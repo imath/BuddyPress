@@ -18,6 +18,12 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.7.0
  */
 class BP_Activity_Theme_Compat {
+	/**
+	 * @var WP_Post
+	 *
+	 * @since 5.0.0
+	 */
+	private $post;
 
 	/**
 	 * Set up the activity component theme compatibility.
@@ -91,11 +97,62 @@ class BP_Activity_Theme_Compat {
 	}
 
 	/**
+	 * Set Activity's page thumbnail.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param  string       $html              The post thumbnail HTML.
+	 * @param  int          $post_id           The post ID.
+	 * @param  string       $post_thumbnail_id The post thumbnail ID.
+	 * @param  string|array $size              The post thumbnail size. Image size or array of width and height
+	 *                                         values (in that order). Default 'post-thumbnail'.
+	 * @param  string       $attr              Query string of attributes.
+	 * @return string                          The post thumbnail image tag.
+	 */
+	function set_page_thumbnail( $html = '', $post_ID = 0, $post_thumbnail_id = 0, $size = '', $attr = '' ) {
+		// Prevent infinite loops.
+		remove_filter( 'post_thumbnail_html', array( $this, 'set_page_thumbnail' ) );
+
+		// Restore the Activity page thumbnail.
+		return get_the_post_thumbnail( $this->post, $size, $attr );
+	}
+
+	/**
+	 * Set the Activity's page attributes.
+	 *
+	 * @since 5.0.0
+	 */
+	function set_page_attributes() {
+		$bp             = buddypress();
+		$this->post     = get_post();
+		$this->post->ID = (int) $bp->pages->activity->id;
+
+		if ( has_post_thumbnail( $this->post ) ) {
+			add_filter( 'has_post_thumbnail', '__return_true' );
+			add_filter( 'post_thumbnail_html', array( $this, 'set_page_thumbnail' ), 10, 5 );
+		}
+
+		if ( function_exists( 'has_block' ) && has_block( 'image', $this->post ) )  {
+			$blocks         = parse_blocks( $this->post->post_content );
+			$block          = reset( $blocks );
+
+			// Set Activity's page attributes.
+			$bp->activity->page_attributes = wp_parse_args( $block['attrs'],
+				array(
+					'align' => '',
+				)
+			);
+		}
+	}
+
+	/**
 	 * Update the global $post with directory data.
 	 *
 	 * @since 1.7.0
 	 */
 	public function directory_dummy_post() {
+		$this->set_page_attributes();
+
 		bp_theme_compat_reset_post( array(
 			'ID'             => 0,
 			'post_title'     => bp_get_directory_title( 'activity' ),

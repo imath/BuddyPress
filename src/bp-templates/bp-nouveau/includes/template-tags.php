@@ -3,7 +3,7 @@
  * Common template tags
  *
  * @since 3.0.0
- * @version 4.0.0
+ * @version 5.0.0
  */
 
 // Exit if accessed directly.
@@ -1406,6 +1406,7 @@ function bp_nouveau_container_classes() {
 	 * @return string CSS classes
 	 */
 	function bp_nouveau_get_container_classes() {
+		$bp                = buddypress();
 		$classes           = array( 'buddypress-wrap' );
 		$component         = bp_current_component();
 		$bp_nouveau        = bp_nouveau();
@@ -1421,6 +1422,10 @@ function bp_nouveau_container_classes() {
 			$customizer_option = 'group_nav_display';
 
 		} elseif ( bp_is_directory() ) {
+			if ( isset( $bp->{$component}->page_attributes['align'] ) ) {
+				$classes[] = 'align' . $bp->{$component}->page_attributes['align'];
+			}
+
 			switch ( $component ) {
 				case 'activity':
 					$customizer_option = 'activity_dir_layout';
