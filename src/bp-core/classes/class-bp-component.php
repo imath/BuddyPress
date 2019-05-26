@@ -770,7 +770,16 @@ class BP_Component {
 	 * @since 1.5.0
 	 *
 	 */
-	public function add_rewrite_tags() {
+	public function add_rewrite_tags( $rewrite_tags = array() ) {
+		if ( $rewrite_tags ) {
+			foreach ( (array) $rewrite_tags as $rewrite_tag ) {
+				if ( ! isset( $rewrite_tag['id'] ) || ! isset( $rewrite_tag['regex'] ) ) {
+					continue;
+				}
+
+				add_rewrite_tag( $rewrite_tag['id'], $rewrite_tag['regex'] );
+			}
+		}
 
 		/**
 		 * Fires in the add_rewrite_tags method inside BP_Component.
@@ -788,7 +797,22 @@ class BP_Component {
 	 * @since 1.9.0
 	 *
 	 */
-	public function add_rewrite_rules() {
+	public function add_rewrite_rules( $rewrite_rules = array() ) {
+		$priority = 'top';
+
+		if ( $rewrite_rules ) {
+			foreach ( $rewrite_rules as $rewrite_rule ) {
+				if ( ! isset( $rewrite_rule['regex'] ) || ! isset( $rewrite_rule['query'] ) ) {
+					continue;
+				}
+
+				if ( ! isset( $rewrite_rule['priority'] ) || ! ! $rewrite_rule['priority'] ) {
+					$rewrite_rule['priority'] = $priority;
+				}
+
+				add_rewrite_rule( $rewrite_rule['regex'], $rewrite_rule['query'], $rewrite_rule['priority'] );
+			}
+		}
 
 		/**
 		 * Fires in the add_rewrite_rules method inside BP_Component.
@@ -806,7 +830,23 @@ class BP_Component {
 	 * @since 1.9.0
 	 *
 	 */
-	public function add_permastructs() {
+	public function add_permastructs( $name = '', $struct = '', $args = array() ) {
+		if ( ! $name || ! $struct ) {
+			return;
+		}
+
+		$r = wp_parse_args( $args, array(
+			'with_front'  => false,
+			'ep_mask'     => EP_NONE,
+			'paged'       => true,
+			'feed'        => false,
+			'forcomments' => false,
+			'walk_dirs'   => true,
+			'endpoints'   => false,
+		) );
+
+		// Add the permastruct.
+		add_permastruct( $name, $struct, $r );
 
 		/**
 		 * Fires in the add_permastructs method inside BP_Component.
@@ -824,9 +864,9 @@ class BP_Component {
 	 * @since 1.9.0
 	 *
 	 *
-	 * @param object $query The main WP_Query.
+	 * @param WP_Query $query The main WP_Query.
 	 */
-	public function parse_query( $query ) {
+	public function parse_query( WP_Query $query ) {
 
 		/**
 		 * Fires in the parse_query method inside BP_Component.
@@ -835,7 +875,7 @@ class BP_Component {
 		 *
 		 * @since 1.9.0
 		 *
-		 * @param object $query Main WP_Query object. Passed by reference.
+		 * @param WP_Query $query Main WP_Query object. Passed by reference.
 		 */
 		do_action_ref_array( 'bp_' . $this->id . '_parse_query', array( &$query ) );
 	}

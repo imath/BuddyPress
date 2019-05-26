@@ -456,4 +456,73 @@ class BP_Members_Component extends BP_Component {
 
 		parent::setup_cache_groups();
 	}
+
+	public function add_rewrite_tags( $rewrite_tags = array() ) {
+		// @todo set this in self::setup_globals();
+		$directory_rewrite_id   = 'bp_members';
+		$single_item_rewrite_id = 'bp_member';
+
+		$rewrite_tags = array(
+			'directory' => array(
+				'id'    => '%' . $directory_rewrite_id . '%',
+				'regex' => '([1]{1,})',
+			),
+			'single-item' => array(
+				'id'      => '%' . $single_item_rewrite_id . '%',
+				'regex'   => '([^/]+)',
+			),
+		);
+
+		parent::add_rewrite_tags( $rewrite_tags );
+	}
+
+	public function add_rewrite_rules( $rewrite_rules = array() ) {
+		// @todo use self::setup_globals().
+		$page_slug              = 'page';
+		$directory_rewrite_id   = 'bp_members';
+		$single_item_rewrite_id = 'bp_member';
+		$directory_slug         = 'bp-members';
+
+		$rewrite_rules = array(
+			'single-item' => array(
+				'regex' => $directory_slug . '/([^/]+)/?$',
+				'query' => 'index.php?' . $directory_rewrite_id . '=1&' . $single_item_rewrite_id . '=$matches[1]',
+			),
+			'paged-directory' => array(
+				'regex' => $directory_slug . '/' . $page_slug . '/?([0-9]{1,})/?$',
+				'query' => 'index.php?' . $directory_rewrite_id . '=1&paged=$matches[1]',
+			),
+			'directory' => array(
+				'regex' => $directory_slug,
+				'query' => 'index.php?' . $directory_rewrite_id . '=1',
+			),
+		);
+
+		parent::add_rewrite_rules( $rewrite_rules );
+	}
+
+	public function add_permastructs( $name = '', $struct = '', $args = array() ) {
+		// @todo use self::setup_globals().
+		$directory_rewrite_id   = 'bp_members';
+		$directory_slug         = 'bp-members';
+
+		parent::add_permastructs( $directory_rewrite_id, $directory_slug . '/%' . $directory_rewrite_id . '%' );
+	}
+
+	public function parse_query( WP_Query $query ) {
+		if ( ! $query->is_main_query() || true === $query->get( 'suppress_filters' ) ) {
+			return;
+		}
+
+		// @todo use self::setup_globals().
+		$directory_rewrite_id   = 'bp_members';
+		$is_members_component   = 1 === (int) $query->get( $directory_rewrite_id );
+		$bp                     = buddypress();
+
+		if ( $is_members_component ) {
+			$bp->current_component = 'members';
+		}
+
+		parent::parse_query( $query );
+	}
 }
