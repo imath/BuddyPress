@@ -459,8 +459,11 @@ class BP_Members_Component extends BP_Component {
 
 	public function add_rewrite_tags( $rewrite_tags = array() ) {
 		// @todo set this in self::setup_globals();
-		$directory_rewrite_id   = 'bp_members';
-		$single_item_rewrite_id = 'bp_member';
+		$directory_rewrite_id                    = 'bp_members';
+		$single_item_rewrite_id                  = 'bp_member';
+		$single_item_component_rewrite_id        = 'bp_member_component';
+		$single_item_action_rewrite_id           = 'bp_member_action';
+		$single_item_action_variables_rewrite_id = 'bp_member_action_variables';
 
 		$rewrite_tags = array(
 			'directory' => array(
@@ -471,6 +474,18 @@ class BP_Members_Component extends BP_Component {
 				'id'      => '%' . $single_item_rewrite_id . '%',
 				'regex'   => '([^/]+)',
 			),
+			'single-item-component' => array(
+				'id'      => '%' . $single_item_component_rewrite_id . '%',
+				'regex'   => '([^/]+)',
+			),
+			'single-item-action' => array(
+				'id'      => '%' . $single_item_action_rewrite_id . '%',
+				'regex'   => '([^/]+)',
+			),
+			'single-item-action-variables' => array(
+				'id'      => '%' . $single_item_action_variables_rewrite_id . '%',
+				'regex'   => '([^/]+)',
+			),
 		);
 
 		parent::add_rewrite_tags( $rewrite_tags );
@@ -478,12 +493,27 @@ class BP_Members_Component extends BP_Component {
 
 	public function add_rewrite_rules( $rewrite_rules = array() ) {
 		// @todo use self::setup_globals().
-		$page_slug              = 'page';
-		$directory_rewrite_id   = 'bp_members';
-		$single_item_rewrite_id = 'bp_member';
-		$directory_slug         = 'bp-members';
+		$page_slug                               = 'page';
+		$directory_rewrite_id                    = 'bp_members';
+		$single_item_rewrite_id                  = 'bp_member';
+		$directory_slug                          = 'bp-members';
+		$single_item_component_rewrite_id        = 'bp_member_component';
+		$single_item_action_rewrite_id           = 'bp_member_action';
+		$single_item_action_variables_rewrite_id = 'bp_member_action_variables';
 
 		$rewrite_rules = array(
+			'single-item-action-variables' => array(
+				'regex' => $directory_slug . '/([^/]+)\/([^/]+)\/([^/]+)\/(.+?)/?$',
+				'query' => 'index.php?' . $directory_rewrite_id . '=1&' . $single_item_rewrite_id . '=$matches[1]&' . $single_item_component_rewrite_id . '=$matches[2]&' . $single_item_action_rewrite_id . '=$matches[3]&' . $single_item_action_variables_rewrite_id . '=$matches[4]',
+			),
+			'single-item-action' => array(
+				'regex' => $directory_slug . '/([^/]+)\/([^/]+)\/([^/]+)/?$',
+				'query' => 'index.php?' . $directory_rewrite_id . '=1&' . $single_item_rewrite_id . '=$matches[1]&' . $single_item_component_rewrite_id . '=$matches[2]&' . $single_item_action_rewrite_id . '=$matches[3]',
+			),
+			'single-item-component' => array(
+				'regex' => $directory_slug . '/([^/]+)\/([^/]+)/?$',
+				'query' => 'index.php?' . $directory_rewrite_id . '=1&' . $single_item_rewrite_id . '=$matches[1]&' . $single_item_component_rewrite_id . '=$matches[2]',
+			),
 			'single-item' => array(
 				'regex' => $directory_slug . '/([^/]+)/?$',
 				'query' => 'index.php?' . $directory_rewrite_id . '=1&' . $single_item_rewrite_id . '=$matches[1]',
@@ -521,6 +551,73 @@ class BP_Members_Component extends BP_Component {
 
 		if ( $is_members_component ) {
 			$bp->current_component = 'members';
+
+			$single_item_rewrite_id = 'bp_member';
+			$member_slug            = $query->get( $single_item_rewrite_id );
+
+			if ( $member_slug ) {
+				$field = 'slug';
+
+				if ( bp_is_username_compatibility_mode() ) {
+					$field = 'login';
+				}
+
+				$member = get_user_by( $field, $member_slug );
+				if ( ! $member->ID ) {
+					$bp->current_component = '';
+					bp_do_404();
+					return;
+				}
+
+				// Set the displayed user.
+				$bp->displayed_user->id = $member->ID;
+
+				/**
+				 * @todo Take care of spammers
+				 */
+
+				// The core userdata of the user who is currently being displayed.
+				if ( ! isset( $bp->displayed_user->userdata ) || ! $bp->displayed_user->userdata ) {
+					$bp->displayed_user->userdata = bp_core_get_core_userdata( bp_displayed_user_id() );
+				}
+
+				// Fetch the full name displayed user.
+				if ( ! isset( $bp->displayed_user->fullname ) || ! $bp->displayed_user->fullname ) {
+					$bp->displayed_user->fullname = '';
+					if ( isset( $bp->displayed_user->userdata->display_name ) ) {
+						$bp->displayed_user->fullname = $bp->displayed_user->userdata->display_name;
+					}
+				}
+
+				// The domain for the user currently being displayed.
+				if ( ! isset( $bp->displayed_user->domain ) || ! $bp->displayed_user->domain ) {
+					$bp->displayed_user->domain   = bp_core_get_user_domain( bp_displayed_user_id() );
+				}
+
+				/**
+				 * We can't rely on the BP Nav screen functions so far.
+				 * Let's make sure the screen will be loaded.
+				 */
+				add_action( 'bp_screens', 'bp_members_screen_display_profile' );
+
+				$single_item_component_rewrite_id = 'bp_member_component';
+				$member_component                 = $query->get( $single_item_component_rewrite_id );
+
+				if ( $member_component ) {
+					$bp->current_component = $member_component;
+				}
+
+				$single_item_action_rewrite_id = 'bp_member_action';
+				$current_action                = $query->get( $single_item_action_rewrite_id );
+
+				if ( $current_action ) {
+					$bp->current_action = $current_action;
+				}
+
+				/**
+				 * @todo Take care of action variables
+				 */
+			}
 
 			/**
 			 * This is temporary to avoid `bp_core_catch_no_access()`
