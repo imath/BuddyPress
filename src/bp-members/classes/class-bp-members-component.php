@@ -521,6 +521,18 @@ class BP_Members_Component extends BP_Component {
 
 		if ( $is_members_component ) {
 			$bp->current_component = 'members';
+
+			/**
+			 * This is temporary to avoid `bp_core_catch_no_access()`
+			 * to generate a 404.
+			 */
+			$query->queried_object = get_post( $bp->pages->members->id );
+
+			/**
+			 * The late include stuff is happening too early. We need to
+			 * run it again..
+			 */
+			$this->late_includes();
 		}
 
 		parent::parse_query( $query );
