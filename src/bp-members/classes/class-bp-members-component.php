@@ -160,6 +160,7 @@ class BP_Members_Component extends BP_Component {
 			'slug'            => BP_MEMBERS_SLUG,
 			'root_slug'       => isset( $bp->pages->members->slug ) ? $bp->pages->members->slug : BP_MEMBERS_SLUG,
 			'has_directory'   => true,
+			'directory_slug'  => 'bp-members',
 			'directory_title' => isset( $bp->pages->members->title ) ? $bp->pages->members->title : $default_directory_title,
 			'search_string'   => __( 'Search Members...', 'buddypress' ),
 			'global_tables'   => array(
@@ -457,6 +458,14 @@ class BP_Members_Component extends BP_Component {
 		parent::setup_cache_groups();
 	}
 
+	/**
+	 * Add the component's rewrite tags.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param array $rewrite_tags Optional. See BP_Component::add_rewrite_tags() for
+	 *                            description.
+	 */
 	public function add_rewrite_tags( $rewrite_tags = array() ) {
 		// @todo set this in self::setup_globals();
 		$directory_rewrite_id                    = 'bp_members';
@@ -491,6 +500,14 @@ class BP_Members_Component extends BP_Component {
 		parent::add_rewrite_tags( $rewrite_tags );
 	}
 
+	/**
+	 * Add the component's rewrite rules.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param array $rewrite_rules Optional. See BP_Component::add_rewrite_rules() for
+	 *                             description.
+	 */
 	public function add_rewrite_rules( $rewrite_rules = array() ) {
 		// @todo use self::setup_globals().
 		$page_slug                               = 'page';
@@ -531,6 +548,18 @@ class BP_Members_Component extends BP_Component {
 		parent::add_rewrite_rules( $rewrite_rules );
 	}
 
+	/**
+	 * Add the component's directory permastructs.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param string $name   Optional. See BP_Component::add_permastructs() for
+	 *                       description.
+	 * @param string $struct Optional. See BP_Component::add_permastructs() for
+	 *                       description.
+	 * @param array  $args   Optional. See BP_Component::add_permastructs() for
+	 *                       description.
+	 */
 	public function add_permastructs( $name = '', $struct = '', $args = array() ) {
 		// @todo use self::setup_globals().
 		$directory_rewrite_id   = 'bp_members';
@@ -539,13 +568,42 @@ class BP_Members_Component extends BP_Component {
 		parent::add_permastructs( $directory_rewrite_id, $directory_slug . '/%' . $directory_rewrite_id . '%' );
 	}
 
+	/**
+	 * Parse the WP_Query and eventually display the component's directory or single item.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param WP_Query $query Required. See BP_Component::add_permastructs() for
+	 *                        description.
+	 */
 	public function parse_query( WP_Query $query ) {
 		if ( ! $query->is_main_query() || true === $query->get( 'suppress_filters' ) ) {
 			return;
 		}
 
 		// @todo use self::setup_globals().
-		$directory_rewrite_id   = 'bp_members';
+		$directory_rewrite_id = 'bp_members';
+		$directory_slug       = 'bp-members';
+
+		// Init the current member.
+		$member       = false;
+		$member_field = 'slug';
+		if ( bp_is_username_compatibility_mode() ) {
+			$member_field = 'login';
+		}
+
+		if ( bp_core_enable_root_profiles() ) {
+			global $wp;
+			$request_chunks = explode( '/', $wp->request );
+			$member_chunk   = reset( $request_chunks );
+
+			// Try to get an existing member.
+			$member = get_user_by( $member_field, $member_chunk );
+			if ( ! $member || ! bp_reset_query( 'members', $query ) ) {
+				return;
+			}
+		}
+
 		$is_members_component   = 1 === (int) $query->get( $directory_rewrite_id );
 		$bp                     = buddypress();
 
@@ -556,17 +614,14 @@ class BP_Members_Component extends BP_Component {
 			$member_slug            = $query->get( $single_item_rewrite_id );
 
 			if ( $member_slug ) {
-				$field = 'slug';
-
-				if ( bp_is_username_compatibility_mode() ) {
-					$field = 'login';
-				}
-
-				$member = get_user_by( $field, $member_slug );
-				if ( ! $member->ID ) {
-					$bp->current_component = '';
-					bp_do_404();
-					return;
+				// Unless root profiles are on, the member shouldn't be set yet.
+				if ( ! $member ) {
+					$member = get_user_by( $field, $member_slug );
+					if ( ! $member ) {
+						$bp->current_component = '';
+						bp_do_404();
+						return;
+					}
 				}
 
 				// Set the displayed user.

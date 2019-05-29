@@ -236,6 +236,7 @@ class BP_Component {
 			'slug'                  => $this->id,
 			'root_slug'             => $default_root_slug,
 			'has_directory'         => false,
+			'directory_slug'        => '',
 			'directory_title'       => '',
 			'notification_callback' => '',
 			'search_string'         => '',
@@ -260,6 +261,15 @@ class BP_Component {
 		 * @param string $value Root directory slug.
 		 */
 		$this->root_slug             = apply_filters( 'bp_' . $this->id . '_root_slug',             $r['root_slug']             );
+
+		/**
+		 * Filters the component's top-level directory slug if available.
+		 *
+		 * @since 6.0.0
+		 *
+		 * @param bool $value Whether or not there is a top-level directory.
+		 */
+		$this->directory_slug        = apply_filters( 'bp_' . $this->id . '_directory_slug',        $r['directory_slug']        );
 
 		/**
 		 * Filters the component's top-level directory if available.

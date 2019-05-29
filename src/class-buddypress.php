@@ -474,6 +474,7 @@ class BuddyPress {
 		require( $this->plugin_dir . 'bp-core/bp-core-cssjs.php'            );
 		require( $this->plugin_dir . 'bp-core/bp-core-update.php'           );
 		require( $this->plugin_dir . 'bp-core/bp-core-options.php'          );
+		require( $this->plugin_dir . 'bp-core/bp-core-rewrites.php'         );
 		require( $this->plugin_dir . 'bp-core/bp-core-taxonomy.php'         );
 		require( $this->plugin_dir . 'bp-core/bp-core-filters.php'          );
 		require( $this->plugin_dir . 'bp-core/bp-core-attachments.php'      );
