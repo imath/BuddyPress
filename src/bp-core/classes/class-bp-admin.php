@@ -123,6 +123,7 @@ class BP_Admin {
 		require( $this->admin_dir . 'bp-core-admin-components.php' );
 		require( $this->admin_dir . 'bp-core-admin-slugs.php'      );
 		require( $this->admin_dir . 'bp-core-admin-tools.php'      );
+		require $this->admin_dir . 'bp-core-admin-rewrites.php';
 	}
 
 	/**
@@ -234,14 +235,25 @@ class BP_Admin {
 			'bp_core_admin_components_settings'
 		);
 
-		$hooks[] = add_submenu_page(
-			$this->settings_page,
-			__( 'BuddyPress Pages', 'buddypress' ),
-			__( 'BuddyPress Pages', 'buddypress' ),
-			$this->capability,
-			'bp-page-settings',
-			'bp_core_admin_slugs_settings'
-		);
+		if ( bp_use_wp_rewrites() ) {
+			$hooks[] = add_submenu_page(
+				$this->settings_page,
+				__( 'BuddyPress URLs', 'buddypress' ),
+				__( 'BuddyPress URLs', 'buddypress' ),
+				$this->capability,
+				'bp-rewrites-settings',
+				'bp_core_admin_rewrites_settings'
+			);
+		} else {
+			$hooks[] = add_submenu_page(
+				$this->settings_page,
+				__( 'BuddyPress Pages', 'buddypress' ),
+				__( 'BuddyPress Pages', 'buddypress' ),
+				$this->capability,
+				'bp-page-settings',
+				'bp_core_admin_slugs_settings'
+			);
+		}
 
 		$hooks[] = add_submenu_page(
 			$this->settings_page,
@@ -394,6 +406,10 @@ class BP_Admin {
 		add_settings_field( '_bp_theme_package_id', __( 'Template Pack', 'buddypress' ), 'bp_admin_setting_callback_theme_package_id', 'buddypress', 'bp_main', array( 'label_for' => '_bp_theme_package_id' ) );
 		register_setting( 'buddypress', '_bp_theme_package_id', 'sanitize_text_field' );
 
+		// Rewrites.
+		add_settings_field( '_bp_use_wp_rewrites', __( 'Custom URLs', 'buddypress' ), 'bp_admin_setting_callback_use_wp_rewrites', 'buddypress', 'bp_main', array( 'label_for' => '_bp_use_wp_rewrites' ) );
+		register_setting( 'buddypress', '_bp_use_wp_rewrites', 'intval' );
+
 		/* XProfile Section **************************************************/
 
 		if ( bp_is_active( 'xprofile' ) ) {
@@ -516,9 +532,10 @@ class BP_Admin {
 	public function admin_head() {
 
 		// Settings pages.
-		remove_submenu_page( $this->settings_page, 'bp-page-settings' );
-		remove_submenu_page( $this->settings_page, 'bp-settings'      );
-		remove_submenu_page( $this->settings_page, 'bp-credits'       );
+		remove_submenu_page( $this->settings_page, 'bp-page-settings'     );
+		remove_submenu_page( $this->settings_page, 'bp-settings'          );
+		remove_submenu_page( $this->settings_page, 'bp-credits'           );
+		remove_submenu_page( $this->settings_page, 'bp-rewrites-settings' );
 
 		// Network Admin Tools.
 		remove_submenu_page( 'network-tools', 'network-tools' );

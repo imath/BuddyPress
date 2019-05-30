@@ -74,6 +74,9 @@ function bp_get_default_options() {
 		// Email unsubscribe salt.
 		'bp-emails-unsubscribe-salt'           => '',
 
+		// Rewrites
+		'_bp_use_wp_rewrites'                  => false,
+
 		/* Groups ************************************************************/
 
 		// @todo Move this into the groups component
@@ -749,4 +752,25 @@ function bp_get_theme_package_id( $default = 'legacy' ) {
 	 * @param string $value The current theme package ID.
 	 */
 	return apply_filters( 'bp_get_theme_package_id', bp_get_option( '_bp_theme_package_id', $default ) );
+}
+
+/**
+ * Check wether BuddyPress is using WP Rewrites.
+ *
+ * @since 6.0.0
+ *
+ * @param bool $default Optional. Fallback value if not found in the database.
+ *                      Default: false.
+ * @return bool True if BuddyPress uses WP Rewrites, otherwise false.
+ */
+function bp_use_wp_rewrites( $default = false ) {
+
+	/**
+	 * Filters wether BuddyPress should use WP Rewrites.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param bool $value Whether or not Rewrites are enabled.
+	 */
+	return apply_filters( 'bp_use_wp_rewrites', bp_get_option( '_bp_use_wp_rewrites', $default ) );
 }

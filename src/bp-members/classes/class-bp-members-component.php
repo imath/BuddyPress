@@ -467,6 +467,10 @@ class BP_Members_Component extends BP_Component {
 	 *                            description.
 	 */
 	public function add_rewrite_tags( $rewrite_tags = array() ) {
+		if ( ! bp_use_wp_rewrites() ) {
+			return parent::add_rewrite_tags( $rewrite_tags );
+		}
+
 		// @todo set this in self::setup_globals();
 		$directory_rewrite_id                    = 'bp_members';
 		$single_item_rewrite_id                  = 'bp_member';
@@ -509,6 +513,10 @@ class BP_Members_Component extends BP_Component {
 	 *                             description.
 	 */
 	public function add_rewrite_rules( $rewrite_rules = array() ) {
+		if ( ! bp_use_wp_rewrites() ) {
+			return parent::add_rewrite_rules( $rewrite_rules );
+		}
+
 		// @todo use self::setup_globals().
 		$page_slug                               = 'page';
 		$directory_rewrite_id                    = 'bp_members';
@@ -561,6 +569,10 @@ class BP_Members_Component extends BP_Component {
 	 *                       description.
 	 */
 	public function add_permastructs( $name = '', $struct = '', $args = array() ) {
+		if ( ! bp_use_wp_rewrites() ) {
+			return parent::add_permastructs( $name, $struct, $args );
+		}
+
 		// @todo use self::setup_globals().
 		$directory_rewrite_id   = 'bp_members';
 		$directory_slug         = 'bp-members';
@@ -577,8 +589,8 @@ class BP_Members_Component extends BP_Component {
 	 *                        description.
 	 */
 	public function parse_query( WP_Query $query ) {
-		if ( ! $query->is_main_query() || true === $query->get( 'suppress_filters' ) ) {
-			return;
+		if ( ! bp_use_wp_rewrites() || ! $query->is_main_query() || true === $query->get( 'suppress_filters' ) ) {
+			return parent::parse_query( $query );
 		}
 
 		// @todo use self::setup_globals().

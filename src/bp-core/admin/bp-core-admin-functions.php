@@ -435,6 +435,13 @@ function bp_core_get_admin_tabs( $active_tab = '' ) {
 		),
 	);
 
+	if ( bp_use_wp_rewrites() ) {
+		$tabs['1'] = array(
+			'href' => bp_get_admin_url( add_query_arg( array( 'page' => 'bp-rewrites-settings' ), 'admin.php' ) ),
+			'name' => __( 'URLs', 'buddypress' )
+		);
+	}
+
 	/**
 	 * Filters the tab data used in our wp-admin screens.
 	 *

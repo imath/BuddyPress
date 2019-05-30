@@ -79,6 +79,19 @@ function bp_admin_setting_callback_theme_package_id() {
 	<?php endif;
 }
 
+function bp_admin_setting_callback_use_wp_rewrites() {
+?>
+
+	<input id="_bp_use_wp_rewrites" name="_bp_use_wp_rewrites" type="checkbox" value="1" <?php checked( bp_use_wp_rewrites() ); ?> />
+	<strong><?php esc_html_e( 'Experimental', 'buddypress' ); ?></strong>
+	<p id="_bp_use_wp_rewrites_description" class="description">
+		<?php esc_html_e( 'By enabling this option, you will be able try a more WordPress friendly way of building/analysing BuddyPress URLs.', 'buddypress' ); ?>&nbsp;
+		<?php esc_html_e( 'The "Pages" tab will be replaced by a "URLs" one, and you will be able to customize BuddyPress URLs.', 'buddypress' ); ?>&nbsp;
+		<?php esc_html_e( 'If some of your BuddyPress plugins are not ready yet for this great feature, no worries: you can come back to our good old way of building/analysing BuddyPress URLs by disabling this option.', 'buddypress' ); ?>
+	</p>
+<?php
+}
+
 /** Activity *******************************************************************/
 
 /**
@@ -293,6 +306,12 @@ function bp_core_admin_settings_save() {
 
 	if ( isset( $_GET['page'] ) && 'bp-settings' == $_GET['page'] && !empty( $_POST['submit'] ) ) {
 		check_admin_referer( 'buddypress-options' );
+
+		// Maybe update rewrite rules.
+		$use_rewrite = bp_use_wp_rewrites();
+		if ( ( ! isset( $_POST['_bp_use_wp_rewrites'] ) && $use_rewrite ) || ( isset( $_POST['_bp_use_wp_rewrites'] ) && ! $use_rewrite ) ) {
+			bp_delete_rewrite_rules();
+		}
 
 		// Because many settings are saved with checkboxes, and thus will have no values
 		// in the $_POST array when unchecked, we loop through the registered settings.
