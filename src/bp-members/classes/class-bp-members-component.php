@@ -628,7 +628,7 @@ class BP_Members_Component extends BP_Component {
 			if ( $member_slug ) {
 				// Unless root profiles are on, the member shouldn't be set yet.
 				if ( ! $member ) {
-					$member = get_user_by( $field, $member_slug );
+					$member = get_user_by( $member_field, $member_slug );
 					if ( ! $member ) {
 						$bp->current_component = '';
 						bp_do_404();
