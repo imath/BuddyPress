@@ -628,6 +628,10 @@ function bp_core_get_directory_pages() {
 						}
 
 						$pages->{$component_id}->slug = implode( '/', array_reverse( (array) $slug ) );
+
+						if ( bp_use_wp_rewrites() ) {
+							$pages->{$component_id}->custom_slugs = get_post_meta( $page_name->ID, '_bp_component_slugs', true );
+						}
 					}
 
 					unset( $slug );

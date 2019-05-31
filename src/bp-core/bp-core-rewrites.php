@@ -28,12 +28,35 @@ function bp_delete_rewrite_rules() {
  *
  * @since 6.0.0
  */
-function bp_unhook_legacy_url_parser() {
-	if ( bp_use_wp_rewrites() ) {
-		remove_action( 'bp_init', 'bp_core_set_uri_globals', 2 );
+function bp_disable_legacy_url_parser() {
+	if ( ! bp_use_wp_rewrites() ) {
+		return;
 	}
+
+	// First let's neutalize our legacy URL parser.
+	remove_action( 'bp_init', 'bp_core_set_uri_globals', 2 );
+
+	// Then register a custom post type to use for the directory pages.
+	register_post_type( 'bp_directories', array(
+		'label'               => _x( 'BuddyPress directories', 'Post type label used in the Admin menu.', 'buddypress' ),
+		'labels'              => array(
+			'singular_name' => _x( 'BuddyPress directory', 'Post type singular name', 'buddypress' ),
+		),
+		'description'         => __( 'The BuddyPress directories post type is used when the custom URLs option is active.', 'buddypress' ),
+		'public'              => false,
+		'hierarchical'        => true,
+		'exclude_from_search' => true,
+		'publicly_queryable'  => false,
+		'show_in_nav_menus'   => true,
+		'show_in_rest'        => false,
+		'supports'            => array( 'title' ),
+		'has_archive'         => false,
+		'rewrite'             => false,
+		'query_var'           => false,
+		'delete_with_user'    => false,
+	) );
 }
-add_action( 'bp_init', 'bp_unhook_legacy_url_parser', 1 );
+add_action( 'bp_init', 'bp_disable_legacy_url_parser', 1 );
 
 /**
  * Resets the query to fit our permalink structure if needed.
