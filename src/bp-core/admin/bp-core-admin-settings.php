@@ -85,9 +85,9 @@ function bp_admin_setting_callback_use_wp_rewrites() {
 	<input id="_bp_use_wp_rewrites" name="_bp_use_wp_rewrites" type="checkbox" value="1" <?php checked( bp_use_wp_rewrites() ); ?> />
 	<strong><?php esc_html_e( 'Experimental', 'buddypress' ); ?></strong>
 	<p id="_bp_use_wp_rewrites_description" class="description">
-		<?php esc_html_e( 'By enabling this option, you will be able try a more WordPress friendly way of building/analysing BuddyPress URLs.', 'buddypress' ); ?>&nbsp;
+		<?php esc_html_e( 'By enabling this option, you will be able to try a more WordPress friendly way of building/analysing BuddyPress URLs.', 'buddypress' ); ?>&nbsp;
 		<?php esc_html_e( 'The "Pages" tab will be replaced by a "URLs" one, and you will be able to customize BuddyPress URLs.', 'buddypress' ); ?>&nbsp;
-		<?php esc_html_e( 'If some of your BuddyPress plugins are not ready yet for this great feature, no worries: you can come back to our good old way of building/analysing BuddyPress URLs by disabling this option.', 'buddypress' ); ?>
+		<?php esc_html_e( 'If some of your BuddyPress plugins are not ready yet for this great feature, no worries: you can come back at any time to our legacy way of building/analysing BuddyPress URLs by disabling this option.', 'buddypress' ); ?>
 	</p>
 <?php
 }
