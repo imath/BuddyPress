@@ -59,6 +59,25 @@ function bp_disable_legacy_url_parser() {
 add_action( 'bp_init', 'bp_disable_legacy_url_parser', 1 );
 
 /**
+ * Maybe temporary ?
+ *
+ * Used to make sure WP Nav Menus still use the same links.
+ */
+function bp_directory_link( $link, WP_Post $post ) {
+	if ( 'bp_directories' !== get_post_type( $post ) ) {
+		return $link;
+	}
+
+	$directory_pages = wp_list_pluck( bp_core_get_directory_pages(), 'slug', 'id' );
+	if ( ! isset( $directory_pages[ $post->ID ] ) ) {
+		return $link;
+	}
+
+	return home_url( user_trailingslashit( $directory_pages[ $post->ID ] ) );
+}
+add_filter( 'post_type_link', 'bp_directory_link', 1, 2 );
+
+/**
  * Resets the query to fit our permalink structure if needed.
  *
  * This is used for specific cases such as Root Member's profile.
