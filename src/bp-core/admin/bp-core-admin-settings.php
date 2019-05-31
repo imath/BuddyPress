@@ -311,6 +311,7 @@ function bp_core_admin_settings_save() {
 		$use_rewrite = bp_use_wp_rewrites();
 		if ( ( ! isset( $_POST['_bp_use_wp_rewrites'] ) && $use_rewrite ) || ( isset( $_POST['_bp_use_wp_rewrites'] ) && ! $use_rewrite ) ) {
 			bp_delete_rewrite_rules();
+			bp_core_admin_rewrites_update_directory_pages( isset( $_POST['_bp_use_wp_rewrites'] ) );
 		}
 
 		// Because many settings are saved with checkboxes, and thus will have no values

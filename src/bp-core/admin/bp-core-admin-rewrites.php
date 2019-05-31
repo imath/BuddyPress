@@ -50,12 +50,12 @@ function bp_core_admin_rewrites_settings() {
 								<tr>
 									<?php if ( $secondary_item['slug'] === $primary_item['default_subnav_slug'] ) : ?>
 										<th scope="row">
-											<label style="margin-left: 2em; display: inline-block; vertical-align: middle" for="<?php printf( esc_attr__( '%1$s-%2$s-slug', 'buddypress' ), $component_id, $secondary_item['component_id'] ); ?>">
+											<label style="margin-left: 2em; display: inline-block; vertical-align: middle" for="<?php printf( esc_attr__( '%s-slug', 'buddypress' ), $secondary_item['screen_function'] ); ?>">
 												<?php printf( esc_html__( '%s main nav slug', 'buddypress' ), $primary_item['name'] ); ?>
 											</label>
 										</th>
 										<td>
-											<input type="text" class="code" name="<?php printf( esc_attr__( '%1$s-%2$s-slug', 'buddypress' ), $component_id, $secondary_item['component_id'] ); ?>" id="<?php printf( esc_attr__( '%1$s-%2$s-slug', 'buddypress' ), $component_id, $secondary_item['component_id'] ); ?>" value="<?php echo esc_attr( $primary_item['slug'] ); ?>">
+											<input type="text" class="code" name="<?php printf( esc_attr__( '%s-slug', 'buddypress' ), $secondary_item['screen_function'] ); ?>" id="<?php printf( esc_attr__( '%s-slug', 'buddypress' ), $secondary_item['screen_function'] ); ?>" value="<?php echo esc_attr( $primary_item['slug'] ); ?>">
 										</td>
 
 									<?php else : ?>
@@ -87,4 +87,52 @@ function bp_core_admin_rewrites_settings() {
 	</div>
 
 <?php
+}
+
+function bp_core_admin_rewrites_update_directory_pages( $use_rewrite = false ) {
+	$bp_pages          = bp_core_get_directory_pages();
+	$nav_menu_item_ids = array();
+
+	$post_type   = 'page';
+	$item_object = 'bp_directories';
+	if ( $use_rewrite ) {
+		$post_type = 'bp_directories';
+		$item_object = 'page';
+	}
+
+	foreach ( $bp_pages as $bp_page ) {
+		$nav_menu_item_ids[] = $bp_page->id;
+
+		// Switch the post type.
+		wp_update_post( array( 'ID' => $bp_page->id, 'post_type' => $post_type ) );
+	}
+
+	// Update nav menu items!
+	$nav_menus = wp_get_nav_menus( array( 'hide_empty' => true ) );
+	foreach ( $nav_menus as $nav_menu ) {
+		$items = wp_get_nav_menu_items( $nav_menu->term_id );
+
+		foreach( $items as $item ) {
+			if ( $item_object !== $item->object || ! in_array( $item->object_id, $nav_menu_item_ids, true ) ) {
+				continue;
+			}
+
+			wp_update_nav_menu_item( $nav_menu->term_id, $item->ID, array(
+				'menu-item-db-id'       => $item->db_id,
+				'menu-item-object-id'   => $item->object_id,
+				'menu-item-object'      => $post_type,
+				'menu-item-parent-id'   => $item->menu_item_parent,
+				'menu-item-position'    => $item->menu_order,
+				'menu-item-type'        => 'post_type',
+				'menu-item-title'       => $item->title,
+				'menu-item-url'         => $item->url,
+				'menu-item-description' => $item->description,
+				'menu-item-attr-title'  => $item->attr_title,
+				'menu-item-target'      => $item->target,
+				'menu-item-classes'     => implode( ' ', (array) $item->classes ),
+				'menu-item-xfn'         => $item->xfn,
+				'menu-item-status'      => 'publish',
+			) );
+		}
+	}
 }
