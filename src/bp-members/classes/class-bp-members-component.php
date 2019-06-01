@@ -649,9 +649,10 @@ class BP_Members_Component extends BP_Component {
 					$bp->current_action = $current_action;
 				}
 
-				/**
-				 * @todo Take care of action variables
-				 */
+				$action_variables = $query->get( $this->rewrite_ids['single_item_action_variables'] );
+				if ( $action_variables ) {
+					$bp->action_variable = explode( '/', ltrim( $action_variables, '/' ) );
+				}
 			}
 
 			/**
