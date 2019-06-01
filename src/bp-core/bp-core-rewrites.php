@@ -78,36 +78,95 @@ function bp_directory_link( $link, WP_Post $post ) {
 add_filter( 'post_type_link', 'bp_directory_link', 1, 2 );
 
 /**
- * Resets the query to fit our permalink structure if needed.
- *
- * This is used for specific cases such as Root Member's profile.
+ * Get needed data to find a member single item from the request.
  *
  * @since 6.0.0
  *
- * @param string $component_id The BuddyPress component's ID (eg: members).
+ * @param string $request The request used during parsing.
+ * @return array Data to find a member single item from the request.
+ */
+function bp_rewrites_get_member_data( $request = '' ) {
+	$member_data = array( 'field' => 'slug' );
+
+	if ( bp_is_username_compatibility_mode() ) {
+		$member_data = array( 'field' => 'login' );
+	}
+
+	if ( bp_core_enable_root_profiles() ) {
+		if ( ! $request ) {
+			$request = $GLOBALS['wp']->request;
+		}
+
+		$request_chunks = explode( '/', ltrim( $request, '/' ) );
+		$member_chunk   = reset( $request_chunks );
+
+		// Try to get an existing member to eventually reset the WP Query.
+		$member_data['object'] = get_user_by( $member_data['field'], $member_chunk );
+	}
+
+	return $member_data;
+}
+
+/**
+ * Makes sure BuddyPress globals are set during Ajax requests.
+ *
+ * @since 6.0.0
+ */
+function bp_parse_ajax_referer_query() {
+	if ( ! wp_doing_ajax() || ! bp_use_wp_rewrites() ) {
+		return;
+	}
+
+	$bp       = buddypress();
+	$bp->ajax = (object) array(
+		'WP' => new WP(),
+	);
+
+	bp_reset_query( bp_get_referer_path(), $GLOBALS['wp_query'] );
+}
+add_action( 'bp_admin_init', 'bp_parse_ajax_referer_query' );
+
+/**
+ * Resets the query to fit our permalink structure if needed.
+ *
+ * This is used for specific cases such as Root Member's profile or Ajax.
+ *
+ * @since 6.0.0
+ *
+ * @param string $bp_request A specific BuddyPress request.
  * @param WP_Query $query The WordPress query object.
  */
-function bp_reset_query( $component_id = '', WP_Query $query ) {
+function bp_reset_query( $bp_request = '', WP_Query $query ) {
 	global $wp;
 	$bp = buddypress();
-
-	if ( ! bp_is_active( $component_id ) || ! isset( $bp->{$component_id}->root_slug ) ) {
-		return false;
-	}
 
 	// Back up request uri.
 	$reset_server_request_uri = $_SERVER['REQUEST_URI'];
 
 	// Temporarly override it.
-	$_SERVER['REQUEST_URI'] = str_replace( $wp->request, $bp->{$component_id}->root_slug . '/' . $wp->request, $reset_server_request_uri );
+	if ( isset( $wp->request ) ) {
+		$_SERVER['REQUEST_URI'] = str_replace( $wp->request, $bp_request, $reset_server_request_uri );
 
-	// Reparse request.
-	$wp->parse_request();
+		// Reparse request.
+		$wp->parse_request();
 
-	// Reparse query.
-	bp_remove_all_filters( 'parse_query' );
-	$query->parse_query( $wp->query_vars );
-	bp_restore_all_filters( 'parse_query' );
+		// Reparse query.
+		bp_remove_all_filters( 'parse_query' );
+		$query->parse_query( $wp->query_vars );
+		bp_restore_all_filters( 'parse_query' );
+
+	} elseif ( isset( $bp->ajax ) ) {
+		// Extra step for root profiles
+		$member = bp_rewrites_get_member_data( $bp_request );
+		if ( isset( $member['object'] ) && $member['object'] ) {
+			$bp_request = '/' . $bp->members->root_slug . $bp_request;
+		}
+
+		$_SERVER['REQUEST_URI'] = $bp_request;
+
+		$bp->ajax->WP->parse_request();
+		$query->parse_query( $bp->ajax->WP->matched_query );
+	}
 
 	// Restore request uri.
 	$_SERVER['REQUEST_URI'] = $reset_server_request_uri;

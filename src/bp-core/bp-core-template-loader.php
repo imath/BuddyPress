@@ -469,9 +469,10 @@ function bp_add_template_stack_locations( $stacks = array() ) {
  * @param WP_Query $posts_query WP_Query object.
  */
 function bp_parse_query( $posts_query ) {
+	$bp_is_doing_ajax = isset( buddypress()->ajax->WP );
 
-	// Bail if $posts_query is not the main loop.
-	if ( ! $posts_query->is_main_query() ) {
+	// Bail if $posts_query is not the main loop and not done in BP Ajax context.
+	if ( ! $bp_is_doing_ajax && ! $posts_query->is_main_query() ) {
 		return;
 	}
 
@@ -480,8 +481,8 @@ function bp_parse_query( $posts_query ) {
 		return;
 	}
 
-	// Bail if in admin.
-	if ( is_admin() ) {
+	// Bail if in admin and not done in BP Ajax context.
+	if ( ! $bp_is_doing_ajax && is_admin() ) {
 		return;
 	}
 

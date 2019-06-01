@@ -575,27 +575,17 @@ class BP_Members_Component extends BP_Component {
 	 *                        description.
 	 */
 	public function parse_query( WP_Query $query ) {
-		if ( ! bp_use_wp_rewrites() || ! $query->is_main_query() || true === $query->get( 'suppress_filters' ) ) {
+		if ( ! bp_use_wp_rewrites() ) {
 			return parent::parse_query( $query );
 		}
 
 		// Init the current member.
 		$member       = false;
-		$member_field = 'slug';
-		if ( bp_is_username_compatibility_mode() ) {
-			$member_field = 'login';
-		}
+		$member_data = bp_rewrites_get_member_data();
 
-		if ( bp_core_enable_root_profiles() ) {
-			global $wp;
-			$request_chunks = explode( '/', $wp->request );
-			$member_chunk   = reset( $request_chunks );
-
-			// Try to get an existing member.
-			$member = get_user_by( $member_field, $member_chunk );
-			if ( ! $member || ! bp_reset_query( 'members', $query ) ) {
-				return;
-			}
+		if ( isset( $member_data['object'] ) && $member_data['object'] ) {
+			bp_reset_query( trailingslashit( $this->root_slug ) . $GLOBALS['wp']->request, $query );
+			$member = $member_data['object'];
 		}
 
 		$is_members_component   = 1 === (int) $query->get( $this->rewrite_ids['directory'] );
@@ -610,7 +600,7 @@ class BP_Members_Component extends BP_Component {
 			if ( $member_slug ) {
 				// Unless root profiles are on, the member shouldn't be set yet.
 				if ( ! $member ) {
-					$member = get_user_by( $member_field, $member_slug );
+					$member = get_user_by( $member_data['field'], $member_slug );
 					if ( ! $member ) {
 						$bp->current_component = '';
 						bp_do_404();
