@@ -160,7 +160,13 @@ class BP_Members_Component extends BP_Component {
 			'slug'            => BP_MEMBERS_SLUG,
 			'root_slug'       => isset( $bp->pages->members->slug ) ? $bp->pages->members->slug : BP_MEMBERS_SLUG,
 			'has_directory'   => true,
-			'directory_slug'  => 'bp-members',
+			'rewrite_ids'     => array(
+				'directory'                    => 'bp_members',
+				'single_item'                  => 'bp_member',
+				'single_item_component'        => 'bp_member_component',
+				'single_item_action'           => 'bp_member_action',
+				'single_item_action_variables' => 'bp_member_action_variables',
+			),
 			'directory_title' => isset( $bp->pages->members->title ) ? $bp->pages->members->title : $default_directory_title,
 			'search_string'   => __( 'Search Members...', 'buddypress' ),
 			'global_tables'   => array(
@@ -471,32 +477,25 @@ class BP_Members_Component extends BP_Component {
 			return parent::add_rewrite_tags( $rewrite_tags );
 		}
 
-		// @todo set this in self::setup_globals();
-		$directory_rewrite_id                    = 'bp_members';
-		$single_item_rewrite_id                  = 'bp_member';
-		$single_item_component_rewrite_id        = 'bp_member_component';
-		$single_item_action_rewrite_id           = 'bp_member_action';
-		$single_item_action_variables_rewrite_id = 'bp_member_action_variables';
-
 		$rewrite_tags = array(
 			'directory' => array(
-				'id'    => '%' . $directory_rewrite_id . '%',
+				'id'    => '%' . $this->rewrite_ids['directory'] . '%',
 				'regex' => '([1]{1,})',
 			),
 			'single-item' => array(
-				'id'      => '%' . $single_item_rewrite_id . '%',
+				'id'      => '%' . $this->rewrite_ids['single_item'] . '%',
 				'regex'   => '([^/]+)',
 			),
 			'single-item-component' => array(
-				'id'      => '%' . $single_item_component_rewrite_id . '%',
+				'id'      => '%' . $this->rewrite_ids['single_item_component'] . '%',
 				'regex'   => '([^/]+)',
 			),
 			'single-item-action' => array(
-				'id'      => '%' . $single_item_action_rewrite_id . '%',
+				'id'      => '%' . $this->rewrite_ids['single_item_action'] . '%',
 				'regex'   => '([^/]+)',
 			),
 			'single-item-action-variables' => array(
-				'id'      => '%' . $single_item_action_variables_rewrite_id . '%',
+				'id'      => '%' . $this->rewrite_ids['single_item_action_variables'] . '%',
 				'regex'   => '([^/]+)',
 			),
 		);
@@ -517,39 +516,30 @@ class BP_Members_Component extends BP_Component {
 			return parent::add_rewrite_rules( $rewrite_rules );
 		}
 
-		// @todo use self::setup_globals().
-		$page_slug                               = 'page';
-		$directory_rewrite_id                    = 'bp_members';
-		$single_item_rewrite_id                  = 'bp_member';
-		$directory_slug                          = 'bp-members';
-		$single_item_component_rewrite_id        = 'bp_member_component';
-		$single_item_action_rewrite_id           = 'bp_member_action';
-		$single_item_action_variables_rewrite_id = 'bp_member_action_variables';
-
 		$rewrite_rules = array(
 			'single-item-action-variables' => array(
-				'regex' => $directory_slug . '/([^/]+)\/([^/]+)\/([^/]+)\/(.+?)/?$',
-				'query' => 'index.php?' . $directory_rewrite_id . '=1&' . $single_item_rewrite_id . '=$matches[1]&' . $single_item_component_rewrite_id . '=$matches[2]&' . $single_item_action_rewrite_id . '=$matches[3]&' . $single_item_action_variables_rewrite_id . '=$matches[4]',
+				'regex' => $this->root_slug . '/([^/]+)\/([^/]+)\/([^/]+)\/(.+?)/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['single_item'] . '=$matches[1]&' . $this->rewrite_ids['single_item_component'] . '=$matches[2]&' . $this->rewrite_ids['single_item_action'] . '=$matches[3]&' . $this->rewrite_ids['single_item_action_variables'] . '=$matches[4]',
 			),
 			'single-item-action' => array(
-				'regex' => $directory_slug . '/([^/]+)\/([^/]+)\/([^/]+)/?$',
-				'query' => 'index.php?' . $directory_rewrite_id . '=1&' . $single_item_rewrite_id . '=$matches[1]&' . $single_item_component_rewrite_id . '=$matches[2]&' . $single_item_action_rewrite_id . '=$matches[3]',
+				'regex' => $this->root_slug . '/([^/]+)\/([^/]+)\/([^/]+)/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['single_item'] . '=$matches[1]&' . $this->rewrite_ids['single_item_component'] . '=$matches[2]&' . $this->rewrite_ids['single_item_action'] . '=$matches[3]',
 			),
 			'single-item-component' => array(
-				'regex' => $directory_slug . '/([^/]+)\/([^/]+)/?$',
-				'query' => 'index.php?' . $directory_rewrite_id . '=1&' . $single_item_rewrite_id . '=$matches[1]&' . $single_item_component_rewrite_id . '=$matches[2]',
+				'regex' => $this->root_slug . '/([^/]+)\/([^/]+)/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['single_item'] . '=$matches[1]&' . $this->rewrite_ids['single_item_component'] . '=$matches[2]',
 			),
 			'single-item' => array(
-				'regex' => $directory_slug . '/([^/]+)/?$',
-				'query' => 'index.php?' . $directory_rewrite_id . '=1&' . $single_item_rewrite_id . '=$matches[1]',
+				'regex' => $this->root_slug . '/([^/]+)/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['single_item'] . '=$matches[1]',
 			),
 			'paged-directory' => array(
-				'regex' => $directory_slug . '/' . $page_slug . '/?([0-9]{1,})/?$',
-				'query' => 'index.php?' . $directory_rewrite_id . '=1&paged=$matches[1]',
+				'regex' => $this->root_slug . '/page/?([0-9]{1,})/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&paged=$matches[1]',
 			),
 			'directory' => array(
-				'regex' => $directory_slug,
-				'query' => 'index.php?' . $directory_rewrite_id . '=1',
+				'regex' => $this->root_slug,
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1',
 			),
 		);
 
@@ -573,11 +563,7 @@ class BP_Members_Component extends BP_Component {
 			return parent::add_permastructs( $name, $struct, $args );
 		}
 
-		// @todo use self::setup_globals().
-		$directory_rewrite_id   = 'bp_members';
-		$directory_slug         = 'bp-members';
-
-		parent::add_permastructs( $directory_rewrite_id, $directory_slug . '/%' . $directory_rewrite_id . '%' );
+		parent::add_permastructs( $this->rewrite_ids['directory'], $this->root_slug . '/%' . $this->rewrite_ids['directory'] . '%' );
 	}
 
 	/**
@@ -592,10 +578,6 @@ class BP_Members_Component extends BP_Component {
 		if ( ! bp_use_wp_rewrites() || ! $query->is_main_query() || true === $query->get( 'suppress_filters' ) ) {
 			return parent::parse_query( $query );
 		}
-
-		// @todo use self::setup_globals().
-		$directory_rewrite_id = 'bp_members';
-		$directory_slug       = 'bp-members';
 
 		// Init the current member.
 		$member       = false;
@@ -616,14 +598,14 @@ class BP_Members_Component extends BP_Component {
 			}
 		}
 
-		$is_members_component   = 1 === (int) $query->get( $directory_rewrite_id );
+		$is_members_component   = 1 === (int) $query->get( $this->rewrite_ids['directory'] );
 		$bp                     = buddypress();
 
 		if ( $is_members_component ) {
 			$bp->current_component = 'members';
 
 			$single_item_rewrite_id = 'bp_member';
-			$member_slug            = $query->get( $single_item_rewrite_id );
+			$member_slug            = $query->get( $this->rewrite_ids['single_item'] );
 
 			if ( $member_slug ) {
 				// Unless root profiles are on, the member shouldn't be set yet.
@@ -667,16 +649,12 @@ class BP_Members_Component extends BP_Component {
 				 */
 				add_action( 'bp_screens', 'bp_members_screen_display_profile' );
 
-				$single_item_component_rewrite_id = 'bp_member_component';
-				$member_component                 = $query->get( $single_item_component_rewrite_id );
-
+				$member_component = $query->get( $this->rewrite_ids['single_item_component'] );
 				if ( $member_component ) {
 					$bp->current_component = $member_component;
 				}
 
-				$single_item_action_rewrite_id = 'bp_member_action';
-				$current_action                = $query->get( $single_item_action_rewrite_id );
-
+				$current_action = $query->get( $this->rewrite_ids['single_item_action'] );
 				if ( $current_action ) {
 					$bp->current_action = $current_action;
 				}

@@ -236,7 +236,7 @@ class BP_Component {
 			'slug'                  => $this->id,
 			'root_slug'             => $default_root_slug,
 			'has_directory'         => false,
-			'directory_slug'        => '',
+			'rewrite_ids'           => array(),
 			'directory_title'       => '',
 			'notification_callback' => '',
 			'search_string'         => '',
@@ -263,13 +263,13 @@ class BP_Component {
 		$this->root_slug             = apply_filters( 'bp_' . $this->id . '_root_slug',             $r['root_slug']             );
 
 		/**
-		 * Filters the component's top-level directory slug if available.
+		 * Filters the component's rewrite IDs if available.
 		 *
 		 * @since 6.0.0
 		 *
-		 * @param bool $value Whether or not there is a top-level directory.
+		 * @param array $value The list of rewrite IDs of the component.
 		 */
-		$this->directory_slug        = apply_filters( 'bp_' . $this->id . '_directory_slug',        $r['directory_slug']        );
+		$this->rewrite_ids           = apply_filters( 'bp_' . $this->id . '_rewrite_ids',           $r['rewrite_ids']           );
 
 		/**
 		 * Filters the component's top-level directory if available.
