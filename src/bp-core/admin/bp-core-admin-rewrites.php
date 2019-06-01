@@ -42,7 +42,12 @@ function bp_core_admin_rewrites_settings() {
 					</tr>
 				</table>
 
-				<?php if ( 'members' === $component_id ) : ?>
+				<?php
+				/**
+				 * The BP Nav is not set yet, since `bp_setup_nav` hook has been delayed to `bp_parse_query`
+				 * This part needs more work.
+				 */
+				/*if ( 'members' === $component_id ) : ?>
 					<h4><?php esc_html_e( 'Single item slugs', 'buddypress' ); ?></h4>
 					<table class="form-table" role="presentation">
 						<?php foreach ( $bp->members->nav->get_primary() as $primary_item ) : ?>
@@ -73,7 +78,7 @@ function bp_core_admin_rewrites_settings() {
 							<?php endforeach ; ?>
 						<?php endforeach ; ?>
 					</table>
-				<?php endif ; ?>
+				<?php endif ; */?>
 
 			<?php endforeach ; ?>
 

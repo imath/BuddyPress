@@ -601,8 +601,9 @@ class BP_Members_Component extends BP_Component {
 				// Unless root profiles are on, the member shouldn't be set yet.
 				if ( ! $member ) {
 					$member = get_user_by( $member_data['field'], $member_slug );
+					$bp->current_component = '';
+
 					if ( ! $member ) {
-						$bp->current_component = '';
 						bp_do_404();
 						return;
 					}
@@ -633,11 +634,10 @@ class BP_Members_Component extends BP_Component {
 					$bp->displayed_user->domain   = bp_core_get_user_domain( bp_displayed_user_id() );
 				}
 
-				/**
-				 * We can't rely on the BP Nav screen functions so far.
-				 * Let's make sure the screen will be loaded.
-				 */
-				add_action( 'bp_screens', 'bp_members_screen_display_profile' );
+				// If A user is displayed, check if there is a front template
+				if ( bp_get_displayed_user() ) {
+					$bp->displayed_user->front_template = bp_displayed_user_get_front_template();
+				}
 
 				$member_component = $query->get( $this->rewrite_ids['single_item_component'] );
 				if ( $member_component ) {
@@ -651,8 +651,14 @@ class BP_Members_Component extends BP_Component {
 
 				$action_variables = $query->get( $this->rewrite_ids['single_item_action_variables'] );
 				if ( $action_variables ) {
-					$bp->action_variable = explode( '/', ltrim( $action_variables, '/' ) );
+					$bp->action_variables = explode( '/', ltrim( $action_variables, '/' ) );
 				}
+
+				/**
+				 * We can't rely on the BP Nav screen functions so far...
+				 * Let's make sure the screen will be loaded.
+				 */
+				add_action( 'bp_screens', 'bp_members_screen_display_profile', 2 );
 			}
 
 			/**
@@ -660,12 +666,6 @@ class BP_Members_Component extends BP_Component {
 			 * to generate a 404.
 			 */
 			$query->queried_object = get_post( $bp->pages->members->id );
-
-			/**
-			 * The late include stuff is happening too early. We need to
-			 * run it again..
-			 */
-			$this->late_includes();
 		}
 
 		parent::parse_query( $query );

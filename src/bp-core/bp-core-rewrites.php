@@ -36,6 +36,14 @@ function bp_disable_legacy_url_parser() {
 	// First let's neutalize our legacy URL parser.
 	remove_action( 'bp_init', 'bp_core_set_uri_globals', 2 );
 
+	// Then unhook some hooks from `bp_init` so that they happen later.
+	remove_action( 'bp_init', 'bp_setup_canonical_stack', 5 );
+	remove_action( 'bp_init', 'bp_setup_nav',             6 );
+
+	// Make sure the query is parsed before hooking them back.
+	add_action( 'bp_parse_query', 'bp_setup_canonical_stack', 11 );
+	add_action( 'bp_parse_query', 'bp_setup_nav',             12 );
+
 	// Then register a custom post type to use for the directory pages.
 	register_post_type( 'bp_directories', array(
 		'label'               => _x( 'BuddyPress directories', 'Post type label used in the Admin menu.', 'buddypress' ),
