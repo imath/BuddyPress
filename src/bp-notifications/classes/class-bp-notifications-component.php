@@ -180,6 +180,7 @@ class BP_Notifications_Component extends BP_Component {
 			'screen_function'         => 'bp_notifications_screen_unread',
 			'default_subnav_slug'     => 'unread',
 			'item_css_id'             => $this->id,
+			'rewrite_id'              => 'bp_member_notifications',
 		);
 
 		// Add the subnav items to the notifications nav item.

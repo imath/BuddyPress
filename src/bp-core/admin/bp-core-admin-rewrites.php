@@ -28,7 +28,7 @@ function bp_core_admin_rewrites_settings() {
 
 			<?php foreach ( $bp->pages as $component_id => $directory_data ) : ?>
 
-				<h3><?php echo esc_html( $directory_data->title ); ?></h3>
+				<h2><?php echo esc_html( $directory_data->title ); ?></h2>
 				<table class="form-table" role="presentation">
 					<tr>
 						<th scope="row">
@@ -37,48 +37,32 @@ function bp_core_admin_rewrites_settings() {
 							</label>
 						</th>
 						<td>
-							<input type="text" class="code" name="<?php printf( esc_attr__( '%s-directory-slug', 'buddypress' ), $component_id ); ?>" id="<?php printf( esc_attr__( '%s-directory-slug', 'buddypress' ), $component_id ); ?>" value="<?php echo esc_attr( $directory_data->slug ); ?>">
+							<input type="text" class="code" name="<?php printf( 'components[%d][post_name]', absint( $directory_data->id ) ); ?>" id="<?php printf( esc_attr__( '%s-directory-slug', 'buddypress' ), $component_id ); ?>" value="<?php echo esc_attr( $directory_data->slug ); ?>" <?php disabled( $component_id !== 'members' ); ?>>
 						</td>
 					</tr>
 				</table>
 
-				<?php
-				/**
-				 * The BP Nav is not set yet, since `bp_setup_nav` hook has been delayed to `bp_parse_query`
-				 * This part needs more work.
-				 */
-				/*if ( 'members' === $component_id ) : ?>
-					<h4><?php esc_html_e( 'Single item slugs', 'buddypress' ); ?></h4>
+				<?php if ( 'members' === $component_id ) : ?>
+					<h3><?php esc_html_e( 'Single Member primary navigation slugs', 'buddypress' ); ?></h3>
 					<table class="form-table" role="presentation">
-						<?php foreach ( $bp->members->nav->get_primary() as $primary_item ) : ?>
-							<?php foreach ( $bp->members->nav->get_secondary( array( 'parent_slug' => $primary_item->slug ) ) as $secondary_item ) : ?>
-								<tr>
-									<?php if ( $secondary_item['slug'] === $primary_item['default_subnav_slug'] ) : ?>
-										<th scope="row">
-											<label style="margin-left: 2em; display: inline-block; vertical-align: middle" for="<?php printf( esc_attr__( '%s-slug', 'buddypress' ), $secondary_item['screen_function'] ); ?>">
-												<?php printf( esc_html__( '%s main nav slug', 'buddypress' ), $primary_item['name'] ); ?>
-											</label>
-										</th>
-										<td>
-											<input type="text" class="code" name="<?php printf( esc_attr__( '%s-slug', 'buddypress' ), $secondary_item['screen_function'] ); ?>" id="<?php printf( esc_attr__( '%s-slug', 'buddypress' ), $secondary_item['screen_function'] ); ?>" value="<?php echo esc_attr( $primary_item['slug'] ); ?>">
-										</td>
-
-									<?php else : ?>
-										<th scope="row">
-											<label style="margin-left: 2em;  display: inline-block; vertical-align: middle" for="<?php echo esc_attr( $secondary_item['screen_function'] ); ?>">
-												<?php printf( esc_html__( '"%s" subnav slug', 'buddypress' ), $secondary_item['name'] ); ?>
-											</label>
-										</th>
-										<td>
-											<input type="text" class="code" name="<?php echo esc_attr( $secondary_item['screen_function'] ); ?>" id="<?php echo esc_attr( $secondary_item['screen_function'] ); ?>" value="<?php echo esc_attr( $secondary_item['slug'] ); ?>">
-										</td>
-
-									<?php endif ; ?>
-								</tr>
-							<?php endforeach ; ?>
+						<?php foreach ( $bp->members->nav->get_primary() as $primary_nav_item ) :
+							if ( ! isset( $primary_nav_item['rewrite_id'] ) || ! $primary_nav_item['rewrite_id'] ) {
+								continue;
+							}
+						?>
+							<tr>
+								<th scope="row">
+									<label style="margin-left: 2em; display: inline-block; vertical-align: middle" for="<?php printf( esc_attr__( '%s-slug', 'buddypress' ), $primary_nav_item['rewrite_id'] ); ?>">
+										<?php printf( esc_html__( '"%s" slug', 'buddypress' ), $primary_nav_item['name'] ); ?>
+									</label>
+								</th>
+								<td>
+									<input type="text" class="code" name="<?php printf( 'components[%1$d][_bp_component_slugs][%2$s]', absint( $directory_data->id ), esc_attr( $primary_nav_item['rewrite_id'] ) ); ?>" id="<?php printf( esc_attr__( '%s-slug', 'buddypress' ), $primary_nav_item['rewrite_id'] ); ?>" value="<?php echo esc_attr( bp_rewrites_get_slug( $component_id, $primary_nav_item['rewrite_id'], $primary_nav_item['slug'] ) ); ?>">
+								</td>
+							</tr>
 						<?php endforeach ; ?>
 					</table>
-				<?php endif ; */?>
+				<?php endif ; ?>
 
 			<?php endforeach ; ?>
 
@@ -94,6 +78,17 @@ function bp_core_admin_rewrites_settings() {
 <?php
 }
 
+/**
+ * Switch directory pages between the `page` & the `bp_directories`
+ * post types and update WP Nav items.
+ *
+ * This is what allowes a user to test our new parser, making sure he can
+ * come back to the legacy one in case a plugin/theme is not ready yet.
+ *
+ * @since 6.0.0
+ *
+ * @param bool $use_rewrite Whether to use the Legacy parser or the WP Rewrites.
+ */
 function bp_core_admin_rewrites_update_directory_pages( $use_rewrite = false ) {
 	$bp_pages          = bp_core_get_directory_pages();
 	$nav_menu_item_ids = array();
@@ -141,3 +136,54 @@ function bp_core_admin_rewrites_update_directory_pages( $use_rewrite = false ) {
 		}
 	}
 }
+
+/**
+ * Handle saving of the BuddyPress customizable slugs.
+ *
+ * @since 6.0.0
+ */
+function bp_core_admin_rewrites_setup_handler() {
+
+	if ( ! isset( $_POST['bp-admin-rewrites-submit'] ) ) {
+		return;
+	}
+
+	check_admin_referer( 'bp-admin-rewrites-setup' );
+
+	$base_url = bp_get_admin_url( add_query_arg( 'page', 'bp-rewrites-settings', 'admin.php' ) );
+
+	if ( ! isset( $_POST['components'] ) ) {
+		wp_safe_redirect( add_query_arg( 'error', 'true', $base_url ) );
+	}
+
+	$current_page_slugs   = wp_list_pluck( bp_core_get_directory_pages(), 'slug', 'id' );
+	$directory_slug_edits = array();
+	foreach ( $_POST['components'] as $page_id => $slugs ) {
+		$postarr = array();
+
+		if ( ! isset( $current_page_slugs[ $page_id ] ) )  {
+			continue;
+		}
+
+		$postarr['ID'] = $page_id;
+
+		if ( $current_page_slugs[ $page_id ] !== $slugs['post_name'] ) {
+			$directory_slug_edits[] = $page_id;
+			$postarr['post_name'] = $slugs['post_name'];
+		}
+
+		if ( isset( $slugs['_bp_component_slugs'] ) && is_array( $slugs['_bp_component_slugs'] ) ) {
+			$postarr['meta_input']['_bp_component_slugs'] = array_map( 'sanitize_title', $slugs['_bp_component_slugs'] );
+		}
+
+		wp_update_post( $postarr );
+	}
+
+	// Make sure the WP rewrites will be regenarated at next page load.
+	if ( $directory_slug_edits ) {
+		bp_delete_rewrite_rules();
+	}
+
+	wp_safe_redirect( add_query_arg( 'updated', 'true', $base_url ) );
+}
+add_action( 'bp_admin_init', 'bp_core_admin_rewrites_setup_handler' );

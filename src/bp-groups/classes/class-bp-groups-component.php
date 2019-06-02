@@ -548,7 +548,8 @@ class BP_Groups_Component extends BP_Component {
 			'position'            => 70,
 			'screen_function'     => 'groups_screen_my_groups',
 			'default_subnav_slug' => 'my-groups',
-			'item_css_id'         => $this->id
+			'item_css_id'         => $this->id,
+			'rewrite_id'          => 'bp_member_groups',
 		);
 
 		if ( ! empty( $user_domain ) ) {

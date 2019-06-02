@@ -34,6 +34,7 @@ defined( 'ABSPATH' ) || exit;
  *     @type callable    $screen_function         The callback function that will run when the nav item is clicked.
  *     @type bool|string $default_subnav_slug     Optional. The slug of the default subnav item to select when the nav
  *                                                item is clicked.
+ *     @type string      $rewrite_id              Optional. The rewrite id to allow slug customization.
  * }
  * @param string       $component The component the navigation is attached to. Defaults to 'members'.
  * @return null|false Returns false on failure.
@@ -52,7 +53,8 @@ function bp_core_new_nav_item( $args, $component = 'members' ) {
 		'site_admin_only'         => false, // Can only site admins see this nav item?
 		'position'                => 99,    // Index of where this nav item should be positioned.
 		'screen_function'         => false, // The name of the function to run when clicked.
-		'default_subnav_slug'     => false  // The slug of the default subnav item to select when clicked.
+		'default_subnav_slug'     => false, // The slug of the default subnav item to select when clicked.
+		'rewrite_id'              => '',    // The rewrite id to allow slug customization.
 	);
 
 	$r = wp_parse_args( $args, $defaults );
@@ -113,6 +115,7 @@ function bp_core_new_nav_item( $args, $component = 'members' ) {
  *     @type callable    $screen_function         The callback function that will run when the nav item is clicked.
  *     @type bool|string $default_subnav_slug     Optional. The slug of the default subnav item to select when the nav
  *                                                item is clicked.
+ *     @type string      $rewrite_id              Optional. The rewrite id to allow slug customization.
  * }
  * @param string       $component Optional. Component that the nav belongs to.
  * @return false|array Returns false on failure, new nav item on success.
@@ -129,7 +132,8 @@ function bp_core_create_nav_link( $args = '', $component = 'members' ) {
 		'site_admin_only'         => false, // Can only site admins see this nav item?
 		'position'                => 99,    // Index of where this nav item should be positioned.
 		'screen_function'         => false, // The name of the function to run when clicked.
-		'default_subnav_slug'     => false  // The slug of the default subnav item to select when clicked.
+		'default_subnav_slug'     => false, // The slug of the default subnav item to select when clicked.
+		'rewrite_id'              => '',    // The rewrite id to allow slug customization.
 	);
 
 	$r = wp_parse_args( $args, $defaults );
@@ -161,7 +165,8 @@ function bp_core_create_nav_link( $args = '', $component = 'members' ) {
 		'show_for_displayed_user' => $r['show_for_displayed_user'],
 		'position'                => $r['position'],
 		'screen_function'         => &$r['screen_function'],
-		'default_subnav_slug'	  => $r['default_subnav_slug']
+		'default_subnav_slug'	  => $r['default_subnav_slug'],
+		'rewrite_id'              => $r['rewrite_id'],
 	);
 
 	// Add the item to the nav.

@@ -188,3 +188,29 @@ function bp_reset_query( $bp_request = '', WP_Query $query ) {
 	// The query is reset.
 	return true;
 }
+
+/**
+ * Returns the slug to use for the nav item of the requested component.
+ *
+ * @since 6.0.0
+ *
+ * @param string $component_id The BuddyPress component's ID.
+ * @param string $rewrite_id   The nav item's rewrite ID.
+ * @param string $default_slug The nav item's default slug.
+ * @return string              The slug to use for the nav item of the requested component.
+ */
+function bp_rewrites_get_slug( $component_id = '', $rewrite_id = '', $default_slug = '' ) {
+	$directory_pages = bp_core_get_directory_pages();
+	$slug            = $default_slug;
+
+	if ( ! isset( $directory_pages->{$component_id}->custom_slugs ) || ! $rewrite_id ) {
+		return $slug;
+	}
+
+	$custom_slugs = (array) $directory_pages->{$component_id}->custom_slugs;
+	if ( isset( $custom_slugs[ $rewrite_id ] ) && $custom_slugs[ $rewrite_id ] ) {
+		$slug = $custom_slugs[ $rewrite_id ];
+	}
+
+	return $slug;
+}

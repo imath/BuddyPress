@@ -226,7 +226,8 @@ class BP_Activity_Component extends BP_Component {
 			'position'            => 10,
 			'screen_function'     => 'bp_activity_screen_my_activity',
 			'default_subnav_slug' => 'just-me',
-			'item_css_id'         => $this->id
+			'item_css_id'         => $this->id,
+			'rewrite_id'          => 'bp_member_activity',
 		);
 
 		// Add the subnav items to the activity nav item if we are using a theme that supports this.

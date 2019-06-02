@@ -144,7 +144,8 @@ class BP_Settings_Component extends BP_Component {
 			'position'                => 100,
 			'show_for_displayed_user' => $access,
 			'screen_function'         => 'bp_settings_screen_general',
-			'default_subnav_slug'     => 'general'
+			'default_subnav_slug'     => 'general',
+			'rewrite_id'              => 'bp_member_settings',
 		);
 
 		// Add General Settings nav item.

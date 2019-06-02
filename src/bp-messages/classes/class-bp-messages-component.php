@@ -231,7 +231,8 @@ class BP_Messages_Component extends BP_Component {
 			'show_for_displayed_user' => $access,
 			'screen_function'         => 'messages_screen_inbox',
 			'default_subnav_slug'     => 'inbox',
-			'item_css_id'             => $this->id
+			'item_css_id'             => $this->id,
+			'rewrite_id'              => 'bp_member_messages',
 		);
 
 		// Add the subnav items to the profile.

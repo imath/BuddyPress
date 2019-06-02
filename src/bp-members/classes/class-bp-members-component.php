@@ -344,7 +344,8 @@ class BP_Members_Component extends BP_Component {
 				'position'            => 20,
 				'screen_function'     => 'bp_members_screen_display_profile',
 				'default_subnav_slug' => 'public',
-				'item_css_id'         => buddypress()->profile->id
+				'item_css_id'         => buddypress()->profile->id,
+				'rewrite_id'          => 'bp_member_profile',
 			);
 		}
 
@@ -374,6 +375,7 @@ class BP_Members_Component extends BP_Component {
 				'position'            => 5,
 				'screen_function'     => 'bp_members_screen_display_profile',
 				'default_subnav_slug' => 'public',
+				'rewrite_id'          => 'bp_member_front',
 			);
 
 			// We need a dummy subnav for the front page to load.
