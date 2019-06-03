@@ -265,7 +265,7 @@ function bp_rewrites_get_link( $args = array() ) {
 
 	// Using pretty links.
 	} else {
-		$link = str_replace( '%bp_members%', $r['single_item'], $component->permastruct );
+		$link = str_replace( '%' . $component->rewrite_ids['directory'] . '%', $r['single_item'], $component->permastruct );
 		unset( $r['single_item'] );
 		$r = array_filter( $r );
 
