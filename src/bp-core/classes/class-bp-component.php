@@ -858,6 +858,9 @@ class BP_Component {
 		// Add the permastruct.
 		add_permastruct( $name, $struct, $r );
 
+		// Globalise it for a later use.
+		$this->permastruct = $struct;
+
 		/**
 		 * Fires in the add_permastructs method inside BP_Component.
 		 *

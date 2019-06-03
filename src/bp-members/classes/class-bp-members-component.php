@@ -653,7 +653,11 @@ class BP_Members_Component extends BP_Component {
 
 				$action_variables = $query->get( $this->rewrite_ids['single_item_action_variables'] );
 				if ( $action_variables ) {
-					$bp->action_variables = explode( '/', ltrim( $action_variables, '/' ) );
+					if ( ! is_array( $action_variables ) )  {
+						$bp->action_variables = explode( '/', ltrim( $action_variables, '/' ) );
+					} else {
+						$bp->action_variables = $action_variables;
+					}
 				}
 
 				/**

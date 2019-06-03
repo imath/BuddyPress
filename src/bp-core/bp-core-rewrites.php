@@ -214,3 +214,67 @@ function bp_rewrites_get_slug( $component_id = '', $rewrite_id = '', $default_sl
 
 	return $slug;
 }
+
+/**
+ * Builds a BuddyPress link using the WP Rewrite API.
+ *
+ * @todo Allow customization using `bp_rewrites_get_slug()`
+ *       Describe parameter.
+ *
+ * @since 6.0.0
+ *
+ * @param array $args
+ * @return string The BuddyPress link.
+ */
+function bp_rewrites_get_link( $args = array() ) {
+	$bp   = buddypress();
+	$link = '';
+
+	$r = wp_parse_args( $args, array(
+		'component_id'                 => '',
+		'single_item'                  => '',
+		'single_item_component'        => '',
+		'single_item_action'           => '',
+		'single_item_action_variables' => array(),
+	) );
+
+	$is_pretty_links = !! get_option( 'permalink_structure', '' );
+
+	if ( ! isset( $bp->{$r['component_id']} ) ) {
+		return $link;
+	}
+
+	$component = $bp->{$r['component_id']};
+	unset( $r['component_id'] );
+
+	// Using plain links.
+	if ( ! $is_pretty_links ) {
+		$r['directory'] = 1;
+		$r              = array_filter( $r );
+		$qv             = array();
+
+		foreach ( $component->rewrite_ids as $key => $rewrite_id ) {
+			if ( ! isset( $r[ $key ] ) ) {
+				continue;
+			}
+
+			$qv[ $rewrite_id ] = $r[ $key ];
+		}
+
+		$link = add_query_arg( $qv, home_url( '/' ) );
+
+	// Using pretty links.
+	} else {
+		$link = str_replace( '%bp_members%', $r['single_item'], $component->permastruct );
+		unset( $r['single_item'] );
+		$r = array_filter( $r );
+
+		if ( isset( $r['single_item_action_variables'] ) && $r['single_item_action_variables'] ) {
+			$r['single_item_action_variables'] = join( '/', (array) $r['single_item_action_variables'] );
+		}
+
+		$link = home_url( user_trailingslashit( '/' . $link . '/' . join( '/', $r ) ) );
+	}
+
+	return $link;
+}
