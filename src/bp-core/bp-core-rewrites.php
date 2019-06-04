@@ -69,25 +69,47 @@ function bp_disable_legacy_url_parser() {
 		'query_var'           => false,
 		'delete_with_user'    => false,
 	) );
+
+	/**
+	 * Then start using a new way of building BuddyPress URLs.
+	 *
+	 * Using filters let us safelyt edit our legacy way of building URLs.
+	 */
+	$filters = array(
+		'bp_core_get_user_domain' => array(
+			'function' => 'bp_rewrite_get_user_link',
+			'num_args' => 3,
+		),
+	);
+
+	foreach ( $filters as $legacy => $rewrite ) {
+		if ( ! isset( $rewrite['priority'] ) ) {
+			$rewrite['priority'] = 1;
+		}
+
+		add_filter( $legacy, $rewrite['function'], $rewrite['priority'], $rewrite['num_args'] );
+	}
 }
 add_action( 'bp_init', 'bp_disable_legacy_url_parser', 1 );
 
 /**
- * Maybe temporary ?
+ * Make sure WP Nav Menus still use the right links.
  *
- * Used to make sure WP Nav Menus still use the same links.
+ * @since 6.0.0
+ *
+ * @param  string  $link The post type link.
+ * @param  WP_Post $post The post type object.
+ * @return string        The post type link.
  */
 function bp_directory_link( $link, WP_Post $post ) {
 	if ( 'bp_directories' !== get_post_type( $post ) ) {
 		return $link;
 	}
 
-	$directory_pages = wp_list_pluck( bp_core_get_directory_pages(), 'slug', 'id' );
-	if ( ! isset( $directory_pages[ $post->ID ] ) ) {
-		return $link;
-	}
+	$directory_pages = wp_filter_object_list( (array) bp_core_get_directory_pages(), array( 'id' => $post->ID ) ) ;
+	$component       = key( $directory_pages );
 
-	return home_url( user_trailingslashit( $directory_pages[ $post->ID ] ) );
+	return bp_rewrites_get_link( array( 'component_id' => $component ) );
 }
 add_filter( 'post_type_link', 'bp_directory_link', 1, 2 );
 
@@ -274,6 +296,38 @@ function bp_rewrites_get_link( $args = array() ) {
 		}
 
 		$link = home_url( user_trailingslashit( '/' . $link . '/' . join( '/', $r ) ) );
+	}
+
+	return $link;
+}
+
+function bp_rewrite_get_user_link( $link = '', $user_id = 0, $username = '' ) {
+	if ( ! $user_id ) {
+		return $link;
+	}
+
+	$bp = buddypress();
+	if ( ! $username ) {
+		if ( (int) $user_id === (int) bp_displayed_user_id() ) {
+			$username = isset( $bp->displayed_user->user_nicename ) ? $bp->displayed_user->user_nicename : null;
+		} elseif ( (int) $user_id === (int) bp_loggedin_user_id() ) {
+			$username = isset( $bp->loggedin_user->user_nicename ) ? $bp->loggedin_user->user_nicename : null;
+		} else {
+			$username = null;
+		}
+	}
+
+	if ( is_null( $username ) ) {
+		return $link;
+	}
+
+	$link = bp_rewrites_get_link( array(
+		'component_id' => 'members',
+		'single_item'  => $username,
+	) );
+
+	if ( bp_core_enable_root_profiles() && !! get_option( 'permalink_structure', '' ) ) {
+		$link = str_replace( $bp->members->root_slug . '/', '', $link );
 	}
 
 	return $link;
