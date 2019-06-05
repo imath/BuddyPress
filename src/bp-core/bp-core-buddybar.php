@@ -98,6 +98,7 @@ function bp_core_new_nav_item( $args, $component = 'members' ) {
  * @since 2.6.0 Introduced the `$component` parameter. Began returning a BP_Core_Nav_Item
  *              object on success.
  * @since 4.0.0 Introduced `$component_id` argument.
+ * @since 6.0.0 Introduced the dynamice filter `bp_{$component}_nav_add_item_link`.
  *
  * @param array|string $args {
  *     Array describing the new nav item.
@@ -156,7 +157,32 @@ function bp_core_create_nav_link( $args = '', $component = 'members' ) {
 		$r['item_css_id'] = $r['slug'];
 	}
 
-	$nav_item = array(
+	/**
+	 * Filter here to edit the component's nav item parameters just before it is added.
+	 *
+	 * The dynamic portion of the hook will be the component's id the nav item is created for.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param array $value {
+	 *     Array describing the new nav item.
+	 *     @type string      $component_id            Optional. The ID of the component registering this nav item. Defaults to the
+	 *                                                the value of `$slug`.
+	 *     @type string      $name                    Display name for the nav item.
+	 *     @type string      $slug                    Unique URL slug for the nav item.
+	 *     @type string      $link                    The link for the nav item.
+	 *     @type bool|string $item_css_id             Optional. 'id' attribute for the nav item. Default: the value of `$slug`.
+	 *     @type bool        $show_for_displayed_user Optional. Whether the nav item should be visible when viewing a
+	 *                                                member profile other than your own. Default: true.
+	 *     @type int         $position                Optional. Numerical index specifying where the item should appear in
+	 *                                                the nav array. Default: 99.
+	 *     @type callable    $screen_function         The callback function that will run when the nav item is clicked.
+	 *     @type bool|string $default_subnav_slug     Optional. The slug of the default subnav item to select when the nav
+	 *                                                item is clicked.
+	 *     @type string      $rewrite_id              Optional. The rewrite id to allow slug customization.
+	 * }
+	 */
+	$nav_item = apply_filters( "bp_{$component}_nav_add_item_link", array(
 		'component_id'            => $r['component_id'],
 		'name'                    => $r['name'],
 		'slug'                    => $r['slug'],
@@ -167,7 +193,7 @@ function bp_core_create_nav_link( $args = '', $component = 'members' ) {
 		'screen_function'         => &$r['screen_function'],
 		'default_subnav_slug'	  => $r['default_subnav_slug'],
 		'rewrite_id'              => $r['rewrite_id'],
-	);
+	) );
 
 	// Add the item to the nav.
 	buddypress()->{$component}->nav->add_nav( $nav_item );

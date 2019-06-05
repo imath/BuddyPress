@@ -263,7 +263,7 @@ class BP_Members_Component extends BP_Component {
 			$bp->canonical_stack['base_url'] = bp_displayed_user_domain();
 
 			if ( bp_current_component() ) {
-				$bp->canonical_stack['component'] = bp_current_component();
+				$bp->canonical_stack['component'] = bp_rewrites_get_slug( 'members', 'bp_member_' . bp_current_component(), bp_current_component() );
 			}
 
 			if ( bp_current_action() ) {
@@ -643,6 +643,12 @@ class BP_Members_Component extends BP_Component {
 
 				$member_component = $query->get( $this->rewrite_ids['single_item_component'] );
 				if ( $member_component ) {
+					// Check if the member's component slug has been customized.
+					$rewrite_id = bp_rewrites_get_rewrite_id( 'members', $member_component );
+					if ( $rewrite_id ) {
+						$member_component = str_replace( 'bp_member_', '', $rewrite_id );
+					}
+
 					$bp->current_component = $member_component;
 				}
 

@@ -1039,11 +1039,17 @@ function bp_nouveau_nav_link() {
 			$link = $nav_item->link;
 		}
 
-		if ( 'personal' === $bp_nouveau->displayed_nav && ! empty( $nav_item->primary ) ) {
-			if ( bp_loggedin_user_domain() ) {
-				$link = str_replace( bp_loggedin_user_domain(), bp_displayed_user_domain(), $link );
-			} else {
-				$link = trailingslashit( bp_displayed_user_domain() . $link );
+		/**
+		 * Rewrites directly set the displayed user link. This substitution is
+		 * only required when BuddyPress is using the legacy URL parser.
+		 */
+		if ( ! bp_use_wp_rewrites() ) {
+			if ( 'personal' === $bp_nouveau->displayed_nav && ! empty( $nav_item->primary ) ) {
+				if ( bp_loggedin_user_domain() ) {
+					$link = str_replace( bp_loggedin_user_domain(), bp_displayed_user_domain(), $link );
+				} else {
+					$link = trailingslashit( bp_displayed_user_domain() . $link );
+				}
 			}
 		}
 

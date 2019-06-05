@@ -21,6 +21,17 @@ function bp_delete_rewrite_rules() {
 }
 
 /**
+ * Are pretty links active ?
+ *
+ * @since 6.0.0
+ *
+ * @return bool True if pretty links are on. False otherwise.
+ */
+function bp_has_pretty_links() {
+	return !! get_option( 'permalink_structure', '' );
+}
+
+/**
  * Let's experiment WordPress URL rewriting in BuddyPress!
  *
  * If the Custom URLs option is active, this will neutralize our
@@ -79,6 +90,10 @@ function bp_disable_legacy_url_parser() {
 		'bp_core_get_user_domain' => array(
 			'function' => 'bp_rewrite_get_user_link',
 			'num_args' => 3,
+		),
+		'bp_members_nav_add_item_link' => array(
+			'function' => 'bp_rewrite_members_primary_nav_link',
+			'num_args' => 1,
 		),
 	);
 
@@ -237,6 +252,19 @@ function bp_rewrites_get_slug( $component_id = '', $rewrite_id = '', $default_sl
 	return $slug;
 }
 
+function bp_rewrites_get_rewrite_id( $component_id = '', $slug = '' ) {
+	$directory_pages = bp_core_get_directory_pages();
+
+	if ( ! isset( $directory_pages->{$component_id}->custom_slugs ) || ! $slug ) {
+		return null;
+	}
+
+	$custom_slugs = (array) $directory_pages->{$component_id}->custom_slugs;
+
+	// If there's a match it's a custom slug.
+	return array_search( $slug, $custom_slugs );
+}
+
 /**
  * Builds a BuddyPress link using the WP Rewrite API.
  *
@@ -250,7 +278,7 @@ function bp_rewrites_get_slug( $component_id = '', $rewrite_id = '', $default_sl
  */
 function bp_rewrites_get_link( $args = array() ) {
 	$bp   = buddypress();
-	$link = '';
+	$link = '#';
 
 	$r = wp_parse_args( $args, array(
 		'component_id'                 => '',
@@ -260,7 +288,7 @@ function bp_rewrites_get_link( $args = array() ) {
 		'single_item_action_variables' => array(),
 	) );
 
-	$is_pretty_links = !! get_option( 'permalink_structure', '' );
+	$is_pretty_links = bp_has_pretty_links();
 
 	if ( ! isset( $bp->{$r['component_id']} ) ) {
 		return $link;
@@ -287,6 +315,10 @@ function bp_rewrites_get_link( $args = array() ) {
 
 	// Using pretty links.
 	} else {
+		if ( ! isset( $component->rewrite_ids['directory'] ) || ! isset( $component->permastruct ) ) {
+			return $link;
+		}
+
 		$link = str_replace( '%' . $component->rewrite_ids['directory'] . '%', $r['single_item'], $component->permastruct );
 		unset( $r['single_item'] );
 		$r = array_filter( $r );
@@ -308,10 +340,15 @@ function bp_rewrite_get_user_link( $link = '', $user_id = 0, $username = '' ) {
 
 	$bp = buddypress();
 	if ( ! $username ) {
+		$prop = 'user_nicename';
+		if ( bp_is_username_compatibility_mode() ) {
+			$prop = 'user_login';
+		}
+
 		if ( (int) $user_id === (int) bp_displayed_user_id() ) {
-			$username = isset( $bp->displayed_user->user_nicename ) ? $bp->displayed_user->user_nicename : null;
+			$username = isset( $bp->displayed_user->userdata->{$prop} ) ? $bp->displayed_user->userdata->{$prop} : null;
 		} elseif ( (int) $user_id === (int) bp_loggedin_user_id() ) {
-			$username = isset( $bp->loggedin_user->user_nicename ) ? $bp->loggedin_user->user_nicename : null;
+			$username = isset( $bp->loggedin_user->userdata->{$prop} ) ? $bp->loggedin_user->userdata->{$prop} : null;
 		} else {
 			$username = null;
 		}
@@ -326,9 +363,53 @@ function bp_rewrite_get_user_link( $link = '', $user_id = 0, $username = '' ) {
 		'single_item'  => $username,
 	) );
 
-	if ( bp_core_enable_root_profiles() && !! get_option( 'permalink_structure', '' ) ) {
+	if ( bp_core_enable_root_profiles() && bp_has_pretty_links() ) {
 		$link = str_replace( $bp->members->root_slug . '/', '', $link );
 	}
 
 	return $link;
+}
+
+/**
+ * Edit the link parameter of the members primary nav item links.
+ *
+ * @see bp_core_create_nav_link() for description of parameters.
+ *
+ * @since 6.0.0
+ *
+ * @param  array $args The arguments used to create the primary nav item.
+ * @return array       The arguments used to create the primary nav item.
+ */
+function bp_rewrite_members_primary_nav_link( $args = array() ) {
+	$bp   = buddypress();
+	$prop = 'user_nicename';
+	if ( bp_is_username_compatibility_mode() ) {
+		$prop = 'user_login';
+	}
+
+	if ( isset( $bp->displayed_user->userdata->{$prop} ) ) {
+		$username = $bp->displayed_user->userdata->{$prop};
+	} elseif ( isset( $bp->loggedin_user->userdata->{$prop} ) ) {
+		$username = $bp->loggedin_user->userdata->{$prop};
+	} else {
+		$username = null;
+	}
+
+	if ( ! $username ) {
+		return $args;
+	}
+
+	$link = bp_rewrites_get_link( array(
+		'component_id'          => 'members',
+		'single_item'           => $username,
+		'single_item_component' => bp_rewrites_get_slug( 'members', $args['rewrite_id'], $args['slug'] ),
+	) );
+
+	if ( bp_core_enable_root_profiles() && bp_has_pretty_links() ) {
+		$link = str_replace( $bp->members->root_slug . '/', '', $link );
+	}
+
+	$args['link'] = $link;
+
+	return $args;
 }

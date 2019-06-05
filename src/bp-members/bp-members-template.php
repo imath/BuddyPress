@@ -1478,10 +1478,18 @@ function bp_get_displayed_user_nav() {
 			$selected = ' class="current selected"';
 		}
 
-		if ( bp_loggedin_user_domain() ) {
-			$link = str_replace( bp_loggedin_user_domain(), bp_displayed_user_domain(), $user_nav_item->link );
+		/**
+		 * Rewrites directly set the displayed user link. This substitution is
+		 * only required when BuddyPress is using the legacy URL parser.
+		 */
+		if ( ! bp_use_wp_rewrites() ) {
+			if ( bp_loggedin_user_domain() ) {
+				$link = str_replace( bp_loggedin_user_domain(), bp_displayed_user_domain(), $user_nav_item->link );
+			} else {
+				$link = trailingslashit( bp_displayed_user_domain() . $user_nav_item->link );
+			}
 		} else {
-			$link = trailingslashit( bp_displayed_user_domain() . $user_nav_item->link );
+			$link = $user_nav_item->link;
 		}
 
 		/**
