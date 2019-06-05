@@ -20,6 +20,9 @@ Let the user undo and come back to BuddyPress without rewrites without pain.
 
 - Edit functions to get BuddyPress links so that they take in account plain permalinks.
 - Take care of `bp_redirect_canonical()`.
+- improve the way the member component custom slug is handled in `parse_query()` method
+ - try to use the nav instead of the `bp_rewrites_get_rewrite_id()` function.
+ - try the same into the canonical method.
 
 ## Questions
 
