@@ -177,9 +177,6 @@ class BP_Members_Component extends BP_Component {
 
 		parent::setup_globals( $args );
 
-		// Set the component's permastruct early as it's used to build links.
-		$this->permastruct = $this->root_slug . '/%' . $this->rewrite_ids['directory'] . '%';
-
 		/** Logged in user ***************************************************
 		 */
 
@@ -561,19 +558,23 @@ class BP_Members_Component extends BP_Component {
 	 *
 	 * @since 6.0.0
 	 *
-	 * @param string $name   Optional. See BP_Component::add_permastructs() for
-	 *                       description.
-	 * @param string $struct Optional. See BP_Component::add_permastructs() for
-	 *                       description.
-	 * @param array  $args   Optional. See BP_Component::add_permastructs() for
+	 * @param array $structs Optional. See BP_Component::add_permastructs() for
 	 *                       description.
 	 */
-	public function add_permastructs( $name = '', $struct = '', $args = array() ) {
+	public function add_permastructs( $structs = array() ) {
 		if ( ! bp_use_wp_rewrites() ) {
-			return parent::add_permastructs( $name, $struct, $args );
+			return parent::add_permastructs( $structs );
 		}
 
-		parent::add_permastructs( $this->rewrite_ids['directory'], $this->permastruct );
+		$permastructs = array(
+			// Directory permastruct.
+			$this->rewrite_ids['directory'] => array(
+				'struct' => $this->directory_permastruct,
+				'args'   => array(),
+			),
+		);
+
+		parent::add_permastructs( $permastructs );
 	}
 
 	/**
@@ -581,7 +582,7 @@ class BP_Members_Component extends BP_Component {
 	 *
 	 * @since 6.0.0
 	 *
-	 * @param WP_Query $query Required. See BP_Component::add_permastructs() for
+	 * @param WP_Query $query Required. See BP_Component::parse_query() for
 	 *                        description.
 	 */
 	public function parse_query( WP_Query $query ) {

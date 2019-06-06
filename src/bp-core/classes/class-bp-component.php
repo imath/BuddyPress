@@ -280,6 +280,11 @@ class BP_Component {
 		 */
 		$this->has_directory         = apply_filters( 'bp_' . $this->id . '_has_directory',         $r['has_directory']         );
 
+		// Set the component's directory permastruct early so that it's available to build links.
+		if ( $this->has_directory && isset( $this->rewrite_ids['directory'] ) ) {
+			$this->directory_permastruct = $this->root_slug . '/%' . $this->rewrite_ids['directory'] . '%';
+		}
+
 		/**
 		 * Filters the component's directory title.
 		 *
@@ -778,7 +783,16 @@ class BP_Component {
 	 * Add any additional rewrite tags.
 	 *
 	 * @since 1.5.0
+	 * @since 6.0.0 Adds $rewrite_tags argument to pass components rewrite tags.
 	 *
+	 * @param array $rewrite tags {
+	 *      Associative array of arguments list used to register WordPress permastructs.
+	 *      The main array keys describe the rules type and allow individual edits if needed.
+	 *
+	 *      @type string $id    The name of the new rewrite tag. Required.
+	 *      @type string $regex The regular expression to substitute the tag for in rewrite rules.
+	 *                          Required.
+	 * }
 	 */
 	public function add_rewrite_tags( $rewrite_tags = array() ) {
 		if ( $rewrite_tags ) {
@@ -805,7 +819,17 @@ class BP_Component {
 	 * Add any additional rewrite rules.
 	 *
 	 * @since 1.9.0
+	 * @since 6.0.0 Adds $rewrite_rules argument to pass components rewrite rules.
 	 *
+	 * @param array $rewrite_rules {
+	 *      Associative array of arguments list used to register WordPress permastructs.
+	 *      The main array keys describe the rules type and allow individual edits if needed.
+	 *
+	 *      @type string $regex    Regular expression to match request against. Required.
+	 *      @type string $query    The corresponding query vars for this rewrite rule. Required.
+	 *      @type string $priority The Priority of the new rule. Accepts 'top' or 'bottom'. Optional.
+	 *                             Default 'top'.
+	 * }
 	 */
 	public function add_rewrite_rules( $rewrite_rules = array() ) {
 		$priority = 'top';
@@ -838,25 +862,43 @@ class BP_Component {
 	 * Add any permalink structures.
 	 *
 	 * @since 1.9.0
+	 * @since 6.0.0 Adds $structs argument to pass components permastructs.
 	 *
+	 * @param array $structs {
+	 *      Associative array of arguments list used to register WordPress permastructs.
+	 *      The main array keys hold the name argument of the `add_permastruct()` function.
+	 *
+	 *      @type string $struct The permalink structure. Required.
+	 *      @type array  $args   The permalink structure arguments. Optional
+	 * }
 	 */
-	public function add_permastructs( $name = '', $struct = '', $args = array() ) {
-		if ( ! $name || ! $struct ) {
+	public function add_permastructs( $structs = array() ) {
+		if ( ! $structs ) {
 			return;
 		}
 
-		$r = wp_parse_args( $args, array(
-			'with_front'  => false,
-			'ep_mask'     => EP_NONE,
-			'paged'       => true,
-			'feed'        => false,
-			'forcomments' => false,
-			'walk_dirs'   => true,
-			'endpoints'   => false,
-		) );
+		foreach ( (array) $structs as $name => $params ) {
+			if ( ! $name || ! isset( $params['struct'] ) || ! $params['struct'] ) {
+				continue;
+			}
 
-		// Add the permastruct.
-		add_permastruct( $name, $struct, $r );
+			if ( ! $params['args'] ) {
+				$params['args'] = array();
+			}
+
+			$args = wp_parse_args( $params['args'], array(
+				'with_front'  => false,
+				'ep_mask'     => EP_NONE,
+				'paged'       => true,
+				'feed'        => false,
+				'forcomments' => false,
+				'walk_dirs'   => true,
+				'endpoints'   => false,
+			) );
+
+			// Add the permastruct.
+			add_permastruct( $name, $params['struct'], $args );
+		}
 
 		/**
 		 * Fires in the add_permastructs method inside BP_Component.

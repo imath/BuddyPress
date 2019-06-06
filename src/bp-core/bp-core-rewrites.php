@@ -315,11 +315,11 @@ function bp_rewrites_get_link( $args = array() ) {
 
 	// Using pretty links.
 	} else {
-		if ( ! isset( $component->rewrite_ids['directory'] ) || ! isset( $component->permastruct ) ) {
+		if ( ! isset( $component->rewrite_ids['directory'] ) || ! isset( $component->directory_permastruct ) ) {
 			return $link;
 		}
 
-		$link = str_replace( '%' . $component->rewrite_ids['directory'] . '%', $r['single_item'], $component->permastruct );
+		$link = str_replace( '%' . $component->rewrite_ids['directory'] . '%', $r['single_item'], $component->directory_permastruct );
 		unset( $r['single_item'] );
 		$r = array_filter( $r );
 
