@@ -88,12 +88,49 @@ function bp_disable_legacy_url_parser() {
 	 */
 	$filters = array(
 		'bp_core_get_user_domain' => array(
-			'function' => 'bp_rewrite_get_user_link',
+			'function' => 'bp_rewrites_get_user_link',
 			'num_args' => 3,
 		),
 		'bp_members_nav_add_item_link' => array(
-			'function' => 'bp_rewrite_members_primary_nav_link',
+			'function' => 'bp_rewrites_members_primary_nav_link',
 			'num_args' => 1,
+		),
+		'bp_activity_admin_nav' => array(
+			'function' => 'bp_rewrites_user_admin_nav_link',
+			'num_args' => 1,
+		),
+		'bp_blogs_admin_nav' => array(
+			'function' => 'bp_rewrites_user_admin_nav_link',
+			'num_args' => 1,
+		),
+		'bp_friends_admin_nav' => array(
+			'function' => 'bp_rewrites_user_admin_nav_link',
+			'num_args' => 1,
+		),
+		'bp_groups_admin_nav' => array(
+			'function' => 'bp_rewrites_user_admin_nav_link',
+			'num_args' => 1,
+		),
+		'bp_messages_admin_nav' => array(
+			'function' => 'bp_rewrites_user_admin_nav_link',
+			'num_args' => 1,
+		),
+		'bp_notifications_admin_nav' => array(
+			'function' => 'bp_rewrites_user_admin_nav_link',
+			'num_args' => 1,
+		),
+		'bp_settings_admin_nav' => array(
+			'function' => 'bp_rewrites_user_admin_nav_link',
+			'num_args' => 1,
+			'priority' => 3, // After xProfile filter.
+		),
+		'bp_xprofile_admin_nav' => array(
+			'function' => 'bp_rewrites_user_admin_nav_link',
+			'num_args' => 1,
+		),
+		'bp_members_edit_profile_url' => array(
+			'function' => 'bp_rewrites_edit_profile_url',
+			'num_args' => 3,
 		),
 	);
 
@@ -156,6 +193,25 @@ function bp_rewrites_get_member_data( $request = '' ) {
 	}
 
 	return $member_data;
+}
+
+function bp_rewrites_get_member_slug( $user_id = 0 ) {
+	$bp = buddypress();
+
+	$prop = 'user_nicename';
+	if ( bp_is_username_compatibility_mode() ) {
+		$prop = 'user_login';
+	}
+
+	if ( (int) $user_id === (int) bp_displayed_user_id() ) {
+		$slug = isset( $bp->displayed_user->userdata->{$prop} ) ? $bp->displayed_user->userdata->{$prop} : null;
+	} elseif ( (int) $user_id === (int) bp_loggedin_user_id() ) {
+		$slug = isset( $bp->loggedin_user->userdata->{$prop} ) ? $bp->loggedin_user->userdata->{$prop} : null;
+	} else {
+		$slug = bp_core_get_username( $user_id );
+	}
+
+	return $slug;
 }
 
 /**
@@ -333,29 +389,14 @@ function bp_rewrites_get_link( $args = array() ) {
 	return $link;
 }
 
-function bp_rewrite_get_user_link( $link = '', $user_id = 0, $username = '' ) {
+function bp_rewrites_get_user_link( $link = '', $user_id = 0, $username = '' ) {
 	if ( ! $user_id ) {
 		return $link;
 	}
 
 	$bp = buddypress();
 	if ( ! $username ) {
-		$prop = 'user_nicename';
-		if ( bp_is_username_compatibility_mode() ) {
-			$prop = 'user_login';
-		}
-
-		if ( (int) $user_id === (int) bp_displayed_user_id() ) {
-			$username = isset( $bp->displayed_user->userdata->{$prop} ) ? $bp->displayed_user->userdata->{$prop} : null;
-		} elseif ( (int) $user_id === (int) bp_loggedin_user_id() ) {
-			$username = isset( $bp->loggedin_user->userdata->{$prop} ) ? $bp->loggedin_user->userdata->{$prop} : null;
-		} else {
-			$username = null;
-		}
-	}
-
-	if ( is_null( $username ) ) {
-		return $link;
+		$username = bp_rewrites_get_member_slug( $user_id );
 	}
 
 	$link = bp_rewrites_get_link( array(
@@ -380,21 +421,14 @@ function bp_rewrite_get_user_link( $link = '', $user_id = 0, $username = '' ) {
  * @param  array $args The arguments used to create the primary nav item.
  * @return array       The arguments used to create the primary nav item.
  */
-function bp_rewrite_members_primary_nav_link( $args = array() ) {
-	$bp   = buddypress();
-	$prop = 'user_nicename';
-	if ( bp_is_username_compatibility_mode() ) {
-		$prop = 'user_login';
+function bp_rewrites_members_primary_nav_link( $args = array() ) {
+	$bp      = buddypress();
+	$user_id = bp_displayed_user_id();
+	if ( ! $user_id ) {
+		$user_id = bp_loggedin_user_id();
 	}
 
-	if ( isset( $bp->displayed_user->userdata->{$prop} ) ) {
-		$username = $bp->displayed_user->userdata->{$prop};
-	} elseif ( isset( $bp->loggedin_user->userdata->{$prop} ) ) {
-		$username = $bp->loggedin_user->userdata->{$prop};
-	} else {
-		$username = null;
-	}
-
+	$username = bp_rewrites_get_member_slug( $user_id );
 	if ( ! $username ) {
 		return $args;
 	}
@@ -412,4 +446,89 @@ function bp_rewrite_members_primary_nav_link( $args = array() ) {
 	$args['link'] = $link;
 
 	return $args;
+}
+
+function bp_rewrites_user_admin_nav_link( $wp_admin_nav = array() ) {
+	$bp = buddypress();
+	$username = bp_rewrites_get_member_slug( bp_loggedin_user_id() );
+	if ( ! $username ) {
+		return $wp_admin_nav;
+	}
+
+	$parent         = '';
+	$component_slug = '';
+	$link_args      = array(
+		'component_id' => 'members',
+		'single_item'  => $username,
+	);
+
+	foreach ( $wp_admin_nav as $index_nav => $nav_item ) {
+		$component      = '';
+		$component_url  = '';
+
+		if ( bp_has_pretty_links() ) {
+			$url_parts = explode( '/', rtrim( wp_parse_url( $wp_admin_nav[ $index_nav ]['href'], PHP_URL_PATH ), '/' ) );
+		} else {
+			$url_parts = wp_parse_args( wp_parse_url( $wp_admin_nav[ $index_nav ]['href'], PHP_URL_QUERY ), array() );
+
+			if ( isset( $url_parts['bp_member'] ) ) {
+				// Move added slugs to the `bp_member` query var at the end of the URL parts.
+				$url_parts = array_merge(
+					$url_parts,
+					explode( '/', rtrim( str_replace( $username, '', $url_parts['bp_member'] ), '/' ) )
+				);
+
+				// Make sure the `bp_member` query var is consistent.
+				$url_parts['bp_member'] = $username;
+			}
+		}
+
+		$slug = end( $url_parts );
+
+		// Make sure to reset the item action at each loop.
+		$link_args['single_item_action']    = '';
+
+		// This is the single item compnent's main nav item.
+		if ( $bp->my_account_menu_id === $nav_item['parent'] ) {
+			/**
+			 * Make sure to reset the item component, component slug and parent
+			 * at each main nav item change.
+			 */
+			$link_args['single_item_component'] = '';
+			$component_slug                     = '';
+			$parent                             = '';
+
+			$component      = str_replace( 'my-account-', '', $nav_item['id'] );
+			$parent         = $nav_item['id'];
+			$component_slug = $slug;
+
+			// Specific to Extended Profiles.
+			if ( 'xprofile' === $component ) {
+				$component = 'profile';
+			}
+
+			$link_args['single_item_component'] = bp_rewrites_get_slug( 'members', 'bp_member_' . $component, $component_slug );
+			$wp_admin_nav[ $index_nav ]['href'] = bp_rewrites_get_link( $link_args );
+		}
+
+		if ( $component_slug && $parent === $nav_item['parent'] && false !== strpos( $nav_item['href'], $username ) ) {
+			$link_args['single_item_action']    = $slug !== $component_slug ? $slug : '';
+			$wp_admin_nav[ $index_nav ]['href'] = bp_rewrites_get_link( $link_args );
+		}
+	}
+
+	return $wp_admin_nav;
+}
+
+function bp_rewrites_edit_profile_url( $profile_link = '', $url = '', $user_id = 0 ) {
+	if ( ! is_admin() && bp_is_active( 'xprofile' ) ) {
+		$profile_link = bp_rewrites_get_link( array(
+			'component_id'          => 'members',
+			'single_item'           => bp_rewrites_get_member_slug( $user_id ),
+			'single_item_component' => bp_rewrites_get_slug( 'members', 'bp_member_profile', bp_get_profile_slug() ),
+			'single_item_action'    => 'edit'
+		) );
+	}
+
+	return $profile_link;
 }
