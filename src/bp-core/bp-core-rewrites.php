@@ -252,7 +252,7 @@ function bp_rewrites_get_slug( $component_id = '', $rewrite_id = '', $default_sl
 	return $slug;
 }
 
-function bp_rewrites_get_rewrite_id( $component_id = '', $slug = '' ) {
+function bp_rewrites_get_custom_slug_rewrite_id( $component_id = '', $slug = '' ) {
 	$directory_pages = bp_core_get_directory_pages();
 
 	if ( ! isset( $directory_pages->{$component_id}->custom_slugs ) || ! $slug ) {

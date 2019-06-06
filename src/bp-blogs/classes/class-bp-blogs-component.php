@@ -234,7 +234,7 @@ class BP_Blogs_Component extends BP_Component {
 			'screen_function'     => 'bp_blogs_screen_my_blogs',
 			'default_subnav_slug' => 'my-sites',
 			'item_css_id'         => $this->id,
-			'rewrite_id'          => 'bp_member_blogs',
+			'rewrite_id'          => 'bp_member_' . $slug,
 		);
 
 		$sub_nav[] = array(

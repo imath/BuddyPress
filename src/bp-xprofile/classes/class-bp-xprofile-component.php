@@ -255,7 +255,7 @@ class BP_XProfile_Component extends BP_Component {
 			'screen_function'     => 'xprofile_screen_display_profile',
 			'default_subnav_slug' => 'public',
 			'item_css_id'         => $this->id,
-			'rewrite_id'          => 'bp_member_profile',
+			'rewrite_id'          => 'bp_member_' . $slug,
 		);
 
 		// Add the subnav items to the profile.

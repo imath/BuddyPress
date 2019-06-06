@@ -549,7 +549,7 @@ class BP_Groups_Component extends BP_Component {
 			'screen_function'     => 'groups_screen_my_groups',
 			'default_subnav_slug' => 'my-groups',
 			'item_css_id'         => $this->id,
-			'rewrite_id'          => 'bp_member_groups',
+			'rewrite_id'          => 'bp_member_' . $slug,
 		);
 
 		if ( ! empty( $user_domain ) ) {

@@ -187,7 +187,7 @@ class BP_Friends_Component extends BP_Component {
 			'screen_function'     => 'friends_screen_my_friends',
 			'default_subnav_slug' => 'my-friends',
 			'item_css_id'         => $this->id,
-			'rewrite_id'          => 'bp_member_friends',
+			'rewrite_id'          => 'bp_member_' . $slug,
 		);
 
 		// Add the subnav items to the friends nav item.

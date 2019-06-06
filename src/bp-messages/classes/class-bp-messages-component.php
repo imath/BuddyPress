@@ -232,7 +232,7 @@ class BP_Messages_Component extends BP_Component {
 			'screen_function'         => 'messages_screen_inbox',
 			'default_subnav_slug'     => 'inbox',
 			'item_css_id'             => $this->id,
-			'rewrite_id'              => 'bp_member_messages',
+			'rewrite_id'              => 'bp_member_' . $slug,
 		);
 
 		// Add the subnav items to the profile.

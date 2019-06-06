@@ -177,6 +177,9 @@ class BP_Members_Component extends BP_Component {
 
 		parent::setup_globals( $args );
 
+		// Set the component's permastruct early as it's used to build links.
+		$this->permastruct = $this->root_slug . '/%' . $this->rewrite_ids['directory'] . '%';
+
 		/** Logged in user ***************************************************
 		 */
 
@@ -263,7 +266,12 @@ class BP_Members_Component extends BP_Component {
 			$bp->canonical_stack['base_url'] = bp_displayed_user_domain();
 
 			if ( bp_current_component() ) {
-				$bp->canonical_stack['component'] = bp_rewrites_get_slug( 'members', 'bp_member_' . bp_current_component(), bp_current_component() );
+				$item_component = bp_current_component();
+				$bp->canonical_stack['component'] = $item_component;
+
+				if ( bp_use_wp_rewrites() ) {
+					$bp->canonical_stack['component'] = bp_rewrites_get_slug( 'members', 'bp_member_' . $item_component, $item_component );
+				}
 			}
 
 			if ( bp_current_action() ) {
@@ -565,7 +573,7 @@ class BP_Members_Component extends BP_Component {
 			return parent::add_permastructs( $name, $struct, $args );
 		}
 
-		parent::add_permastructs( $this->rewrite_ids['directory'], $this->root_slug . '/%' . $this->rewrite_ids['directory'] . '%' );
+		parent::add_permastructs( $this->rewrite_ids['directory'], $this->permastruct );
 	}
 
 	/**
@@ -643,10 +651,11 @@ class BP_Members_Component extends BP_Component {
 
 				$member_component = $query->get( $this->rewrite_ids['single_item_component'] );
 				if ( $member_component ) {
+
 					// Check if the member's component slug has been customized.
-					$rewrite_id = bp_rewrites_get_rewrite_id( 'members', $member_component );
-					if ( $rewrite_id ) {
-						$member_component = str_replace( 'bp_member_', '', $rewrite_id );
+					$item_component_rewrite_id = bp_rewrites_get_custom_slug_rewrite_id( 'members', $member_component );
+					if ( $item_component_rewrite_id ) {
+						$member_component = str_replace( 'bp_member_', '', $item_component_rewrite_id );
 					}
 
 					$bp->current_component = $member_component;
