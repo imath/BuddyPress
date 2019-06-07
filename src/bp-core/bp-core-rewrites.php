@@ -92,7 +92,11 @@ function bp_disable_legacy_url_parser() {
 			'num_args' => 3,
 		),
 		'bp_members_nav_add_item_link' => array(
-			'function' => 'bp_rewrites_members_primary_nav_link',
+			'function' => 'bp_rewrites_members_nav_link',
+			'num_args' => 1,
+		),
+		'bp_members_subnav_add_item_link' => array(
+			'function' => 'bp_rewrites_members_nav_link',
 			'num_args' => 1,
 		),
 		'bp_activity_admin_nav' => array(
@@ -421,7 +425,7 @@ function bp_rewrites_get_user_link( $link = '', $user_id = 0, $username = '' ) {
  * @param  array $args The arguments used to create the primary nav item.
  * @return array       The arguments used to create the primary nav item.
  */
-function bp_rewrites_members_primary_nav_link( $args = array() ) {
+function bp_rewrites_members_nav_link( $args = array() ) {
 	$bp      = buddypress();
 	$user_id = bp_displayed_user_id();
 	if ( ! $user_id ) {
@@ -433,11 +437,36 @@ function bp_rewrites_members_primary_nav_link( $args = array() ) {
 		return $args;
 	}
 
-	$link = bp_rewrites_get_link( array(
-		'component_id'          => 'members',
-		'single_item'           => $username,
-		'single_item_component' => bp_rewrites_get_slug( 'members', $args['rewrite_id'], $args['slug'] ),
-	) );
+	if ( 'bp_members_nav_add_item_link' === current_filter() ) {
+		$link_params = array(
+			'component_id'          => 'members',
+			'single_item'           => $username,
+			'single_item_component' => bp_rewrites_get_slug( 'members', $args['rewrite_id'], $args['slug'] ),
+		);
+	} else {
+		$parent_nav = $bp->members->nav->get_primary( array( 'slug' => $args['parent_slug'] ), false );
+		if ( ! $parent_nav ) {
+			return $args;
+		}
+
+		$parent_nav = reset( $parent_nav );
+		if ( ! isset( $parent_nav->rewrite_id ) ) {
+			return $args;
+		}
+
+		$link_params = array(
+			'component_id'          => 'members',
+			'single_item'           => $username,
+			'single_item_component' => bp_rewrites_get_slug( 'members', $parent_nav->rewrite_id, $args['parent_slug'] ),
+			'single_item_action'    => $args['slug'],
+		);
+	}
+
+	if ( ! isset( $link_params ) ) {
+		return $args;
+	}
+
+	$link = bp_rewrites_get_link( $link_params );
 
 	if ( bp_core_enable_root_profiles() && bp_has_pretty_links() ) {
 		$link = str_replace( $bp->members->root_slug . '/', '', $link );

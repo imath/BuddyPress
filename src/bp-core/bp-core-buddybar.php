@@ -506,6 +506,7 @@ function bp_core_new_subnav_item( $args, $component = null ) {
  *
  * @since 2.4.0
  * @since 2.6.0 Introduced the `$component` parameter. Began returning a BP_Core_Nav_Item object on success.
+ * @since 6.0.0 Introduced the dynamice filter `bp_{$component}_subnav_add_item_link`.
  *
  * @param array|string $args {
  *     Array describing the new subnav item.
@@ -582,7 +583,35 @@ function bp_core_create_subnav_link( $args = '', $component = 'members' ) {
 		$r['item_css_id'] = $r['slug'];
 	}
 
-	$subnav_item = array(
+	/**
+	* Filter here to edit the component's sub nav item parameters just before it is added.
+	*
+	* The dynamic portion of the hook will be the component's id the nav item is created for.
+	*
+	* @since 6.0.0
+	*
+	* @param array $value {
+	*     Array describing the new nav item.
+	*     @type string      $name              Display name for the subnav item.
+	*     @type string      $link              The link for the subnav item.
+	*     @type string      $slug              Unique URL slug for the subnav item.
+	*     @type string      $parent_slug       Slug of the top-level nav item under which the
+	*                                          new subnav item should be added.
+	*     @type bool|string $item_css_id       Optional. 'id' attribute for the subnav item. Default: the value of `$slug`.
+	*     @type int         $position          Optional. Numerical index specifying where the item should appear in
+	*                                          the subnav array. Default: 99.
+	*     @type bool        $user_has_access   Optional. True if the logged-in user has access to the
+	*                                          subnav item, otherwise false. Can be set dynamically
+	*                                          when registering the subnav; eg, use bp_is_my_profile()
+	*                                          to restrict access to profile owners only. Default: true.
+	*     @type string      $no_access_url     The link to redirect to if the user can't access the subnav item.
+	*     @type callable    $screen_function   The callback function that will run when the subnav item is clicked.
+	*     @type bool        $show_in_admin_bar Optional. Whether the subnav item should be added into
+	*                                          the group's "Edit" Admin Bar menu for group admins.
+	*                                          Default: false.
+	* }
+	*/
+	$subnav_item = apply_filters( "bp_{$component}_subnav_add_item_link", array(
 		'name'              => $r['name'],
 		'link'              => $r['link'],
 		'slug'              => $r['slug'],
@@ -593,7 +622,7 @@ function bp_core_create_subnav_link( $args = '', $component = 'members' ) {
 		'no_access_url'     => $r['no_access_url'],
 		'screen_function'   => &$r['screen_function'],
 		'show_in_admin_bar' => (bool) $r['show_in_admin_bar'],
-	);
+	) );
 
 	buddypress()->{$component}->nav->add_nav( $subnav_item );
 
