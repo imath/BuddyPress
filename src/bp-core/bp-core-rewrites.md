@@ -14,7 +14,7 @@ A new sub screen to edit slugs
 Let the user undo and come back to BuddyPress without rewrites without pain.
 - Create a new private post type `bp_directories`
 - edit the post type of core BuddyPress pages to this private post type on activation
-- use it to store rewrite slugs (post_excerpt ?)
+- use it to store custom slugs (post_excerpt ?)
 
 ## todos
 

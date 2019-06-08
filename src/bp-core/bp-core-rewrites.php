@@ -91,6 +91,10 @@ function bp_disable_legacy_url_parser() {
 			'function' => 'bp_rewrites_get_user_link',
 			'num_args' => 3,
 		),
+		'bp_get_members_directory_permalink' => array(
+			'function' => 'bp_rewrites_get_users_link',
+			'num_args' => 1,
+		),
 		'bp_members_nav_add_item_link' => array(
 			'function' => 'bp_rewrites_members_nav_link',
 			'num_args' => 1,
@@ -419,6 +423,12 @@ function bp_rewrites_get_user_link( $link = '', $user_id = 0, $username = '' ) {
 	}
 
 	return $link;
+}
+
+function bp_rewrites_get_users_link( $link = '' ) {
+	return bp_rewrites_get_link( array(
+		'component_id' => 'members',
+	) );
 }
 
 /**
