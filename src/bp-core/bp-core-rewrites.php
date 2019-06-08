@@ -275,8 +275,14 @@ function bp_reset_query( $bp_request = '', WP_Query $query ) {
 
 		$_SERVER['REQUEST_URI'] = $bp_request;
 
-		$bp->ajax->WP->parse_request();
-		$query->parse_query( $bp->ajax->WP->matched_query );
+		if ( bp_has_pretty_links() ) {
+			$bp->ajax->WP->parse_request();
+			$matched_query = $bp->ajax->WP->matched_query;
+		} else {
+			$matched_query = wp_parse_url( $bp_request, PHP_URL_QUERY );
+		}
+
+		$query->parse_query( $matched_query );
 	}
 
 	// Restore request uri.
