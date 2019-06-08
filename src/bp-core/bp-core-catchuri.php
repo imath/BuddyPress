@@ -515,6 +515,10 @@ function bp_core_load_template( $templates ) {
 			$wp_query->is_page     = true;
 			$wp_query->is_singular = true;
 			$wp_query->is_404      = false;
+
+			if ( bp_use_wp_rewrites() ) {
+				$wp_query->is_home = false;
+			}
 		}
 
 		/**
