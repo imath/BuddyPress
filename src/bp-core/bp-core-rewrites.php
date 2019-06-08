@@ -95,6 +95,10 @@ function bp_disable_legacy_url_parser() {
 			'function' => 'bp_rewrites_get_users_link',
 			'num_args' => 1,
 		),
+		'bp_get_member_type_directory_permalink' => array(
+			'function' => 'bp_rewrites_get_users_type_link',
+			'num_args' => 2,
+		),
 		'bp_members_nav_add_item_link' => array(
 			'function' => 'bp_rewrites_members_nav_link',
 			'num_args' => 1,
@@ -161,7 +165,7 @@ add_action( 'bp_init', 'bp_disable_legacy_url_parser', 1 );
  * @param  WP_Post $post The post type object.
  * @return string        The post type link.
  */
-function bp_directory_link( $link, WP_Post $post ) {
+function bp_page_directory_link( $link, WP_Post $post ) {
 	if ( 'bp_directories' !== get_post_type( $post ) ) {
 		return $link;
 	}
@@ -171,7 +175,7 @@ function bp_directory_link( $link, WP_Post $post ) {
 
 	return bp_rewrites_get_link( array( 'component_id' => $component ) );
 }
-add_filter( 'post_type_link', 'bp_directory_link', 1, 2 );
+add_filter( 'post_type_link', 'bp_page_directory_link', 1, 2 );
 
 /**
  * Get needed data to find a member single item from the request.
@@ -352,6 +356,7 @@ function bp_rewrites_get_link( $args = array() ) {
 
 	$r = wp_parse_args( $args, array(
 		'component_id'                 => '',
+		'directory_type'               => '',
 		'single_item'                  => '',
 		'single_item_component'        => '',
 		'single_item_action'           => '',
@@ -428,6 +433,17 @@ function bp_rewrites_get_user_link( $link = '', $user_id = 0, $username = '' ) {
 function bp_rewrites_get_users_link( $link = '' ) {
 	return bp_rewrites_get_link( array(
 		'component_id' => 'members',
+	) );
+}
+
+function bp_rewrites_get_users_type_link( $link = '', $type = null ) {
+	if ( ! isset( $type->directory_slug ) ) {
+		return $link;
+	}
+
+	return bp_rewrites_get_link( array(
+		'component_id'   => 'members',
+		'directory_type' => $type->directory_slug,
 	) );
 }
 

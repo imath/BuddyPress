@@ -162,6 +162,7 @@ class BP_Members_Component extends BP_Component {
 			'has_directory'   => true,
 			'rewrite_ids'     => array(
 				'directory'                    => 'bp_members',
+				'directory_type'               => 'bp_members_type',
 				'single_item'                  => 'bp_member',
 				'single_item_component'        => 'bp_member_component',
 				'single_item_action'           => 'bp_member_action',
@@ -489,6 +490,10 @@ class BP_Members_Component extends BP_Component {
 				'id'    => '%' . $this->rewrite_ids['directory'] . '%',
 				'regex' => '([1]{1,})',
 			),
+			'directory-type' => array(
+				'id'    => '%' . $this->rewrite_ids['directory_type'] . '%',
+				'regex' => '([^/]+)',
+			),
 			'single-item' => array(
 				'id'      => '%' . $this->rewrite_ids['single_item'] . '%',
 				'regex'   => '([^/]+)',
@@ -524,6 +529,18 @@ class BP_Members_Component extends BP_Component {
 		}
 
 		$rewrite_rules = array(
+			'paged-directory-type' => array(
+				'regex' => $this->root_slug . '/' . bp_get_members_member_type_base() . '/([^/]+)/page/?([0-9]{1,})/?$' ,
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['directory_type'] . '=$matches[1]&paged=$matches[2]',
+			),
+			'directory-type' => array(
+				'regex' => $this->root_slug . '/' . bp_get_members_member_type_base() . '/([^/]+)/?$' ,
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['directory_type'] . '=$matches[1]',
+			),
+			'paged-directory' => array(
+				'regex' => $this->root_slug . '/page/?([0-9]{1,})/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&paged=$matches[1]',
+			),
 			'single-item-action-variables' => array(
 				'regex' => $this->root_slug . '/([^/]+)\/([^/]+)\/([^/]+)\/(.+?)/?$',
 				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['single_item'] . '=$matches[1]&' . $this->rewrite_ids['single_item_component'] . '=$matches[2]&' . $this->rewrite_ids['single_item_action'] . '=$matches[3]&' . $this->rewrite_ids['single_item_action_variables'] . '=$matches[4]',
@@ -539,10 +556,6 @@ class BP_Members_Component extends BP_Component {
 			'single-item' => array(
 				'regex' => $this->root_slug . '/([^/]+)/?$',
 				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['single_item'] . '=$matches[1]',
-			),
-			'paged-directory' => array(
-				'regex' => $this->root_slug . '/page/?([0-9]{1,})/?$',
-				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&paged=$matches[1]',
 			),
 			'directory' => array(
 				'regex' => $this->root_slug,
@@ -604,9 +617,9 @@ class BP_Members_Component extends BP_Component {
 
 		if ( $is_members_component ) {
 			$bp->current_component = 'members';
+			$member_slug           = $query->get( $this->rewrite_ids['single_item'] );
+			$member_type_slug      = $query->get( $this->rewrite_ids['directory_type'] );
 
-			$single_item_rewrite_id = 'bp_member';
-			$member_slug            = $query->get( $this->rewrite_ids['single_item'] );
 
 			if ( $member_slug ) {
 				// Unless root profiles are on, the member shouldn't be set yet.
@@ -681,6 +694,21 @@ class BP_Members_Component extends BP_Component {
 				 * Let's make sure the screen will be loaded.
 				 */
 				add_action( 'bp_screens', 'bp_members_screen_display_profile', 2 );
+
+			// Is this a member type query ?
+			} elseif ( $member_type_slug ) {
+				$member_type = bp_get_member_types( array(
+					'has_directory'  => true,
+					'directory_slug' => $member_type_slug,
+				) );
+
+				if ( $member_type ) {
+					$bp->current_member_type = reset( $member_type );
+				} else {
+					$bp->current_component = '';
+					bp_do_404();
+					return;
+				}
 			}
 
 			/**

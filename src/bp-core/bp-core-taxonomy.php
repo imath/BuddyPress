@@ -22,7 +22,13 @@ defined( 'ABSPATH' ) || exit;
 function bp_register_default_taxonomies() {
 	// Member Type.
 	register_taxonomy( bp_get_member_type_tax_name(), 'user', array(
-		'public' => false,
+		'public'  => false,
+		/**
+		 * Prevents WordPress Taxonomy rewrite rules to be automaticaly generated.
+		 * Rewrite rules for the Member Type Taxonomy is handled within the Members
+		 * component class {@see BP_Members_Component::add_rewrite_rules()}}.
+		 */
+		'rewrite' => false,
 	) );
 
 	// Email type.
