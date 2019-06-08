@@ -919,6 +919,9 @@ class BP_Component {
 	 * @param WP_Query $query The main WP_Query.
 	 */
 	public function parse_query( WP_Query $query ) {
+		if ( bp_use_wp_rewrites() && is_buddypress() ) {
+			add_filter( 'posts_pre_query', array( $this, 'posts_pre_query' ), 10, 2 );
+		}
 
 		/**
 		 * Fires in the parse_query method inside BP_Component.
@@ -930,6 +933,28 @@ class BP_Component {
 		 * @param WP_Query $query Main WP_Query object. Passed by reference.
 		 */
 		do_action_ref_array( 'bp_' . $this->id . '_parse_query', array( &$query ) );
+	}
+
+	/**
+	 * Make sure to avoid querying for regular posts when displaying a BuddyPress page.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param  null       $return A null value to use the regular WP Query.
+	 * @param  WP_Query   $query  The WP Query object.
+	 * @return null|array         Null if not displaying a BuddyPress page.
+	 *                            An array containing the BuddyPress directory Post otherwise.
+	 */
+	public function posts_pre_query( $return = null, WP_Query $query ) {
+		remove_filter( 'posts_pre_query', array( $this, 'posts_pre_query' ), 10, 2 );
+
+		$queried_object = $query->get_queried_object();
+
+		if ( is_a( $queried_object, 'WP_Post' ) && 'bp_directories' === get_post_type( $queried_object ) ) {
+			return array( $queried_object );
+		}
+
+		return null;
 	}
 
 	/**

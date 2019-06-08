@@ -603,9 +603,10 @@ class BP_Members_Component extends BP_Component {
 			return parent::parse_query( $query );
 		}
 
-		// Init the current member.
+		// Init the current member and member type.
 		$member       = false;
-		$member_data = bp_rewrites_get_member_data();
+		$member_type  = false;
+		$member_data  = bp_rewrites_get_member_data();
 
 		if ( isset( $member_data['object'] ) && $member_data['object'] ) {
 			bp_reset_query( trailingslashit( $this->root_slug ) . $GLOBALS['wp']->request, $query );
@@ -703,7 +704,8 @@ class BP_Members_Component extends BP_Component {
 				) );
 
 				if ( $member_type ) {
-					$bp->current_member_type = reset( $member_type );
+					$member_type             = reset( $member_type );
+					$bp->current_member_type = $member_type;
 				} else {
 					$bp->current_component = '';
 					bp_do_404();
@@ -712,10 +714,16 @@ class BP_Members_Component extends BP_Component {
 			}
 
 			/**
-			 * This is temporary to avoid `bp_core_catch_no_access()`
-			 * to generate a 404.
+			 * Set the BuddyPress queried object.
 			 */
-			$query->queried_object = get_post( $bp->pages->members->id );
+			$query->queried_object    = get_post( $bp->pages->members->id );
+			$query->queried_object_id = $query->queried_object->ID;
+
+			if ( $member ) {
+				$query->queried_object->single_item_name = $member->display_name;
+			} elseif ( $member_type ) {
+				$query->queried_object->directory_type_name = $member_type;
+			}
 		}
 
 		parent::parse_query( $query );
