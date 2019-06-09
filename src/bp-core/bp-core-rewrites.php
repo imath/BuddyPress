@@ -144,6 +144,22 @@ function bp_disable_legacy_url_parser() {
 			'function' => 'bp_rewrites_edit_profile_url',
 			'num_args' => 3,
 		),
+		'bp_get_group_permalink' => array(
+			'function' => 'bp_rewrites_get_group_url',
+			'num_args' => 2,
+		),
+		'bp_get_groups_directory_permalink' => array(
+			'function' => 'bp_rewrites_get_groups_url',
+			'num_args' => 1,
+		),
+		'bp_groups_subnav_add_item_link' => array(
+			'function' => 'bp_rewrites_groups_nav_link',
+			'num_args' => 1,
+		),
+		'bp_get_groups_action_link' => array(
+			'function' => 'bp_rewrites_get_group_admin_link',
+			'num_args' => 4,
+		),
 	);
 
 	foreach ( $filters as $legacy => $rewrite ) {
@@ -448,14 +464,14 @@ function bp_rewrites_get_users_type_link( $link = '', $type = null ) {
 }
 
 /**
- * Edit the link parameter of the members primary nav item links.
+ * Edit the link parameter of the members primary/secondary nav item links.
  *
  * @see bp_core_create_nav_link() for description of parameters.
  *
  * @since 6.0.0
  *
- * @param  array $args The arguments used to create the primary nav item.
- * @return array       The arguments used to create the primary nav item.
+ * @param  array $args The arguments used to create the primary/secondary nav item.
+ * @return array       The arguments used to create the primary/secondary nav item.
  */
 function bp_rewrites_members_nav_link( $args = array() ) {
 	$bp      = buddypress();
@@ -592,4 +608,92 @@ function bp_rewrites_edit_profile_url( $profile_link = '', $url = '', $user_id =
 	}
 
 	return $profile_link;
+}
+
+function bp_rewrites_get_group_url( $link = '', $group = null ) {
+	if ( ! isset( $group->id ) || ! $group->id ) {
+		return $link;
+	}
+
+	return bp_rewrites_get_link( array(
+		'component_id' => 'groups',
+		'single_item'  => bp_get_group_slug( $group ),
+	) );
+}
+
+function bp_rewrites_get_groups_url( $link = '' ) {
+	return bp_rewrites_get_link( array(
+		'component_id' => 'groups',
+	) );
+}
+
+/**
+ * Edit the link parameter of the group's secondary nav item links.
+ *
+ * @see bp_core_create_subnav_link() for description of parameters.
+ *
+ * @since 6.0.0
+ *
+ * @param  array $args The arguments used to create the secondary nav item.
+ * @return array       The arguments used to create the secondary nav item.
+ */
+function bp_rewrites_groups_nav_link( $args = array() ) {
+	if ( ! isset( $args['parent_slug'] ) || ! isset( $args['slug'] ) ) {
+		return $args;
+	}
+
+	$single_item        = $args['parent_slug'];
+	$single_item_action = $args['slug'];
+
+	if ( false !== strpos( $single_item, '_manage' ) ) {
+		$single_item_action = 'admin';
+		$single_item = str_replace( '_manage', '', $single_item );
+	}
+
+	$link_params = array(
+		'component_id'       => 'groups',
+		'single_item'        => $single_item,
+		'single_item_action' => $single_item_action,
+	);
+
+	if ( 'admin' === $single_item_action && 'admin' !== $args['slug'] ) {
+		$link_params['single_item_action_variables'] = explode( '/', $args['slug'] );
+	}
+
+	$args['link'] = bp_rewrites_get_link( $link_params );
+
+	return $args;
+}
+
+function bp_rewrites_get_group_admin_link( $link = '', $action = '', $query_args = array(), $nonce = false ) {
+	if ( ! $action ) {
+		return $link;
+	}
+
+	$group = groups_get_current_group();
+	if ( ! isset( $group->slug ) ) {
+		return $link;
+	}
+
+	$single_item_action_variables = explode( '/', rtrim( $action, '/' ) );
+	$single_item_action           = array_shift( $single_item_action_variables );
+
+	$link = bp_rewrites_get_link( array(
+		'component_id'                 => 'groups',
+		'single_item'                  => $group->slug,
+		'single_item_action'           => $single_item_action,
+		'single_item_action_variables' => $single_item_action_variables,
+	) );
+
+	if ( $query_args && is_array( $query_args ) ) {
+		$link = add_query_arg( $query_args, $link );
+	}
+
+	if ( true === $nonce ) {
+		$link = wp_nonce_url( $link );
+	} elseif ( is_string( $nonce ) ) {
+		$link = wp_nonce_url( $link, $nonce );
+	}
+
+	return $link;
 }

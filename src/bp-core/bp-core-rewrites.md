@@ -27,3 +27,4 @@ Let the user undo and come back to BuddyPress without rewrites without pain.
 
 - bp_get_search_slug() right after root conflicts with WordPress. Do we still need this feature ? See [4154](https://buddypress.trac.wordpress.org/ticket/4154).
 - It's possible to add a parent page to directories. Let's not forget it!
+- It's possible to set the front page to be a BuddyPress directory page on front.. 😬
