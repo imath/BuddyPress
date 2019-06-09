@@ -632,6 +632,8 @@ class BP_Members_Component extends BP_Component {
 						bp_do_404();
 						return;
 					}
+
+					$bp->current_item = $member_slug;
 				}
 
 				// Set the displayed user.
@@ -689,12 +691,6 @@ class BP_Members_Component extends BP_Component {
 						$bp->action_variables = $action_variables;
 					}
 				}
-
-				/**
-				 * We can't rely on the BP Nav screen functions so far...
-				 * Let's make sure the screen will be loaded.
-				 */
-				add_action( 'bp_screens', 'bp_members_screen_display_profile', 2 );
 
 			// Is this a member type query ?
 			} elseif ( $member_type_slug ) {
