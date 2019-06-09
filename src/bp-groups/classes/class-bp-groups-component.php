@@ -213,6 +213,85 @@ class BP_Groups_Component extends BP_Component {
 	}
 
 	/**
+	 * Get the current Group object using its slug.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param  string               $group_slug The Group slug used into the URL path.
+	 * @return int|BP_Groups_Group  The current group found. 0 otherwise.
+	 */
+	public function get_current_group( $group_slug = '' ) {
+		if ( ! $group_slug ) {
+			return 0;
+		}
+
+		// Get the BuddyPress main instance.
+		$bp = buddypress();
+
+		// Try to find a group ID matching the requested slug.
+		$group_id = BP_Groups_Group::group_exists( $group_slug );
+		if ( ! $group_id ) {
+			$group_id = BP_Groups_Group::get_id_by_previous_slug( $group_slug );
+		}
+
+		// The Group was not found?
+		if ( ! $group_id ) {
+			return 0;
+		}
+
+		// Set the single item and init the current group.
+		$bp->is_single_item  = true;
+		$current_group       = 0;
+
+		/**
+		 * Filters the current PHP Class being used.
+		 *
+		 * @since 1.5.0
+		 *
+		 * @param string $value Name of the class being used.
+		 */
+		$current_group_class = apply_filters( 'bp_groups_current_group_class', 'BP_Groups_Group' );
+
+		if ( $current_group_class == 'BP_Groups_Group' ) {
+			$current_group = groups_get_group( $group_id );
+
+		} else {
+
+			/**
+			 * Filters the current group object being instantiated from previous filter.
+			 *
+			 * @since 1.5.0
+			 *
+			 * @param object $value Newly instantiated object for the group.
+			 */
+			$current_group = apply_filters( 'bp_groups_current_group_object', new $current_group_class( $group_id ) );
+		}
+
+		// We have a group let's add some other usefull things.
+		if ( $current_group ) {
+			// Using "item" not "group" for generic support in other components.
+			if ( bp_current_user_can( 'bp_moderate' ) ) {
+				bp_update_is_item_admin( true, 'groups' );
+			} else {
+				bp_update_is_item_admin( groups_is_user_admin( bp_loggedin_user_id(), $current_group->id ), 'groups' );
+			}
+
+			// If the user is not an admin, check if they are a moderator.
+			if ( ! bp_is_item_admin() ) {
+				bp_update_is_item_mod( groups_is_user_mod( bp_loggedin_user_id(), $current_group->id ), 'groups' );
+			}
+
+			// Check once if the current group has a custom front template.
+			$current_group->front_template = bp_groups_get_front_template( $current_group );
+
+			// Initialize the nav for the groups component.
+			$this->nav = new BP_Core_Nav( $current_group->id );
+		}
+
+		return $current_group;
+	}
+
+	/**
 	 * Set up component global data.
 	 *
 	 * The BP_GROUPS_SLUG constant is deprecated, and only used here for
@@ -254,6 +333,13 @@ class BP_Groups_Component extends BP_Component {
 			'slug'                  => BP_GROUPS_SLUG,
 			'root_slug'             => isset( $bp->pages->groups->slug ) ? $bp->pages->groups->slug : BP_GROUPS_SLUG,
 			'has_directory'         => true,
+			'rewrite_ids'     => array(
+				'directory'                    => 'bp_groups',
+				'directory_type'               => 'bp_groups_type',
+				'single_item'                  => 'bp_group',
+				'single_item_action'           => 'bp_group_action',
+				'single_item_action_variables' => 'bp_group_action_variables',
+			),
 			'directory_title'       => isset( $bp->pages->groups->title ) ? $bp->pages->groups->title : $default_directory_title,
 			'notification_callback' => 'groups_format_notifications',
 			'search_string'         => _x( 'Search Groups...', 'Component directory search', 'buddypress' ),
@@ -266,63 +352,18 @@ class BP_Groups_Component extends BP_Component {
 		/* Single Group Globals **********************************************/
 
 		// Are we viewing a single group?
-		if ( bp_is_groups_component()
-			&& ( ( $group_id = BP_Groups_Group::group_exists( bp_current_action() ) )
-				|| ( $group_id = BP_Groups_Group::get_id_by_previous_slug( bp_current_action() ) ) )
-			) {
-			$bp->is_single_item  = true;
+		if ( bp_is_groups_component() ) {
+			$this->current_group = $this->get_current_group( bp_current_action() );
 
-			/**
-			 * Filters the current PHP Class being used.
-			 *
-			 * @since 1.5.0
-			 *
-			 * @param string $value Name of the class being used.
-			 */
-			$current_group_class = apply_filters( 'bp_groups_current_group_class', 'BP_Groups_Group' );
-
-			if ( $current_group_class == 'BP_Groups_Group' ) {
-				$this->current_group = groups_get_group( $group_id );
-
-			} else {
-
+			if ( $this->current_group ) {
 				/**
-				 * Filters the current group object being instantiated from previous filter.
-				 *
-				 * @since 1.5.0
-				 *
-				 * @param object $value Newly instantiated object for the group.
+				 * When in a single group, the first action is bumped down one because of the
+				 * group name, so we need to adjust this and set the group name to current_item.
 				 */
-				$this->current_group = apply_filters( 'bp_groups_current_group_object', new $current_group_class( $group_id ) );
+				$bp->current_item   = bp_current_action();
+				$bp->current_action = bp_action_variable( 0 );
+				array_shift( $bp->action_variables );
 			}
-
-			// When in a single group, the first action is bumped down one because of the
-			// group name, so we need to adjust this and set the group name to current_item.
-			$bp->current_item   = bp_current_action();
-			$bp->current_action = bp_action_variable( 0 );
-			array_shift( $bp->action_variables );
-
-			// Using "item" not "group" for generic support in other components.
-			if ( bp_current_user_can( 'bp_moderate' ) ) {
-				bp_update_is_item_admin( true, 'groups' );
-			} else {
-				bp_update_is_item_admin( groups_is_user_admin( bp_loggedin_user_id(), $this->current_group->id ), 'groups' );
-			}
-
-			// If the user is not an admin, check if they are a moderator.
-			if ( ! bp_is_item_admin() ) {
-				bp_update_is_item_mod  ( groups_is_user_mod  ( bp_loggedin_user_id(), $this->current_group->id ), 'groups' );
-			}
-
-			// Check once if the current group has a custom front template.
-			$this->current_group->front_template = bp_groups_get_front_template( $this->current_group );
-
-			// Initialize the nav for the groups component.
-			$this->nav = new BP_Core_Nav( $this->current_group->id );
-
-		// Set current_group to 0 to prevent debug errors.
-		} else {
-			$this->current_group = 0;
 		}
 
 		// Set group type if available.
@@ -921,5 +962,178 @@ class BP_Groups_Component extends BP_Component {
 		register_taxonomy( 'bp_group_type', 'bp_group', array(
 			'public' => false,
 		) );
+	}
+
+	/**
+	 * Add the component's rewrite tags.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param array $rewrite_tags Optional. See BP_Component::add_rewrite_tags() for
+	 *                            description.
+	 */
+	public function add_rewrite_tags( $rewrite_tags = array() ) {
+		if ( ! bp_use_wp_rewrites() ) {
+			return parent::add_rewrite_tags( $rewrite_tags );
+		}
+
+		$rewrite_tags = array(
+			'directory' => array(
+				'id'    => '%' . $this->rewrite_ids['directory'] . '%',
+				'regex' => '([1]{1,})',
+			),
+			'directory-type' => array(
+				'id'    => '%' . $this->rewrite_ids['directory_type'] . '%',
+				'regex' => '([^/]+)',
+			),
+			'single-item' => array(
+				'id'      => '%' . $this->rewrite_ids['single_item'] . '%',
+				'regex'   => '([^/]+)',
+			),
+			'single-item-action' => array(
+				'id'      => '%' . $this->rewrite_ids['single_item_action'] . '%',
+				'regex'   => '([^/]+)',
+			),
+			'single-item-action-variables' => array(
+				'id'      => '%' . $this->rewrite_ids['single_item_action_variables'] . '%',
+				'regex'   => '([^/]+)',
+			),
+		);
+
+		parent::add_rewrite_tags( $rewrite_tags );
+	}
+
+	/**
+	 * Add the component's rewrite rules.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param array $rewrite_rules Optional. See BP_Component::add_rewrite_rules() for
+	 *                             description.
+	 */
+	public function add_rewrite_rules( $rewrite_rules = array() ) {
+		if ( ! bp_use_wp_rewrites() ) {
+			return parent::add_rewrite_rules( $rewrite_rules );
+		}
+
+		$rewrite_rules = array(
+			'paged-directory-type' => array(
+				'regex' => $this->root_slug . '/' . bp_get_groups_group_type_base() . '/([^/]+)/page/?([0-9]{1,})/?$' ,
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['directory_type'] . '=$matches[1]&paged=$matches[2]',
+			),
+			'directory-type' => array(
+				'regex' => $this->root_slug . '/' . bp_get_groups_group_type_base() . '/([^/]+)/?$' ,
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['directory_type'] . '=$matches[1]',
+			),
+			'paged-directory' => array(
+				'regex' => $this->root_slug . '/page/?([0-9]{1,})/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&paged=$matches[1]',
+			),
+			'single-item-action-variables' => array(
+				'regex' => $this->root_slug . '/([^/]+)\/([^/]+)\/(.+?)/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['single_item'] . '=$matches[1]&' . $this->rewrite_ids['single_item_action'] . '=$matches[2]&' . $this->rewrite_ids['single_item_action_variables'] . '=$matches[3]',
+			),
+			'single-item-action' => array(
+				'regex' => $this->root_slug . '/([^/]+)\/([^/]+)/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['single_item'] . '=$matches[1]&' . $this->rewrite_ids['single_item_action'] . '=$matches[2]',
+			),
+			'single-item' => array(
+				'regex' => $this->root_slug . '/([^/]+)/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['single_item'] . '=$matches[1]',
+			),
+			'directory' => array(
+				'regex' => $this->root_slug,
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1',
+			),
+		);
+
+		parent::add_rewrite_rules( $rewrite_rules );
+	}
+
+	/**
+	 * Add the component's directory permastructs.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param array $structs Optional. See BP_Component::add_permastructs() for
+	 *                       description.
+	 */
+	public function add_permastructs( $structs = array() ) {
+		if ( ! bp_use_wp_rewrites() ) {
+			return parent::add_permastructs( $structs );
+		}
+
+		$permastructs = array(
+			// Directory permastruct.
+			$this->rewrite_ids['directory'] => array(
+				'struct' => $this->directory_permastruct,
+				'args'   => array(),
+			),
+		);
+
+		parent::add_permastructs( $permastructs );
+	}
+
+	/**
+	 * Parse the WP_Query and eventually display the component's directory or single item.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param WP_Query $query Required. See BP_Component::parse_query() for
+	 *                        description.
+	 */
+	public function parse_query( WP_Query $query ) {
+		if ( ! bp_use_wp_rewrites() ) {
+			return parent::parse_query( $query );
+		}
+
+		$is_groups_component = 1 === (int) $query->get( $this->rewrite_ids['directory'] );
+		$bp                  = buddypress();
+		$group_type          = false;
+
+		if ( $is_groups_component ) {
+			$bp->current_component = 'groups';
+			$group_slug            = $query->get( $this->rewrite_ids['single_item'] );
+
+			if ( $group_slug ) {
+				$this->current_group = $this->get_current_group( $group_slug );
+
+				if ( ! $this->current_group ) {
+					bp_do_404();
+					return;
+				}
+
+				// Set the current item using the group slug.
+				$bp->current_item = $group_slug;
+
+				$current_action = $query->get( $this->rewrite_ids['single_item_action'] );
+				if ( $current_action ) {
+					$bp->current_action = $current_action;
+				}
+
+				$action_variables = $query->get( $this->rewrite_ids['single_item_action_variables'] );
+				if ( $action_variables ) {
+					if ( ! is_array( $action_variables ) )  {
+						$bp->action_variables = explode( '/', ltrim( $action_variables, '/' ) );
+					} else {
+						$bp->action_variables = $action_variables;
+					}
+				}
+			}
+
+			/**
+			 * Set the BuddyPress queried object.
+			 */
+			$query->queried_object    = get_post( $bp->pages->groups->id );
+			$query->queried_object_id = $query->queried_object->ID;
+
+			if ( $this->current_group ) {
+				$query->queried_object->single_item_name = $this->current_group->name;
+			} elseif ( $group_type ) {
+				$query->queried_object->directory_type_name = $group_type;
+			}
+		}
+
+		parent::parse_query( $query );
 	}
 }
