@@ -90,92 +90,92 @@ function bp_disable_legacy_url_parser() {
 	 */
 	$filters = array(
 		'bp_core_get_user_domain' => array(
-			'function' => 'bp_rewrites_get_user_link',
+			'function' => '_bp_rewrites_get_user_link',
 			'num_args' => 3,
 		),
 		'bp_get_members_directory_permalink' => array(
-			'function' => 'bp_rewrites_get_users_link',
+			'function' => '_bp_rewrites_get_users_link',
 			'num_args' => 1,
 		),
 		'bp_get_member_type_directory_permalink' => array(
-			'function' => 'bp_rewrites_get_users_type_link',
+			'function' => '_bp_rewrites_get_users_type_link',
 			'num_args' => 2,
 		),
 		'bp_members_nav_add_item_link' => array(
-			'function' => 'bp_rewrites_members_nav_link',
+			'function' => '_bp_rewrites_members_nav_link',
 			'num_args' => 1,
 		),
 		'bp_members_subnav_add_item_link' => array(
-			'function' => 'bp_rewrites_members_nav_link',
+			'function' => '_bp_rewrites_members_nav_link',
 			'num_args' => 1,
 		),
 		'bp_activity_admin_nav' => array(
-			'function' => 'bp_rewrites_user_admin_nav_link',
+			'function' => '_bp_rewrites_user_admin_nav_link',
 			'num_args' => 1,
 		),
 		'bp_blogs_admin_nav' => array(
-			'function' => 'bp_rewrites_user_admin_nav_link',
+			'function' => '_bp_rewrites_user_admin_nav_link',
 			'num_args' => 1,
 		),
 		'bp_friends_admin_nav' => array(
-			'function' => 'bp_rewrites_user_admin_nav_link',
+			'function' => '_bp_rewrites_user_admin_nav_link',
 			'num_args' => 1,
 		),
 		'bp_groups_admin_nav' => array(
-			'function' => 'bp_rewrites_user_admin_nav_link',
+			'function' => '_bp_rewrites_user_admin_nav_link',
 			'num_args' => 1,
 		),
 		'bp_messages_admin_nav' => array(
-			'function' => 'bp_rewrites_user_admin_nav_link',
+			'function' => '_bp_rewrites_user_admin_nav_link',
 			'num_args' => 1,
 		),
 		'bp_notifications_admin_nav' => array(
-			'function' => 'bp_rewrites_user_admin_nav_link',
+			'function' => '_bp_rewrites_user_admin_nav_link',
 			'num_args' => 1,
 		),
 		'bp_settings_admin_nav' => array(
-			'function' => 'bp_rewrites_user_admin_nav_link',
+			'function' => '_bp_rewrites_user_admin_nav_link',
 			'num_args' => 1,
 			'priority' => 3, // After xProfile filter.
 		),
 		'bp_xprofile_admin_nav' => array(
-			'function' => 'bp_rewrites_user_admin_nav_link',
+			'function' => '_bp_rewrites_user_admin_nav_link',
 			'num_args' => 1,
 		),
 		'bp_members_edit_profile_url' => array(
-			'function' => 'bp_rewrites_edit_profile_url',
+			'function' => '_bp_rewrites_edit_profile_url',
 			'num_args' => 3,
 		),
 		'bp_get_signup_page'  => array(
-			'function' => 'bp_rewrites_get_signup_link',
+			'function' => '_bp_rewrites_get_signup_link',
 			'num_args' => 1,
 		),
 		'bp_get_activation_page'  => array(
-			'function' => 'bp_rewrites_get_activation_link',
+			'function' => '_bp_rewrites_get_activation_link',
 			'num_args' => 3,
 		),
 		'bp_get_group_permalink' => array(
-			'function' => 'bp_rewrites_get_group_url',
+			'function' => '_bp_rewrites_get_group_url',
 			'num_args' => 2,
 		),
 		'bp_get_groups_directory_permalink' => array(
-			'function' => 'bp_rewrites_get_groups_url',
+			'function' => '_bp_rewrites_get_groups_url',
 			'num_args' => 1,
 		),
 		'bp_get_group_type_directory_permalink' => array(
-			'function' => 'bp_rewrites_get_group_type_url',
+			'function' => '_bp_rewrites_get_group_type_url',
 			'num_args' => 2,
 		),
 		'bp_groups_subnav_add_item_link' => array(
-			'function' => 'bp_rewrites_groups_nav_link',
+			'function' => '_bp_rewrites_groups_nav_link',
 			'num_args' => 1,
 		),
 		'bp_get_groups_action_link' => array(
-			'function' => 'bp_rewrites_get_group_admin_link',
+			'function' => '_bp_rewrites_get_group_admin_link',
 			'num_args' => 4,
 		),
 		'bp_get_group_create_link' => array(
-			'function' => 'bp_rewrites_get_group_create_link',
+			'function' => '_bp_rewrites_get_group_create_link',
 			'num_args' => 2,
 		),
 	);
@@ -474,7 +474,7 @@ function bp_rewrites_get_link( $args = array() ) {
 	return $link;
 }
 
-function bp_rewrites_get_user_link( $link = '', $user_id = 0, $username = '' ) {
+function _bp_rewrites_get_user_link( $link = '', $user_id = 0, $username = '' ) {
 	if ( ! $user_id ) {
 		return $link;
 	}
@@ -496,13 +496,13 @@ function bp_rewrites_get_user_link( $link = '', $user_id = 0, $username = '' ) {
 	return $link;
 }
 
-function bp_rewrites_get_users_link( $link = '' ) {
+function _bp_rewrites_get_users_link( $link = '' ) {
 	return bp_rewrites_get_link( array(
 		'component_id' => 'members',
 	) );
 }
 
-function bp_rewrites_get_users_type_link( $link = '', $type = null ) {
+function _bp_rewrites_get_users_type_link( $link = '', $type = null ) {
 	if ( ! isset( $type->directory_slug ) ) {
 		return $link;
 	}
@@ -523,7 +523,7 @@ function bp_rewrites_get_users_type_link( $link = '', $type = null ) {
  * @param  array $args The arguments used to create the primary/secondary nav item.
  * @return array       The arguments used to create the primary/secondary nav item.
  */
-function bp_rewrites_members_nav_link( $args = array() ) {
+function _bp_rewrites_members_nav_link( $args = array() ) {
 	$bp      = buddypress();
 	$user_id = bp_displayed_user_id();
 	if ( ! $user_id ) {
@@ -575,7 +575,7 @@ function bp_rewrites_members_nav_link( $args = array() ) {
 	return $args;
 }
 
-function bp_rewrites_user_admin_nav_link( $wp_admin_nav = array() ) {
+function _bp_rewrites_user_admin_nav_link( $wp_admin_nav = array() ) {
 	$bp = buddypress();
 	$username = bp_rewrites_get_member_slug( bp_loggedin_user_id() );
 	if ( ! $username ) {
@@ -647,7 +647,7 @@ function bp_rewrites_user_admin_nav_link( $wp_admin_nav = array() ) {
 	return $wp_admin_nav;
 }
 
-function bp_rewrites_edit_profile_url( $profile_link = '', $url = '', $user_id = 0 ) {
+function _bp_rewrites_edit_profile_url( $profile_link = '', $url = '', $user_id = 0 ) {
 	if ( ! is_admin() && bp_is_active( 'xprofile' ) ) {
 		$profile_link = bp_rewrites_get_link( array(
 			'component_id'          => 'members',
@@ -660,14 +660,14 @@ function bp_rewrites_edit_profile_url( $profile_link = '', $url = '', $user_id =
 	return $profile_link;
 }
 
-function bp_rewrites_get_signup_link( $link = '' ) {
+function _bp_rewrites_get_signup_link( $link = '' ) {
 	return bp_rewrites_get_link( array(
 		'component_id'    => 'members',
 		'member_register' => 1,
 	) );
 }
 
-function bp_rewrites_get_activation_link( $link = '', $key = '', $has_custom_activation_page = false ) {
+function _bp_rewrites_get_activation_link( $link = '', $key = '', $has_custom_activation_page = false ) {
 	if ( ! $has_custom_activation_page ) {
 		return $link;
 	}
@@ -684,7 +684,7 @@ function bp_rewrites_get_activation_link( $link = '', $key = '', $has_custom_act
 	return bp_rewrites_get_link( $link_params );
 }
 
-function bp_rewrites_get_group_url( $link = '', $group = null ) {
+function _bp_rewrites_get_group_url( $link = '', $group = null ) {
 	if ( ! isset( $group->id ) || ! $group->id ) {
 		return $link;
 	}
@@ -695,13 +695,13 @@ function bp_rewrites_get_group_url( $link = '', $group = null ) {
 	) );
 }
 
-function bp_rewrites_get_groups_url( $link = '' ) {
+function _bp_rewrites_get_groups_url( $link = '' ) {
 	return bp_rewrites_get_link( array(
 		'component_id' => 'groups',
 	) );
 }
 
-function bp_rewrites_get_group_type_url( $link = '', $type = null ) {
+function _bp_rewrites_get_group_type_url( $link = '', $type = null ) {
 	if ( ! isset( $type->directory_slug ) ) {
 		return $link;
 	}
@@ -722,7 +722,7 @@ function bp_rewrites_get_group_type_url( $link = '', $type = null ) {
  * @param  array $args The arguments used to create the secondary nav item.
  * @return array       The arguments used to create the secondary nav item.
  */
-function bp_rewrites_groups_nav_link( $args = array() ) {
+function _bp_rewrites_groups_nav_link( $args = array() ) {
 	if ( ! isset( $args['parent_slug'] ) || ! isset( $args['slug'] ) ) {
 		return $args;
 	}
@@ -750,7 +750,7 @@ function bp_rewrites_groups_nav_link( $args = array() ) {
 	return $args;
 }
 
-function bp_rewrites_get_group_admin_link( $link = '', $action = '', $query_args = array(), $nonce = false ) {
+function _bp_rewrites_get_group_admin_link( $link = '', $action = '', $query_args = array(), $nonce = false ) {
 	if ( ! $action ) {
 		return $link;
 	}
@@ -783,7 +783,7 @@ function bp_rewrites_get_group_admin_link( $link = '', $action = '', $query_args
 	return $link;
 }
 
-function bp_rewrites_get_group_create_link( $link = '', $step = '' ) {
+function _bp_rewrites_get_group_create_link( $link = '', $step = '' ) {
 	$link_params = array(
 		'component_id'       => 'groups',
 		'create_single_item' => 1,
