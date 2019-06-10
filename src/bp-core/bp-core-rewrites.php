@@ -47,7 +47,7 @@ function bp_disable_legacy_url_parser() {
 	// First let's neutalize our legacy URL parser.
 	remove_action( 'bp_init', 'bp_core_set_uri_globals', 2 );
 
-	// These hook needs to happen later.
+	// These hooks need to happen later.
 	remove_action( 'bp_init', 'bp_setup_canonical_stack', 5 );
 	add_action( 'bp_parse_query', 'bp_setup_canonical_stack', 11 );
 	remove_action( 'bp_init', 'bp_setup_title', 8 );
