@@ -1094,6 +1094,7 @@ class BP_Groups_Component extends BP_Component {
 		if ( $is_groups_component ) {
 			$bp->current_component = 'groups';
 			$group_slug            = $query->get( $this->rewrite_ids['single_item'] );
+			$group_type_slug       = $query->get( $this->rewrite_ids['directory_type'] );
 
 			if ( $group_slug ) {
 				$this->current_group = $this->get_current_group( $group_slug );
@@ -1118,6 +1119,21 @@ class BP_Groups_Component extends BP_Component {
 					} else {
 						$bp->action_variables = $action_variables;
 					}
+				}
+			} elseif ( $group_type_slug ) {
+				$group_type = bp_groups_get_group_types( array(
+					'has_directory'  => true,
+					'directory_slug' => $group_type_slug,
+				) );
+
+				if ( $group_type ) {
+					$group_type                   = reset( $group_type );
+					$this->current_directory_type = $group_type;
+					$bp->current_action           = bp_get_groups_group_type_base();
+					$bp->action_variables         = array( $group_type_slug );
+				} else {
+					bp_do_404();
+					return;
 				}
 			}
 

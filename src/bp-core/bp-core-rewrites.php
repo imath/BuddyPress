@@ -152,6 +152,10 @@ function bp_disable_legacy_url_parser() {
 			'function' => 'bp_rewrites_get_groups_url',
 			'num_args' => 1,
 		),
+		'bp_get_group_type_directory_permalink' => array(
+			'function' => 'bp_rewrites_get_group_type_url',
+			'num_args' => 2,
+		),
 		'bp_groups_subnav_add_item_link' => array(
 			'function' => 'bp_rewrites_groups_nav_link',
 			'num_args' => 1,
@@ -414,11 +418,21 @@ function bp_rewrites_get_link( $args = array() ) {
 		unset( $r['single_item'] );
 		$r = array_filter( $r );
 
+		if ( isset( $r['directory_type'] ) && $r['directory_type'] ) {
+			if ( 'members' === $component->id ) {
+				array_unshift( $r, bp_get_members_member_type_base() );
+			} elseif ( 'groups' === $component->id ) {
+				array_unshift( $r, bp_get_groups_group_type_base() );
+			} else {
+				unset( $r['directory_type'] );
+			}
+		}
+
 		if ( isset( $r['single_item_action_variables'] ) && $r['single_item_action_variables'] ) {
 			$r['single_item_action_variables'] = join( '/', (array) $r['single_item_action_variables'] );
 		}
 
-		$link = home_url( user_trailingslashit( '/' . $link . '/' . join( '/', $r ) ) );
+		$link = home_url( user_trailingslashit( '/' . rtrim( $link, '/' ) . '/' . join( '/', $r ) ) );
 	}
 
 	return $link;
@@ -624,6 +638,17 @@ function bp_rewrites_get_group_url( $link = '', $group = null ) {
 function bp_rewrites_get_groups_url( $link = '' ) {
 	return bp_rewrites_get_link( array(
 		'component_id' => 'groups',
+	) );
+}
+
+function bp_rewrites_get_group_type_url( $link = '', $type = null ) {
+	if ( ! isset( $type->directory_slug ) ) {
+		return $link;
+	}
+
+	return bp_rewrites_get_link( array(
+		'component_id'   => 'groups',
+		'directory_type' => $type->directory_slug,
 	) );
 }
 
