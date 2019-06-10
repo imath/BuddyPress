@@ -122,6 +122,43 @@ function bp_groups_directory_permalink() {
 	}
 
 /**
+ * Output the create group link.
+ *
+ * @since 6.0.0
+ *
+ * @param string $step The group creation step name.
+ */
+function bp_group_create_link( $step = '' ) {
+	echo esc_url( bp_get_group_create_link( $step ) );
+}
+
+	/**
+	 * Return the create group link.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param  string $step The group creation step name.
+	 * @return string
+	 */
+	function bp_get_group_create_link( $step = '' ) {
+		$link = trailingslashit( bp_get_groups_directory_permalink() . 'create' );
+
+		if ( $step ) {
+			$link = trailingslashit( $link . 'step/' . $step );
+		}
+
+		/**
+		 * Filters the create group link.
+		 *
+		 * @since 6.0.0
+		 *
+		 * @param string $link The create group link.
+		 * @param string $step The group creation step name.
+		 */
+		return apply_filters( 'bp_get_group_create_link', $link, $step );
+	}
+
+/**
  * Output group type directory permalink.
  *
  * @since 2.7.0
@@ -3449,7 +3486,7 @@ function bp_group_create_button() {
 			'component'  => 'groups',
 			'link_text'  => __( 'Create a Group', 'buddypress' ),
 			'link_class' => 'group-create no-ajax',
-			'link_href'  => trailingslashit( bp_get_groups_directory_permalink() . 'create' ),
+			'link_href'  => bp_get_group_create_link(),
 			'wrapper'    => false,
 			'block_self' => false,
 		);
@@ -4546,7 +4583,7 @@ function bp_group_creation_form_action() {
 	function bp_get_group_creation_form_action() {
 		$bp = buddypress();
 
-		if ( !bp_action_variable( 1 ) ) {
+		if ( ! bp_action_variable( 1 ) ) {
 			$keys = array_keys( $bp->groups->group_creation_steps );
 			$bp->action_variables[1] = array_shift( $keys );
 		}
@@ -4558,7 +4595,7 @@ function bp_group_creation_form_action() {
 		 *
 		 * @param string $value Action to be used with group creation form.
 		 */
-		return apply_filters( 'bp_get_group_creation_form_action', trailingslashit( bp_get_groups_directory_permalink() . 'create/step/' . bp_action_variable( 1 ) ) );
+		return apply_filters( 'bp_get_group_creation_form_action', bp_get_group_create_link( bp_action_variable( 1 ) ) );
 	}
 
 /**

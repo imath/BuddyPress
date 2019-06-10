@@ -47,9 +47,11 @@ function bp_disable_legacy_url_parser() {
 	// First let's neutalize our legacy URL parser.
 	remove_action( 'bp_init', 'bp_core_set_uri_globals', 2 );
 
-	// This hook needs to happen later.
+	// These hook needs to happen later.
 	remove_action( 'bp_init', 'bp_setup_canonical_stack', 5 );
 	add_action( 'bp_parse_query', 'bp_setup_canonical_stack', 11 );
+	remove_action( 'bp_init', 'bp_setup_title', 8 );
+	add_action( 'bp_parse_query', 'bp_setup_title', 14 );
 
 	/**
 	 * This hook needs to happen later on front-end only.
@@ -163,6 +165,10 @@ function bp_disable_legacy_url_parser() {
 		'bp_get_groups_action_link' => array(
 			'function' => 'bp_rewrites_get_group_admin_link',
 			'num_args' => 4,
+		),
+		'bp_get_group_create_link' => array(
+			'function' => 'bp_rewrites_get_group_create_link',
+			'num_args' => 2,
 		),
 	);
 
@@ -311,6 +317,9 @@ function bp_reset_query( $bp_request = '', WP_Query $query ) {
 		}
 
 		$query->parse_query( $matched_query );
+
+		// Do this only once.
+		remove_action( 'parse_query', 'bp_parse_query', 2 );
 	}
 
 	// Restore request uri.
@@ -414,8 +423,14 @@ function bp_rewrites_get_link( $args = array() ) {
 			return $link;
 		}
 
-		$link = str_replace( '%' . $component->rewrite_ids['directory'] . '%', $r['single_item'], $component->directory_permastruct );
-		unset( $r['single_item'] );
+		if ( isset( $r['create_single_item'] ) ) {
+			$link = str_replace( '%' . $component->rewrite_ids['directory'] . '%', 'create', $component->directory_permastruct );
+			unset( $r['create_single_item'] );
+		} else {
+			$link = str_replace( '%' . $component->rewrite_ids['directory'] . '%', $r['single_item'], $component->directory_permastruct );
+			unset( $r['single_item'] );
+		}
+
 		$r = array_filter( $r );
 
 		if ( isset( $r['directory_type'] ) && $r['directory_type'] ) {
@@ -430,6 +445,10 @@ function bp_rewrites_get_link( $args = array() ) {
 
 		if ( isset( $r['single_item_action_variables'] ) && $r['single_item_action_variables'] ) {
 			$r['single_item_action_variables'] = join( '/', (array) $r['single_item_action_variables'] );
+		}
+
+		if ( isset( $r['create_single_item_variables'] ) && $r['create_single_item_variables'] ) {
+			$r['create_single_item_variables'] = join( '/', (array) $r['create_single_item_variables'] );
 		}
 
 		$link = home_url( user_trailingslashit( '/' . rtrim( $link, '/' ) . '/' . join( '/', $r ) ) );
@@ -721,4 +740,17 @@ function bp_rewrites_get_group_admin_link( $link = '', $action = '', $query_args
 	}
 
 	return $link;
+}
+
+function bp_rewrites_get_group_create_link( $link = '', $step = '' ) {
+	$link_params = array(
+		'component_id'       => 'groups',
+		'create_single_item' => 1,
+	);
+
+	if ( $step ) {
+		$link_params['create_single_item_variables'] = array( 'step', $step );
+	}
+
+	return bp_rewrites_get_link( $link_params );
 }

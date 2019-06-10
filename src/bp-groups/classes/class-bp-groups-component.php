@@ -336,6 +336,8 @@ class BP_Groups_Component extends BP_Component {
 			'rewrite_ids'     => array(
 				'directory'                    => 'bp_groups',
 				'directory_type'               => 'bp_groups_type',
+				'create_single_item'           => 'bp_group_create',
+				'create_single_item_variables' => 'bp_group_create_variables',
 				'single_item'                  => 'bp_group',
 				'single_item_action'           => 'bp_group_action',
 				'single_item_action_variables' => 'bp_group_action_variables',
@@ -881,7 +883,7 @@ class BP_Groups_Component extends BP_Component {
 					'parent'   => 'my-account-' . $this->id,
 					'id'       => 'my-account-' . $this->id . '-create',
 					'title'    => _x( 'Create a Group', 'My Account Groups sub nav', 'buddypress' ),
-					'href'     => trailingslashit( bp_get_groups_directory_permalink() . 'create' ),
+					'href'     => bp_get_group_create_link(),
 					'position' => 90
 				);
 			}
@@ -992,6 +994,14 @@ class BP_Groups_Component extends BP_Component {
 				'id'    => '%' . $this->rewrite_ids['directory_type'] . '%',
 				'regex' => '([^/]+)',
 			),
+			'create-single-item' => array(
+				'id'      => '%' . $this->rewrite_ids['create_single_item'] . '%',
+				'regex'   => '([1]{1,})',
+			),
+			'create-single-item-variables' => array(
+				'id'      => '%' . $this->rewrite_ids['create_single_item_variables'] . '%',
+				'regex'   => '([^/]+)',
+			),
 			'single-item' => array(
 				'id'      => '%' . $this->rewrite_ids['single_item'] . '%',
 				'regex'   => '([^/]+)',
@@ -1023,6 +1033,14 @@ class BP_Groups_Component extends BP_Component {
 		}
 
 		$rewrite_rules = array(
+			'create-single-item-variables' => array(
+				'regex' => $this->root_slug . '/create\/(.+?)/?$' ,
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['create_single_item'] . '=1&' . $this->rewrite_ids['create_single_item_variables'] . '=$matches[1]',
+			),
+			'create-single-item' => array(
+				'regex' => $this->root_slug . '/create/?$' ,
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['create_single_item'] . '=1',
+			),
 			'paged-directory-type' => array(
 				'regex' => $this->root_slug . '/' . bp_get_groups_group_type_base() . '/([^/]+)/page/?([0-9]{1,})/?$' ,
 				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['directory_type'] . '=$matches[1]&paged=$matches[2]',
@@ -1101,6 +1119,7 @@ class BP_Groups_Component extends BP_Component {
 			$bp->current_component = 'groups';
 			$group_slug            = $query->get( $this->rewrite_ids['single_item'] );
 			$group_type_slug       = $query->get( $this->rewrite_ids['directory_type'] );
+			$is_group_create       = 1 === (int) $query->get( $this->rewrite_ids['create_single_item'] );
 
 			if ( $group_slug ) {
 				$this->current_group = $this->get_current_group( $group_slug );
@@ -1140,6 +1159,21 @@ class BP_Groups_Component extends BP_Component {
 				} else {
 					bp_do_404();
 					return;
+				}
+			} elseif ( $is_group_create ) {
+				$bp->current_action = 'create';
+
+				if ( bp_user_can_create_groups() && isset( $_COOKIE['bp_new_group_id'] ) ) {
+					$bp->groups->new_group_id = (int) $_COOKIE['bp_new_group_id'];
+				}
+
+				$create_variables = $query->get( $this->rewrite_ids['create_single_item_variables'] );
+				if ( $create_variables ) {
+					if ( ! is_array( $create_variables ) )  {
+						$bp->action_variables = explode( '/', ltrim( $create_variables, '/' ) );
+					} else {
+						$bp->action_variables = $create_variables;
+					}
 				}
 			}
 
