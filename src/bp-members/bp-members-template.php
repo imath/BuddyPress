@@ -2097,32 +2097,51 @@ function bp_has_custom_activation_page() {
  * Output the URL of the activation page.
  *
  * @since 1.0.0
+ * @since 6.0.0 Add the $key parameter.
+ *
+ * @param string $key The activation key.
  */
-function bp_activation_page() {
-	echo esc_url( bp_get_activation_page() );
+function bp_activation_page( $key = '' ) {
+	echo esc_url( bp_get_activation_page( $key ) );
 }
 	/**
 	 * Get the URL of the activation page.
 	 *
 	 * @since 1.2.0
+	 * @since 6.0.0 Add the $key parameter.
 	 *
+	 * @param string $key The activation key.
 	 * @return string
 	 */
-	function bp_get_activation_page() {
-		if ( bp_has_custom_activation_page() ) {
+	function bp_get_activation_page( $key = '' ) {
+		$has_custom_activation_page = bp_has_custom_activation_page();
+
+		if ( $has_custom_activation_page ) {
 			$page = trailingslashit( bp_get_root_domain() . '/' . bp_get_activate_slug() );
+
+			if ( $key ) {
+				$page .= $key . '/';
+			}
 		} else {
 			$page = trailingslashit( bp_get_root_domain() ) . 'wp-activate.php';
+
+			if ( $key ) {
+				$page = add_query_arg( 'key', $key, $page );
+			}
 		}
 
 		/**
 		 * Filters the URL of the activation page.
 		 *
 		 * @since 1.2.0
+		 * @since 6.0.0 Add the $key & $has_custom_activation_page parameters.
 		 *
-		 * @param string $page URL to the activation page.
+		 * @param string $page                       URL to the activation page.
+		 * @param string $key                        The activation key.
+		 * @param bool   $has_custom_activation_page Whether the site has a custom activation
+		 *                                           page or not.
 		 */
-		return apply_filters( 'bp_get_activation_page', $page );
+		return apply_filters( 'bp_get_activation_page', $page, $key, $has_custom_activation_page );
 	}
 
 /**

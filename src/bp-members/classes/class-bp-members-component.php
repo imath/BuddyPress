@@ -167,6 +167,9 @@ class BP_Members_Component extends BP_Component {
 				'single_item_component'        => 'bp_member_component',
 				'single_item_action'           => 'bp_member_action',
 				'single_item_action_variables' => 'bp_member_action_variables',
+				'member_register'              => 'bp_register',
+				'member_activate'              => 'bp_activate',
+				'member_activate_key'          => 'bp_activate_key',
 			),
 			'directory_title' => isset( $bp->pages->members->title ) ? $bp->pages->members->title : $default_directory_title,
 			'search_string'   => __( 'Search Members...', 'buddypress' ),
@@ -177,6 +180,10 @@ class BP_Members_Component extends BP_Component {
 		);
 
 		parent::setup_globals( $args );
+
+		// Set-up Extra permastructs for the register and activate pages
+		$this->register_permastruct = bp_get_signup_slug() . '/%' . $this->rewrite_ids['member_register'] . '%';
+		$this->activate_permastruct = bp_get_activate_slug() . '/%' . $this->rewrite_ids['member_activate'] . '%';
 
 		/** Logged in user ***************************************************
 		 */
@@ -494,6 +501,18 @@ class BP_Members_Component extends BP_Component {
 				'id'    => '%' . $this->rewrite_ids['directory_type'] . '%',
 				'regex' => '([^/]+)',
 			),
+			'member-register' => array(
+				'id'    => '%' . $this->rewrite_ids['member_register'] . '%',
+				'regex' => '([1]{1,})',
+			),
+			'member-activate' => array(
+				'id'    => '%' . $this->rewrite_ids['member_activate'] . '%',
+				'regex' => '([1]{1,})',
+			),
+			'member-activate-key' => array(
+				'id'    => '%' . $this->rewrite_ids['member_activate_key'] . '%',
+				'regex' => '([^/]+)',
+			),
 			'single-item' => array(
 				'id'      => '%' . $this->rewrite_ids['single_item'] . '%',
 				'regex'   => '([^/]+)',
@@ -529,6 +548,18 @@ class BP_Members_Component extends BP_Component {
 		}
 
 		$rewrite_rules = array(
+			'member-register' => array(
+				'regex' => bp_get_signup_slug(),
+				'query' => 'index.php?' . $this->rewrite_ids['member_register'] . '=1',
+			),
+			'member-activate-key' => array(
+				'regex' => bp_get_activate_slug() . '/([^/]+)/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['member_activate'] . '=1&' . $this->rewrite_ids['member_activate_key'] . '=$matches[1]',
+			),
+			'member-activate' => array(
+				'regex' => bp_get_activate_slug(),
+				'query' => 'index.php?' . $this->rewrite_ids['member_activate'] . '=1',
+			),
 			'paged-directory-type' => array(
 				'regex' => $this->root_slug . '/' . bp_get_members_member_type_base() . '/([^/]+)/page/?([0-9]{1,})/?$' ,
 				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['directory_type'] . '=$matches[1]&paged=$matches[2]',
@@ -585,6 +616,16 @@ class BP_Members_Component extends BP_Component {
 				'struct' => $this->directory_permastruct,
 				'args'   => array(),
 			),
+			// Register permastruct.
+			$this->rewrite_ids['member_register'] => array(
+				'struct' => $this->register_permastruct,
+				'args'   => array(),
+			),
+			// Activate permastruct.
+			$this->rewrite_ids['member_activate'] => array(
+				'struct' => $this->activate_permastruct,
+				'args'   => array(),
+			),
 		);
 
 		parent::add_permastructs( $permastructs );
@@ -614,6 +655,8 @@ class BP_Members_Component extends BP_Component {
 		}
 
 		$is_members_component   = 1 === (int) $query->get( $this->rewrite_ids['directory'] );
+		$is_register_component  = 1 === (int) $query->get( $this->rewrite_ids['member_register'] );
+		$is_activate_component  = 1 === (int) $query->get( $this->rewrite_ids['member_activate'] );
 		$bp                     = buddypress();
 
 		if ( $is_members_component ) {
@@ -719,6 +762,19 @@ class BP_Members_Component extends BP_Component {
 				$query->queried_object->single_item_name = $member->display_name;
 			} elseif ( $member_type ) {
 				$query->queried_object->directory_type_name = $member_type;
+			}
+
+		// Handle the custom registration page.
+		} elseif ( $is_register_component ) {
+			$bp->current_component = 'register';
+
+		// Handle the custom activation page.
+		} elseif ( $is_activate_component ) {
+			$bp->current_component = 'activate';
+
+			$current_action = $query->get( $this->rewrite_ids['member_activate_key'] );
+			if ( $current_action ) {
+				$bp->current_action = $current_action;
 			}
 		}
 

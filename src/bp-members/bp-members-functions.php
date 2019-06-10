@@ -2173,7 +2173,7 @@ function bp_core_signup_avatar_upload_dir() {
 function bp_core_signup_send_validation_email( $user_id, $user_email, $key, $salutation = '' ) {
 	$args = array(
 		'tokens' => array(
-			'activate.url' => esc_url( trailingslashit( bp_get_activation_page() ) . "{$key}/" ),
+			'activate.url' => esc_url( trailingslashit( bp_get_activation_page( $key ) ) ),
 			'key'          => $key,
 			'user.email'   => $user_email,
 			'user.id'      => $user_id,

@@ -146,6 +146,14 @@ function bp_disable_legacy_url_parser() {
 			'function' => 'bp_rewrites_edit_profile_url',
 			'num_args' => 3,
 		),
+		'bp_get_signup_page'  => array(
+			'function' => 'bp_rewrites_get_signup_link',
+			'num_args' => 1,
+		),
+		'bp_get_activation_page'  => array(
+			'function' => 'bp_rewrites_get_activation_link',
+			'num_args' => 3,
+		),
 		'bp_get_group_permalink' => array(
 			'function' => 'bp_rewrites_get_group_url',
 			'num_args' => 2,
@@ -403,7 +411,10 @@ function bp_rewrites_get_link( $args = array() ) {
 
 	// Using plain links.
 	if ( ! $is_pretty_links ) {
-		$r['directory'] = 1;
+		if ( ! isset( $r['member_register'] ) && ! isset( $r['member_activate'] ) ) {
+			$r['directory'] = 1;
+		}
+
 		$r              = array_filter( $r );
 		$qv             = array();
 
@@ -423,7 +434,13 @@ function bp_rewrites_get_link( $args = array() ) {
 			return $link;
 		}
 
-		if ( isset( $r['create_single_item'] ) ) {
+		if ( isset( $r['member_register'] ) ) {
+			$link = str_replace( '%' . $component->rewrite_ids['member_register'] . '%', '', $component->register_permastruct );
+			unset( $r['member_register'] );
+		} elseif ( isset( $r['member_activate'] ) ) {
+			$link = str_replace( '%' . $component->rewrite_ids['member_activate'] . '%', '', $component->directory_permastruct );
+			unset( $r['member_activate'] );
+		} elseif ( isset( $r['create_single_item'] ) ) {
 			$link = str_replace( '%' . $component->rewrite_ids['directory'] . '%', 'create', $component->directory_permastruct );
 			unset( $r['create_single_item'] );
 		} else {
@@ -641,6 +658,30 @@ function bp_rewrites_edit_profile_url( $profile_link = '', $url = '', $user_id =
 	}
 
 	return $profile_link;
+}
+
+function bp_rewrites_get_signup_link( $link = '' ) {
+	return bp_rewrites_get_link( array(
+		'component_id'    => 'members',
+		'member_register' => 1,
+	) );
+}
+
+function bp_rewrites_get_activation_link( $link = '', $key = '', $has_custom_activation_page = false ) {
+	if ( ! $has_custom_activation_page ) {
+		return $link;
+	}
+
+	$link_params = array(
+		'component_id'    => 'members',
+		'member_activate' => 1,
+	);
+
+	if ( $key ) {
+		$link_params['member_activate_key'] = $key;
+	}
+
+	return bp_rewrites_get_link( $link_params );
 }
 
 function bp_rewrites_get_group_url( $link = '', $group = null ) {
