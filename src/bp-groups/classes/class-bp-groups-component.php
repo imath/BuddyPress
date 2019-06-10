@@ -961,6 +961,12 @@ class BP_Groups_Component extends BP_Component {
 		// Group Type.
 		register_taxonomy( 'bp_group_type', 'bp_group', array(
 			'public' => false,
+			/**
+			 * Prevents WordPress Taxonomy rewrite rules to be automaticaly generated.
+			 * Rewrite rules for the Group Type Taxonomy is handled within the Groups
+			 * component class {@see BP_Groups_Component::add_rewrite_rules()}}.
+			 */
+			'rewrite' => false,
 		) );
 	}
 
