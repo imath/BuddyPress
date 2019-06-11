@@ -98,7 +98,7 @@ function bp_core_new_nav_item( $args, $component = 'members' ) {
  * @since 2.6.0 Introduced the `$component` parameter. Began returning a BP_Core_Nav_Item
  *              object on success.
  * @since 4.0.0 Introduced `$component_id` argument.
- * @since 6.0.0 Introduced the dynamice filter `bp_{$component}_nav_add_item_link`.
+ * @since 6.0.0 Introduced the dynamic filter `bp_{$component}_nav_add_item_link`.
  *
  * @param array|string $args {
  *     Array describing the new nav item.
@@ -506,7 +506,7 @@ function bp_core_new_subnav_item( $args, $component = null ) {
  *
  * @since 2.4.0
  * @since 2.6.0 Introduced the `$component` parameter. Began returning a BP_Core_Nav_Item object on success.
- * @since 6.0.0 Introduced the dynamice filter `bp_{$component}_subnav_add_item_link`.
+ * @since 6.0.0 Introduced the dynamic filter `bp_{$component}_subnav_add_item_link`.
  *
  * @param array|string $args {
  *     Array describing the new subnav item.

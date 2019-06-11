@@ -53,7 +53,7 @@ function groups_screen_group_admin_edit_details() {
 			 */
 			do_action( 'groups_group_details_edited', $bp->groups->current_group->id );
 
-			bp_core_redirect( bp_get_group_permalink( groups_get_current_group() ) . 'admin/edit-details/' );
+			bp_core_redirect( bp_get_group_admin_form_action( 'edit-details', groups_get_current_group() ) );
 		}
 
 		/**

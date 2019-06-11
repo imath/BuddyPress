@@ -363,7 +363,7 @@ function bp_the_profile_group_description() {
  * Output the XProfile group edit form action.
  *
  * @since 1.1.0
- * @since 6.0.0 Add the $fields_group_id parameter.
+ * @since 6.0.0 Added the `$fields_group_id` parameter.
  *
  * @param int $fields_group_id The ID of the group of fields.
  */
@@ -375,7 +375,7 @@ function bp_the_profile_group_edit_form_action( $fields_group_id = 0 ) {
 	 * Return the XProfile group edit form action.
 	 *
 	 * @since 1.1.0
-	 * @since 6.0.0 Add the $fields_group_id parameter.
+	 * @since 6.0.0 Added the `$fields_group_id` parameter.
 	 *
 	 * @param int $fields_group_id The ID of the group of fields.	 *
 	 * @return string
@@ -395,7 +395,7 @@ function bp_the_profile_group_edit_form_action( $fields_group_id = 0 ) {
 		 * Filters the action for the XProfile group edit form.
 		 *
 		 * @since 1.1.0
-		 * @since 6.0.0 Add the $fields_group_id parameter.
+		 * @since 6.0.0 Added the `$fields_group_id` parameter.
 		 *
 		 * @param string $form_action     URL for the action attribute on the
 		 *                                profile group edit form.

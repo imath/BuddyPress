@@ -178,6 +178,10 @@ function bp_disable_legacy_url_parser() {
 			'function' => '_bp_rewrites_get_group_admin_link',
 			'num_args' => 4,
 		),
+		'bp_group_admin_form_action' => array(
+			'function' => '_bp_rewrites_get_group_admin_form_url',
+			'num_args' => 3,
+		),
 		'bp_get_group_create_link' => array(
 			'function' => '_bp_rewrites_get_group_create_link',
 			'num_args' => 2,
@@ -837,6 +841,19 @@ function _bp_rewrites_get_group_admin_link( $link = '', $action = '', $query_arg
 	}
 
 	return $link;
+}
+
+function _bp_rewrites_get_group_admin_form_url( $link = '', $group = null, $page = '' ) {
+	if ( ! isset( $group->slug ) || ! $page ) {
+		return $link;
+	}
+
+	return bp_rewrites_get_link( array(
+		'component_id'                 => 'groups',
+		'single_item'                  => $group->slug,
+		'single_item_action'           => 'admin',
+		'single_item_action_variables' => array( $page ),
+	) );
 }
 
 function _bp_rewrites_get_group_create_link( $link = '', $step = '' ) {

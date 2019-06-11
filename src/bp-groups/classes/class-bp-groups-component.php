@@ -221,7 +221,7 @@ class BP_Groups_Component extends BP_Component {
 	 * @return int|BP_Groups_Group  The current group found. 0 otherwise.
 	 */
 	public function get_current_group( $group_slug = '' ) {
-		if ( ! $group_slug ) {
+		if ( ! bp_is_groups_component() || ! $group_slug ) {
 			return 0;
 		}
 
@@ -354,18 +354,16 @@ class BP_Groups_Component extends BP_Component {
 		/* Single Group Globals **********************************************/
 
 		// Are we viewing a single group?
-		if ( bp_is_groups_component() ) {
-			$this->current_group = $this->get_current_group( bp_current_action() );
+		$this->current_group = $this->get_current_group( bp_current_action() );
 
-			if ( $this->current_group ) {
-				/**
-				 * When in a single group, the first action is bumped down one because of the
-				 * group name, so we need to adjust this and set the group name to current_item.
-				 */
-				$bp->current_item   = bp_current_action();
-				$bp->current_action = bp_action_variable( 0 );
-				array_shift( $bp->action_variables );
-			}
+		if ( $this->current_group ) {
+			/**
+			 * When in a single group, the first action is bumped down one because of the
+			 * group name, so we need to adjust this and set the group name to current_item.
+			 */
+			$bp->current_item   = bp_current_action();
+			$bp->current_action = bp_action_variable( 0 );
+			array_shift( $bp->action_variables );
 		}
 
 		// Set group type if available.

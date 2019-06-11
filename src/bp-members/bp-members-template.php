@@ -2097,7 +2097,7 @@ function bp_has_custom_activation_page() {
  * Output the URL of the activation page.
  *
  * @since 1.0.0
- * @since 6.0.0 Add the $key parameter.
+ * @since 6.0.0 Added the `$key` parameter.
  *
  * @param string $key The activation key.
  */
@@ -2108,7 +2108,7 @@ function bp_activation_page( $key = '' ) {
 	 * Get the URL of the activation page.
 	 *
 	 * @since 1.2.0
-	 * @since 6.0.0 Add the $key parameter.
+	 * @since 6.0.0 Added the `$key` parameter.
 	 *
 	 * @param string $key The activation key.
 	 * @return string
@@ -2134,7 +2134,7 @@ function bp_activation_page( $key = '' ) {
 		 * Filters the URL of the activation page.
 		 *
 		 * @since 1.2.0
-		 * @since 6.0.0 Add the $key & $has_custom_activation_page parameters.
+		 * @since 6.0.0 Added the `$key` & `$has_custom_activation_page` parameters.
 		 *
 		 * @param string $page                       URL to the activation page.
 		 * @param string $key                        The activation key.

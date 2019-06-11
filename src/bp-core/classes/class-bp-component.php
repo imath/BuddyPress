@@ -783,7 +783,7 @@ class BP_Component {
 	 * Add any additional rewrite tags.
 	 *
 	 * @since 1.5.0
-	 * @since 6.0.0 Adds $rewrite_tags argument to pass components rewrite tags.
+	 * @since 6.0.0 Added the `$rewrite_tags` parameter.
 	 *
 	 * @param array $rewrite tags {
 	 *      Associative array of arguments list used to register WordPress permastructs.
@@ -819,7 +819,7 @@ class BP_Component {
 	 * Add any additional rewrite rules.
 	 *
 	 * @since 1.9.0
-	 * @since 6.0.0 Adds $rewrite_rules argument to pass components rewrite rules.
+	 * @since 6.0.0 Added the `$rewrite_rules` parameter.
 	 *
 	 * @param array $rewrite_rules {
 	 *      Associative array of arguments list used to register WordPress permastructs.
@@ -862,7 +862,7 @@ class BP_Component {
 	 * Add any permalink structures.
 	 *
 	 * @since 1.9.0
-	 * @since 6.0.0 Adds $structs argument to pass components permastructs.
+	 * @since 6.0.0 Added the `$structs` parameter.
 	 *
 	 * @param array $structs {
 	 *      Associative array of arguments list used to register WordPress permastructs.

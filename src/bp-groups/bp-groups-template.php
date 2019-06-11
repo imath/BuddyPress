@@ -2945,11 +2945,13 @@ function bp_group_admin_form_action( $page = false ) {
 		 *
 		 * @since 1.0.0
 		 * @since 2.5.0 Added the `$group` parameter.
+		 * @since 6.0.0 Added the `$page` parameter.
 		 *
 		 * @param string $value Action attribute for a group admin form.
 		 * @param object $group Group object.
+		 * @param string $page  The Admin page slug.
 		 */
-		return apply_filters( 'bp_group_admin_form_action', trailingslashit( bp_get_group_permalink( $group ) . 'admin/' . $page ), $group );
+		return apply_filters( 'bp_group_admin_form_action', trailingslashit( bp_get_group_permalink( $group ) . 'admin/' . $page ), $group, $page );
 	}
 
 /**
