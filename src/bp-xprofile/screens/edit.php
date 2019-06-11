@@ -22,23 +22,7 @@ function xprofile_screen_edit_profile() {
 
 	// Make sure a group is set.
 	if ( ! bp_action_variable( 1 ) ) {
-		$redirect_url = trailingslashit( bp_displayed_user_domain() . bp_get_profile_slug() . '/edit/group/1' );
-
-		/**
-		 * If using rewrites, the redirect URL must be built in a different way
-		 * so that the required screen is reached no matter the permalink settings.
-		 */
-		if ( bp_use_wp_rewrites() ) {
-			$redirect_url = bp_rewrites_get_link( array(
-				'component_id'                 => 'members',
-				'single_item'                  => bp_rewrites_get_member_slug( bp_displayed_user_id() ),
-				'single_item_component'        => bp_rewrites_get_slug( 'members', 'bp_member_profile', bp_get_profile_slug() ),
-				'single_item_action'           => 'edit',
-				'single_item_action_variables' => array( 'group', '1' ),
-			) );
-		}
-
-		bp_core_redirect( $redirect_url );
+		bp_core_redirect( bp_get_the_profile_group_edit_form_action( 1 ) );
 	}
 
 	// Check the field group exists.
@@ -58,7 +42,7 @@ function xprofile_screen_edit_profile() {
 
 		// Check we have field ID's.
 		if ( empty( $_POST['field_ids'] ) ) {
-			bp_core_redirect( trailingslashit( bp_displayed_user_domain() . bp_get_profile_slug() . '/edit/group/' . bp_action_variable( 1 ) ) );
+			bp_core_redirect( bp_get_the_profile_group_edit_form_action( bp_action_variable( 1 ) ) );
 		}
 
 		// Explode the posted field IDs into an array so we know which
@@ -150,7 +134,7 @@ function xprofile_screen_edit_profile() {
 			}
 
 			// Redirect back to the edit screen to display the updates and message.
-			bp_core_redirect( trailingslashit( bp_displayed_user_domain() . bp_get_profile_slug() . '/edit/group/' . bp_action_variable( 1 ) ) );
+			bp_core_redirect( bp_get_the_profile_group_edit_form_action( bp_action_variable( 1 ) ) );
 		}
 	}
 

@@ -363,33 +363,45 @@ function bp_the_profile_group_description() {
  * Output the XProfile group edit form action.
  *
  * @since 1.1.0
+ * @since 6.0.0 Add the $fields_group_id parameter.
+ *
+ * @param int $fields_group_id The ID of the group of fields.
  */
-function bp_the_profile_group_edit_form_action() {
-	echo bp_get_the_profile_group_edit_form_action();
+function bp_the_profile_group_edit_form_action( $fields_group_id = 0 ) {
+	echo bp_get_the_profile_group_edit_form_action( $fields_group_id );
 }
 
 	/**
 	 * Return the XProfile group edit form action.
 	 *
 	 * @since 1.1.0
+	 * @since 6.0.0 Add the $fields_group_id parameter.
 	 *
+	 * @param int $fields_group_id The ID of the group of fields.	 *
 	 * @return string
 	 */
-	function bp_get_the_profile_group_edit_form_action() {
-		global $group;
+	function bp_get_the_profile_group_edit_form_action( $fields_group_id = 0 ) {
+		if ( ! $fields_group_id ) {
+			global $group;
+
+			$fields_group_id =& $group->id;
+		}
+
 
 		// Build the form action URL.
-		$form_action = trailingslashit( bp_displayed_user_domain() . bp_get_profile_slug() . '/edit/group/' . $group->id );
+		$form_action = trailingslashit( bp_displayed_user_domain() . bp_get_profile_slug() . '/edit/group/' . $fields_group_id );
 
 		/**
 		 * Filters the action for the XProfile group edit form.
 		 *
 		 * @since 1.1.0
+		 * @since 6.0.0 Add the $fields_group_id parameter.
 		 *
-		 * @param string $value URL for the action attribute on the
-		 *                      profile group edit form.
+		 * @param string $form_action     URL for the action attribute on the
+		 *                                profile group edit form.
+		 * @param int    $fields_group_id The ID of the group of fields.
 		 */
-		return apply_filters( 'bp_get_the_profile_group_edit_form_action', $form_action );
+		return apply_filters( 'bp_get_the_profile_group_edit_form_action', $form_action, $fields_group_id );
 	}
 
 /**

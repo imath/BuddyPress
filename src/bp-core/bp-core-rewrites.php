@@ -142,6 +142,10 @@ function bp_disable_legacy_url_parser() {
 			'function' => '_bp_rewrites_user_admin_nav_link',
 			'num_args' => 1,
 		),
+		'bp_get_the_profile_group_edit_form_action' => array(
+			'function' => '_bp_rewrites_xprofile_group_edit_url',
+			'num_args' => 2,
+		),
 		'bp_members_edit_profile_url' => array(
 			'function' => '_bp_rewrites_edit_profile_url',
 			'num_args' => 3,
@@ -1040,5 +1044,19 @@ function _bp_rewrites_get_blog_create_url( $link = '' ) {
 	return bp_rewrites_get_link( array(
 		'component_id'       => 'blogs',
 		'single_item_action' => 'create',
+	) );
+}
+
+function _bp_rewrites_xprofile_group_edit_url( $link = '', $field_group_id = 0 ) {
+	if ( ! $field_group_id ) {
+		return $link;
+	}
+
+	return bp_rewrites_get_link( array(
+		'component_id'                 => 'members',
+		'single_item'                  => bp_rewrites_get_member_slug( bp_displayed_user_id() ),
+		'single_item_component'        => bp_rewrites_get_slug( 'members', 'bp_member_profile', bp_get_profile_slug() ),
+		'single_item_action'           => 'edit',
+		'single_item_action_variables' => array( 'group', $field_group_id ),
 	) );
 }
