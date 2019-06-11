@@ -21,10 +21,10 @@ Let the user undo and come back to BuddyPress without rewrites without pain.
 - Edit functions to get BuddyPress links so that they take in account plain permalinks.
 - Take care of `bp_redirect_canonical()`.
 - ~~improve the way the member component custom slug is handled in `parse_query()` method~~
-- Register and activate pages (into the Members component).
+- ~~Register and activate pages (into the Members component).~~
 
 ## Questions
 
-- bp_get_search_slug() right after root conflicts with WordPress. Do we still need this feature ? See [4154](https://buddypress.trac.wordpress.org/ticket/4154).
+- `bp_get_search_slug()` right after root conflicts with WordPress. Do we still need this feature ? See [4154](https://buddypress.trac.wordpress.org/ticket/4154).
 - It's possible to add a parent page to directories. Let's not forget it!
 - It's possible to set the front page to be a BuddyPress directory page on front.. 😬
