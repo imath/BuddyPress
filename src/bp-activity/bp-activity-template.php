@@ -2350,7 +2350,12 @@ function bp_activity_comment_form_nojs_display() {
 	function bp_get_activity_comment_form_nojs_display() {
 		global $activities_template;
 
-		if ( isset( $_GET['ac'] ) && ( $_GET['ac'] === ( $activities_template->activity->id . '/' ) ) ) {
+		$compare_with = $activities_template->activity->id . '/';
+		if ( bp_use_wp_rewrites() && ! bp_has_pretty_links() ) {
+			$compare_with = (string) $activities_template->activity->id;
+		}
+
+		if ( isset( $_GET['ac'] ) && ( $_GET['ac'] === $compare_with ) ) {
 			return 'style="display: block"';
 		}
 

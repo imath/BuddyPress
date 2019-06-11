@@ -178,6 +178,50 @@ function bp_disable_legacy_url_parser() {
 			'function' => '_bp_rewrites_get_group_create_link',
 			'num_args' => 2,
 		),
+		'bp_get_activity_directory_permalink' => array(
+			'function' => '_bp_rewrites_get_activities_url',
+			'num_args' => 1,
+		),
+		'bp_get_activity_post_form_action' => array(
+			'function' => '_bp_rewrites_get_activity_post_form_action',
+			'num_args' => 1,
+		),
+		'bp_get_activity_comment_form_action' => array(
+			'function' => '_bp_rewrites_get_activity_comment_form_action',
+			'num_args' => 1,
+		),
+		'bp_activity_get_permalink' => array(
+			'function' => '_bp_rewrites_get_activity_url',
+			'num_args' => 2,
+		),
+		'bp_activity_permalink_redirect_url' => array(
+			'function' => '_bp_rewrites_get_activity_permalink_redirect_url',
+			'num_args' => 2,
+		),
+		'bp_get_activity_comment_link' => array(
+			'function' => '_bp_rewrites_get_activity_comment_url',
+			'num_args' => 1,
+		),
+		'bp_get_activity_favorite_link' => array(
+			'function' => '_bp_rewrites_get_activity_favorite_url',
+			'num_args' => 1,
+		),
+		'bp_get_activity_unfavorite_link' => array(
+			'function' => '_bp_rewrites_get_activity_unfavorite_url',
+			'num_args' => 1,
+		),
+		'bp_get_activity_delete_url' => array(
+			'function' => '_bp_rewrites_get_activity_delete_url',
+			'num_args' => 1,
+		),
+		'bp_get_sitewide_activity_feed_link' => array(
+			'function' => '_bp_rewrites_get_sitewide_activity_feed_url',
+			'num_args' => 1,
+		),
+		'bp_get_activities_member_rss_link' => array(
+			'function' => '_bp_rewrites_get_activities_member_rss_url',
+			'num_args' => 1,
+		),
 	);
 
 	foreach ( $filters as $legacy => $rewrite ) {
@@ -794,4 +838,186 @@ function _bp_rewrites_get_group_create_link( $link = '', $step = '' ) {
 	}
 
 	return bp_rewrites_get_link( $link_params );
+}
+
+function _bp_rewrites_get_activities_url( $link = '' ) {
+	return bp_rewrites_get_link( array(
+		'component_id' => 'activity',
+	) );
+}
+
+function _bp_rewrites_get_activity_post_form_action( $link = '' ) {
+	return bp_rewrites_get_link( array(
+		'component_id'       => 'activity',
+		'single_item_action' => 'post',
+	) );
+}
+
+function _bp_rewrites_get_activity_comment_form_action( $link = '' ) {
+	return bp_rewrites_get_link( array(
+		'component_id'       => 'activity',
+		'single_item_action' => 'reply',
+	) );
+}
+
+function _bp_rewrites_get_activity_url( $link = '', $activity = null ) {
+	if ( ! isset( $activity->primary_link ) || $link === $activity->primary_link ) {
+		return $link;
+	}
+
+	$link_params = array(
+		'component_id'                 => 'activity',
+		'single_item_action'           => 'p',
+		'single_item_action_variables' => array( $activity->id ),
+	);
+
+	if ( 'activity_comment' === $activity->type ) {
+		$link_params['single_item_action_variables'] = array( $activity->item_id );
+	}
+
+	$link = bp_rewrites_get_link( $link_params );
+
+	if ( 'activity_comment' === $activity->type ) {
+		$link .= '#acomment-' . $activity->id;
+	}
+
+	return $link;
+}
+
+function _bp_rewrites_get_activity_comment_url( $link = '' ) {
+	if ( bp_has_pretty_links() ) {
+		return $link;
+	}
+
+	$url_parts = explode( '/', $link );
+	$query_var = wp_parse_args( ltrim( $url_parts[0], '?' ), array( 'ac' => 0 ) );
+	$anchor    = end( $url_parts );
+
+	if ( bp_is_activity_directory() ) {
+		$link = _bp_rewrites_get_activities_url();
+
+	} else {
+		global $activities_template;
+
+		$link = bp_rewrites_get_link( array(
+			'component_id'                 => 'activity',
+			'single_item_action'           => 'p',
+			'single_item_action_variables' => array( $activities_template->activity->id ),
+		) );
+	}
+
+	return add_query_arg( $query_var, $link ) . $anchor;
+}
+
+function _bp_rewrites_get_activity_favorite_url( $link = '' ) {
+	global $activities_template;
+
+	$link = bp_rewrites_get_link( array(
+		'component_id'                 => 'activity',
+		'single_item_action'           => 'favorite',
+		'single_item_action_variables' => array( $activities_template->activity->id ),
+	) );
+
+	return wp_nonce_url( $link, 'mark_favorite' );
+}
+
+function _bp_rewrites_get_activity_unfavorite_url(  $link = '' ) {
+	global $activities_template;
+
+	$link = bp_rewrites_get_link( array(
+		'component_id'                 => 'activity',
+		'single_item_action'           => 'unfavorite',
+		'single_item_action_variables' => array( $activities_template->activity->id ),
+	) );
+
+	return wp_nonce_url( $link, 'unmark_favorite' );
+}
+
+function _bp_rewrites_get_activity_delete_url( $link = '' ) {
+	global $activities_template;
+	$query_vars = wp_parse_args( wp_parse_url( $link, PHP_URL_QUERY ), array() );
+
+	$link = bp_rewrites_get_link( array(
+		'component_id'                 => 'activity',
+		'single_item_action'           => 'delete',
+		'single_item_action_variables' => array( $activities_template->activity->id ),
+	) );
+
+	return add_query_arg( $query_vars, $link );
+}
+
+function _bp_rewrites_get_sitewide_activity_feed_url( $link = '' ) {
+	return bp_rewrites_get_link( array(
+		'component_id'       => 'activity',
+		'single_item_action' => 'feed',
+	) );
+}
+
+function _bp_rewrites_get_activities_member_rss_url( $link = '' ) {
+	$link_params = array(
+		'component_id'          => 'members',
+		'single_item'           => bp_rewrites_get_member_slug( bp_displayed_user_id() ),
+		'single_item_component' => bp_rewrites_get_slug( 'members', 'bp_member_activity', bp_get_activity_slug() ),
+	);
+
+	if ( bp_is_user_activity() ) {
+		if ( bp_is_user_friends_activity() ) {
+			$link_params['single_item_action'] = bp_get_friends_slug();
+			$link_params['single_item_action_variables'] = 'feed';
+		} elseif( bp_is_user_groups_activity() ) {
+			$link_params['single_item_action'] = bp_get_groups_slug();
+			$link_params['single_item_action_variables'] = 'feed';
+		} elseif( 'favorites' === bp_current_action() ) {
+			$link_params['single_item_action'] = 'favorites';
+			$link_params['single_item_action_variables'] = 'feed';
+		} elseif( 'mentions' === bp_current_action() && bp_activity_do_mentions() ) {
+			$link_params['single_item_action'] = 'mentions';
+			$link_params['single_item_action_variables'] = 'feed';
+		} else {
+			$link_params['single_item_action'] = 'feed';
+		}
+	}
+
+	return bp_rewrites_get_link( $link_params );
+}
+
+function _bp_rewrites_get_activity_permalink_redirect_url( $redirect = '', $activity = null ) {
+	if ( ! $redirect || ! isset( $activity->user_id ) ) {
+		return $redirect;
+	}
+
+	// This shouldn't happen so often!
+	if ( bp_is_active( 'groups') && 'groups' === $activity->component && ! $activity->user_id ) {
+		$group = groups_get_group( $activity->item_id );
+
+		$link_params = array(
+			'component_id'                 => 'groups',
+			'single_item'                  => bp_get_group_slug( $group ),
+			'single_item_action'           => bp_get_activity_slug(),
+			'single_item_action_variables' => array( $activity->id ),
+		);
+	} else {
+		$link_params = array(
+			'component_id'          => 'members',
+			'single_item'           => bp_rewrites_get_member_slug( $activity->user_id ),
+			'single_item_component' => bp_rewrites_get_slug( 'members', 'bp_member_activity', bp_get_activity_slug() ),
+			'single_item_action'    => $activity->id,
+		);
+	}
+
+	$redirect = bp_rewrites_get_link( $link_params );
+
+	// If set, add the original query string back onto the redirect URL.
+	if ( isset( $_SERVER['QUERY_STRING'] ) ) {
+		$query_vars = array();
+		wp_parse_str( $_SERVER['QUERY_STRING'], $query_vars );
+		$exclude_vars = array_intersect_key( $query_vars, array_flip( buddypress()->activity->rewrite_ids ) );
+		$query_vars = array_diff_key( $query_vars, $exclude_vars );
+
+		if ( $query_vars ) {
+			$redirect = add_query_arg( urlencode_deep( $query_vars ), $redirect );
+		}
+	}
+
+	return $redirect;
 }
