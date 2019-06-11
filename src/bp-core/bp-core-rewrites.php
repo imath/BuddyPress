@@ -438,7 +438,7 @@ function bp_rewrites_get_link( $args = array() ) {
 			$link = str_replace( '%' . $component->rewrite_ids['member_register'] . '%', '', $component->register_permastruct );
 			unset( $r['member_register'] );
 		} elseif ( isset( $r['member_activate'] ) ) {
-			$link = str_replace( '%' . $component->rewrite_ids['member_activate'] . '%', '', $component->directory_permastruct );
+			$link = str_replace( '%' . $component->rewrite_ids['member_activate'] . '%', '', $component->activate_permastruct );
 			unset( $r['member_activate'] );
 		} elseif ( isset( $r['create_single_item'] ) ) {
 			$link = str_replace( '%' . $component->rewrite_ids['directory'] . '%', 'create', $component->directory_permastruct );
