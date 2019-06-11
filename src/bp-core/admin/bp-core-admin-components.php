@@ -268,6 +268,9 @@ function bp_core_admin_components_settings_handler() {
 		// Load up BuddyPress.
 		$bp = buddypress();
 
+		// Save a copy of the current active components
+		$active_components = $bp->active_components;
+
 		// Save settings and upgrade schema.
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		require_once( $bp->plugin_dir . '/bp-core/admin/bp-core-admin-schema.php' );
@@ -278,6 +281,11 @@ function bp_core_admin_components_settings_handler() {
 		bp_core_install( $bp->active_components );
 		bp_core_add_page_mappings( $bp->active_components );
 		bp_update_option( 'bp-active-components', $bp->active_components );
+
+		// Compare the copy of active components with submitted one to eventually update rewrite rules.
+		if ( bp_use_wp_rewrites() && array_diff_key( $active_components, $bp->active_components ) ) {
+			bp_delete_rewrite_rules();
+		}
 	}
 
 	// Where are we redirecting to?

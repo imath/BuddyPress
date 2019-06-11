@@ -96,6 +96,34 @@ function bp_blogs_directory_permalink() {
 	}
 
 /**
+ * Output the create blog link.
+ *
+ * @since 6.0.0
+ *
+ */
+function bp_blog_create_link() {
+	echo esc_url( bp_get_blog_create_link() );
+}
+	/**
+	 * Return the create blog link.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @return string The URL of the create blog link.
+	 */
+	function bp_get_blog_create_link() {
+
+		/**
+		 * Filters the blog create blog link.
+		 *
+		 * @since 6.0.0
+		 *
+		 * @param string $value Permalink URL for the create blog link.
+		 */
+		return apply_filters( 'bp_get_blog_create_link', trailingslashit( bp_get_root_domain() . '/' . bp_get_blogs_root_slug() ) . 'create/' );
+	}
+
+/**
  * Rewind the blogs and reset blog index.
  */
 function bp_rewind_blogs() {
@@ -1354,7 +1382,7 @@ function bp_blog_create_button() {
 			'component'  => 'blogs',
 			'link_text'  => __( 'Create a Site', 'buddypress' ),
 			'link_class' => 'blog-create no-ajax',
-			'link_href'  => trailingslashit( bp_get_blogs_directory_permalink() . 'create' ),
+			'link_href'  => bp_get_blog_create_link(),
 			'wrapper'    => false,
 			'block_self' => false,
 		);

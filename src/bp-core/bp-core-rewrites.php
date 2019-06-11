@@ -222,6 +222,14 @@ function bp_disable_legacy_url_parser() {
 			'function' => '_bp_rewrites_get_activities_member_rss_url',
 			'num_args' => 1,
 		),
+		'bp_get_blogs_directory_permalink' => array(
+			'function' => '_bp_rewrites_get_blogs_url',
+			'num_args' => 1,
+		),
+		'bp_get_blog_create_link' => array(
+			'function' => '_bp_rewrites_get_blog_create_url',
+			'num_args' => 1,
+		),
 	);
 
 	foreach ( $filters as $legacy => $rewrite ) {
@@ -1020,4 +1028,17 @@ function _bp_rewrites_get_activity_permalink_redirect_url( $redirect = '', $acti
 	}
 
 	return $redirect;
+}
+
+function _bp_rewrites_get_blogs_url( $link = '' ) {
+	return bp_rewrites_get_link( array(
+		'component_id' => 'blogs',
+	) );
+}
+
+function _bp_rewrites_get_blog_create_url( $link = '' ) {
+	return bp_rewrites_get_link( array(
+		'component_id'       => 'blogs',
+		'single_item_action' => 'create',
+	) );
 }

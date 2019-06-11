@@ -37,7 +37,7 @@ function bp_core_admin_rewrites_settings() {
 							</label>
 						</th>
 						<td>
-							<input type="text" class="code" name="<?php printf( 'components[%d][post_name]', absint( $directory_data->id ) ); ?>" id="<?php printf( esc_attr__( '%s-directory-slug', 'buddypress' ), $component_id ); ?>" value="<?php echo esc_attr( $directory_data->slug ); ?>" <?php disabled( $component_id !== 'members' ); ?>>
+							<input type="text" class="code" name="<?php printf( 'components[%d][post_name]', absint( $directory_data->id ) ); ?>" id="<?php printf( esc_attr__( '%s-directory-slug', 'buddypress' ), $component_id ); ?>" value="<?php echo esc_attr( $directory_data->slug ); ?>">
 						</td>
 					</tr>
 				</table>

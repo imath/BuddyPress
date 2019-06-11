@@ -47,7 +47,7 @@ function bp_nouveau_get_blogs_directory_nav_items() {
 				'component' => 'blogs',
 				'slug'      => 'create', // slug is used because BP_Core_Nav requires it, but it's the scope
 				'li_class'  => array( 'no-ajax', 'site-create', 'create-button' ),
-				'link'      => trailingslashit( bp_get_blogs_directory_permalink() . 'create' ),
+				'link'      => bp_get_blog_create_link(),
 				'text'      => __( 'Create a Site', 'buddypress' ),
 				'count'     => false,
 				'position'  => 999,

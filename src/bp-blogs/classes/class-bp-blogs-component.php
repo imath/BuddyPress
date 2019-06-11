@@ -75,6 +75,11 @@ class BP_Blogs_Component extends BP_Component {
 			'slug'                  => BP_BLOGS_SLUG,
 			'root_slug'             => isset( $bp->pages->blogs->slug ) ? $bp->pages->blogs->slug : BP_BLOGS_SLUG,
 			'has_directory'         => is_multisite(), // Non-multisite installs don't need a top-level Sites directory, since there's only one site.
+			'rewrite_ids'           => array(
+				'directory'                    => 'bp_blogs',
+				'single_item_action'           => 'bp_blogs_action',
+				'single_item_action_variables' => 'bp_blogs_action_variables',
+			),
 			'directory_title'       => isset( $bp->pages->blogs->title ) ? $bp->pages->blogs->title : $default_directory_title,
 			'notification_callback' => 'bp_blogs_format_notifications',
 			'search_string'         => __( 'Search sites...', 'buddypress' ),
@@ -301,7 +306,7 @@ class BP_Blogs_Component extends BP_Component {
 					'parent'   => 'my-account-' . $this->id,
 					'id'       => 'my-account-' . $this->id . '-create',
 					'title'    => __( 'Create a Site', 'buddypress' ),
-					'href'     => trailingslashit( bp_get_blogs_directory_permalink() . 'create' ),
+					'href'     => bp_get_blog_create_link(),
 					'position' => 99
 				);
 			}
@@ -352,5 +357,138 @@ class BP_Blogs_Component extends BP_Component {
 		) );
 
 		parent::setup_cache_groups();
+	}
+
+	/**
+	 * Add the component's rewrite tags.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param array $rewrite_tags Optional. See BP_Component::add_rewrite_tags() for
+	 *                            description.
+	 */
+	public function add_rewrite_tags( $rewrite_tags = array() ) {
+		if ( ! bp_use_wp_rewrites() || ! is_multisite() ) {
+			return parent::add_rewrite_tags( $rewrite_tags );
+		}
+
+		$rewrite_tags = array(
+			'directory' => array(
+				'id'    => '%' . $this->rewrite_ids['directory'] . '%',
+				'regex' => '([1]{1,})',
+			),
+			'single-item-action' => array(
+				'id'      => '%' . $this->rewrite_ids['single_item_action'] . '%',
+				'regex'   => '([^/]+)',
+			),
+			'single-item-action-variables' => array(
+				'id'      => '%' . $this->rewrite_ids['single_item_action_variables'] . '%',
+				'regex'   => '([^/]+)',
+			),
+		);
+
+		parent::add_rewrite_tags( $rewrite_tags );
+	}
+
+	/**
+	 * Add the component's rewrite rules.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param array $rewrite_rules Optional. See BP_Component::add_rewrite_rules() for
+	 *                             description.
+	 */
+	public function add_rewrite_rules( $rewrite_rules = array() ) {
+		if ( ! bp_use_wp_rewrites() || ! is_multisite() ) {
+			return parent::add_rewrite_rules( $rewrite_rules );
+		}
+
+		$rewrite_rules = array(
+			'paged-directory' => array(
+				'regex' => $this->root_slug . '/page/?([0-9]{1,})/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&paged=$matches[1]',
+			),
+			'single-item-action-variables' => array(
+				'regex' => $this->root_slug . '/([^/]+)\/(.+?)/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['single_item_action'] . '=$matches[1]&' . $this->rewrite_ids['single_item_action_variables'] . '=$matches[2]',
+			),
+			'single-item-action' => array(
+				'regex' => $this->root_slug . '/([^/]+)/?$',
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1&' . $this->rewrite_ids['single_item_action'] . '=$matches[1]',
+			),
+			'directory' => array(
+				'regex' => $this->root_slug,
+				'query' => 'index.php?' . $this->rewrite_ids['directory'] . '=1',
+			),
+		);
+
+		parent::add_rewrite_rules( $rewrite_rules );
+	}
+
+	/**
+	 * Add the component's directory permastructs.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param array $structs Optional. See BP_Component::add_permastructs() for
+	 *                       description.
+	 */
+	public function add_permastructs( $structs = array() ) {
+		if ( ! bp_use_wp_rewrites() || ! is_multisite() ) {
+			return parent::add_permastructs( $structs );
+		}
+
+		$permastructs = array(
+			// Directory permastruct.
+			$this->rewrite_ids['directory'] => array(
+				'struct' => $this->directory_permastruct,
+				'args'   => array(),
+			),
+		);
+
+		parent::add_permastructs( $permastructs );
+	}
+
+	/**
+	 * Parse the WP_Query and eventually display the component's directory or single item.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param WP_Query $query Required. See BP_Component::parse_query() for
+	 *                        description.
+	 */
+	public function parse_query( WP_Query $query ) {
+		if ( ! bp_use_wp_rewrites() || ! is_multisite() ) {
+			return parent::parse_query( $query );
+		}
+
+		$is_blogs_component  = 1 === (int) $query->get( $this->rewrite_ids['directory'] );
+		$bp                     = buddypress();
+
+		if ( $is_blogs_component ) {
+			$bp->current_component = 'blogs';
+
+			$current_action = $query->get( $this->rewrite_ids['single_item_action'] );
+			if ( $current_action ) {
+				$bp->current_action = $current_action;
+			}
+
+			$action_variables = $query->get( $this->rewrite_ids['single_item_action_variables'] );
+			if ( $action_variables ) {
+				if ( ! is_array( $action_variables ) )  {
+					$bp->action_variables = explode( '/', ltrim( $action_variables, '/' ) );
+				} else {
+					$bp->action_variables = $action_variables;
+				}
+			}
+
+			/**
+			 * Set the BuddyPress queried object.
+			 */
+			$query->queried_object    = get_post( $bp->pages->blogs->id );
+			$query->queried_object_id = $query->queried_object->ID;
+		}
+
+		parent::parse_query( $query );
 	}
 }
