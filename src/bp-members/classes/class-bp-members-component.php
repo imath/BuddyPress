@@ -679,16 +679,21 @@ class BP_Members_Component extends BP_Component {
 						bp_do_404();
 						return;
 					}
-
-					$bp->current_item = $member_slug;
 				}
 
-				// Set the displayed user.
-				$bp->displayed_user->id = $member->ID;
+				// If the member is marked as a spammer, 404 (unless logged-in user is a super admin).
+				if ( bp_is_user_spammer( $member->ID ) ) {
+					if ( bp_current_user_can( 'bp_moderate' ) ) {
+						bp_core_add_message( __( 'This user has been marked as a spammer. Only site admins can view this profile.', 'buddypress' ), 'warning' );
+					} else {
+						bp_do_404();
+						return;
+					}
+				}
 
-				/**
-				 * @todo Take care of spammers
-				 */
+				// Set the displayed user and the current item.
+				$bp->displayed_user->id = $member->ID;
+				$bp->current_item       = $member_slug;
 
 				// The core userdata of the user who is currently being displayed.
 				if ( ! isset( $bp->displayed_user->userdata ) || ! $bp->displayed_user->userdata ) {
