@@ -369,16 +369,20 @@ function bp_reset_query( $bp_request = '', WP_Query $query ) {
 		bp_restore_all_filters( 'parse_query' );
 
 	} elseif ( isset( $bp->ajax ) ) {
-		// Extra step for root profiles
-		$member = bp_rewrites_get_member_data( $bp_request );
-		if ( isset( $member['object'] ) && $member['object'] ) {
-			$bp_request = '/' . $bp->members->root_slug . $bp_request;
-		}
-
 		$_SERVER['REQUEST_URI'] = $bp_request;
 
 		if ( bp_has_pretty_links() ) {
 			$bp->ajax->WP->parse_request();
+
+			// Extra step to check for root profiles.
+			$member = bp_rewrites_get_member_data( $bp->ajax->WP->request );
+			if ( isset( $member['object'] ) && $member['object'] ) {
+				$_SERVER['REQUEST_URI'] = trailingslashit( $bp->members->root_slug ) . $bp->ajax->WP->request;
+
+				// Reparse the request.
+				$bp->ajax->WP->parse_request();
+			}
+
 			$matched_query = $bp->ajax->WP->matched_query;
 		} else {
 			$matched_query = wp_parse_url( $bp_request, PHP_URL_QUERY );
@@ -386,7 +390,7 @@ function bp_reset_query( $bp_request = '', WP_Query $query ) {
 
 		$query->parse_query( $matched_query );
 
-		// Do this only once.
+		// BP Parse the request in components only once per Ajax request.
 		remove_action( 'parse_query', 'bp_parse_query', 2 );
 	}
 
@@ -505,6 +509,12 @@ function bp_rewrites_get_link( $args = array() ) {
 			unset( $r['create_single_item'] );
 		} else {
 			$link = str_replace( '%' . $component->rewrite_ids['directory'] . '%', $r['single_item'], $component->directory_permastruct );
+
+			// Remove the members directory slug when root profiles are on.
+			if ( bp_core_enable_root_profiles() && 'members' === $component->id && isset( $r['single_item'] ) && $r['single_item'] ) {
+				$link = str_replace( $bp->members->root_slug . '/', '', $link );
+			}
+
 			unset( $r['single_item'] );
 		}
 
@@ -544,16 +554,10 @@ function _bp_rewrites_get_user_link( $link = '', $user_id = 0, $username = '' ) 
 		$username = bp_rewrites_get_member_slug( $user_id );
 	}
 
-	$link = bp_rewrites_get_link( array(
+	return bp_rewrites_get_link( array(
 		'component_id' => 'members',
 		'single_item'  => $username,
 	) );
-
-	if ( bp_core_enable_root_profiles() && bp_has_pretty_links() ) {
-		$link = str_replace( $bp->members->root_slug . '/', '', $link );
-	}
-
-	return $link;
 }
 
 function _bp_rewrites_get_users_link( $link = '' ) {
@@ -624,13 +628,8 @@ function _bp_rewrites_members_nav_link( $args = array() ) {
 		return $args;
 	}
 
-	$link = bp_rewrites_get_link( $link_params );
-
-	if ( bp_core_enable_root_profiles() && bp_has_pretty_links() ) {
-		$link = str_replace( $bp->members->root_slug . '/', '', $link );
-	}
-
-	$args['link'] = $link;
+	// Override the nav link.
+	$args['link'] = bp_rewrites_get_link( $link_params );
 
 	return $args;
 }

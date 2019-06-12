@@ -652,6 +652,9 @@ class BP_Members_Component extends BP_Component {
 		if ( isset( $member_data['object'] ) && $member_data['object'] ) {
 			bp_reset_query( trailingslashit( $this->root_slug ) . $GLOBALS['wp']->request, $query );
 			$member = $member_data['object'];
+
+			// Make sure the Member's screen is fired.
+			add_action( 'bp_screens', 'bp_members_screen_display_profile', 3 );
 		}
 
 		$is_members_component   = 1 === (int) $query->get( $this->rewrite_ids['directory'] );
@@ -666,10 +669,11 @@ class BP_Members_Component extends BP_Component {
 
 
 			if ( $member_slug ) {
+				$bp->current_component = '';
+
 				// Unless root profiles are on, the member shouldn't be set yet.
 				if ( ! $member ) {
 					$member = get_user_by( $member_data['field'], $member_slug );
-					$bp->current_component = '';
 
 					if ( ! $member ) {
 						bp_do_404();
