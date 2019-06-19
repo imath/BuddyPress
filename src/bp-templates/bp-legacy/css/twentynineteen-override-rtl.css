@@ -1,0 +1,395 @@
+/*-----------------------------------------------------------------
+Hello, this is the Twenty Nineteen BuddyPress Companion stylesheet.
+
+@version 5.0.0
+
+-------------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+-------------------------------------------------------------------
+1.0 - BP Generic, Typography & Imagery
+
+2.0 - Navigation - General
+	2.1 - Navs - Object Nav / Sub Nav (item-list-tabs)
+	2.2 - Pagination
+
+3.0 - BP Lists / Loops Generic & filters
+	3.1 - Activity Loop
+		3.1.1 Whats New Activity
+		3.1.2 - Activity Entries
+		3.1.3 - Activity Comments
+	3.2 - Blogs Loop
+	3.3 - Groups Loop
+	3.4 - Members Loop
+
+4.0 - Directories - Members, Groups, Blogs, Register, Activation
+	4.1 - Groups Creation Steps Screens
+5.0 - Single Item screens: User Account & Single Group Screens
+	5.1 - Item Headers: Global
+		5.1.1 - item-header: Groups
+		5.1.2 - item-header: User Accounts
+	5.2 - Item Body: Global
+		5.2.1 - item-body: Groups
+			5.2.1.1 - Management settings screens
+			5.2.1.2 - Group Members list
+			5.2.1.3 - Group Invite list
+			5.2.1.4 - Group Activity
+		5.2.2 - item-body: User Accounts
+			5.2.2.1 - classes, pag, filters
+			5.2.2.2 - Extended Profiles
+			5.2.2.3 - Groups
+			5.2.2.4 - friends
+			5.2.2.5 - Private Messaging Threads
+			5.2.2.6 - Settings
+
+6.0 - Forms  -  General
+	6.1 - Dir Search
+
+7.0 - Tables -  General
+
+8.0 - Classes - Messages, Ajax, Widgets, Buttons, Tooltips
+
+9.0 - Layout Classes.
+-----------------------------------------------------------------*/
+/**
+*-------------------------------------------------------------------------------
+* @section 1.0 - BP Generic, Typography & Imagery
+*-------------------------------------------------------------------------------
+*/
+body #buddypress * a {
+	box-shadow: none;
+	text-decoration: none;
+}
+
+body #buddypress div,
+body #buddypress dl,
+body #buddypress li,
+body #buddypress textarea,
+body #buddypress select,
+body #buddypress input[type="search"],
+body #buddypress input[type="submit"],
+body #buddypress input[type="reset"] {
+	border-radius: 2px;
+	background-clip: padding-box;
+}
+
+body #buddypress #item-body blockquote,
+body #buddypress ul.item-list blockquote {
+	margin-right: 0;
+}
+
+body #buddypress ul.item-list .action {
+	box-sizing: border-box;
+}
+
+body #buddypress .bp-label-text,
+body #buddypress .message-threads {
+	font-size: 13px;
+}
+
+@media screen and (min-width: 46.8em) {
+	body #buddypress .bp-label-text,
+	body #buddypress .message-threads {
+		font-size: 16px;
+	}
+}
+
+body #buddypress .activity-header {
+	font-size: 13px;
+}
+
+@media screen and (min-width: 46.8em) {
+	body #buddypress .activity-header {
+		font-size: 16px;
+	}
+}
+
+body #buddypress .activity-inner {
+	font-size: 15px;
+}
+
+@media screen and (min-width: 46.8em) {
+	body #buddypress .activity-inner {
+		font-size: 18px;
+	}
+}
+
+body #buddypress #whats-new-post-in {
+	font-size: 16px;
+}
+
+body #buddypress .mini .activity-header,
+body #buddypress .acomment-meta {
+	font-size: 16px;
+}
+
+body #buddypress #activity-filter-by {
+	font-size: 13px;
+}
+
+@media screen and (min-width: 46.8em) {
+	body #buddypress #activity-filter-by {
+		font-size: 16px;
+	}
+}
+
+body #buddypress table.notifications th,
+body #buddypress table.notifications-settings th,
+body #buddypress table.profile-settings th,
+body #buddypress table.profile-fields th,
+body #buddypress table.wp-profile-fields th,
+body #buddypress table.messages-notices th {
+	font-size: 13px;
+}
+
+@media screen and (min-width: 46.8em) {
+	body #buddypress table.notifications th,
+	body #buddypress table.notifications-settings th,
+	body #buddypress table.profile-settings th,
+	body #buddypress table.profile-fields th,
+	body #buddypress table.wp-profile-fields th,
+	body #buddypress table.messages-notices th {
+		font-size: 16px;
+	}
+}
+
+body #buddypress table.notifications td,
+body #buddypress table.notifications-settings td,
+body #buddypress table.profile-settings td,
+body #buddypress table.profile-fields td,
+body #buddypress table.wp-profile-fields td,
+body #buddypress table.messages-notices td {
+	font-size: 12px;
+}
+
+@media screen and (min-width: 46.8em) {
+	body #buddypress table.notifications td,
+	body #buddypress table.notifications-settings td,
+	body #buddypress table.profile-settings td,
+	body #buddypress table.profile-fields td,
+	body #buddypress table.wp-profile-fields td,
+	body #buddypress table.messages-notices td {
+		font-size: 14px;
+	}
+}
+
+body #buddypress .profile-fields th {
+	font-size: 15px;
+}
+
+@media screen and (min-width: 46.8em) {
+	body #buddypress .profile-fields th {
+		font-size: 18px;
+	}
+}
+
+body #buddypress .profile-fields td {
+	font-size: 13px;
+}
+
+@media screen and (min-width: 46.8em) {
+	body #buddypress .profile-fields td {
+		font-size: 16px;
+	}
+}
+
+body #buddypress #notification-select {
+	font-size: 12px;
+}
+
+@media screen and (min-width: 46.8em) {
+	body #buddypress #notification-select {
+		font-size: 14px;
+	}
+}
+
+@media screen and (min-width: 46.8em) {
+	body.buddypress .entry-header,
+	body.buddypress .site-content .entry-header,
+	body.buddypress .entry-content {
+		max-width: none;
+	}
+	body.buddypress .entry-header {
+		float: none;
+		max-width: none;
+	}
+	body.buddypress .entry-content,
+	body.buddypress .entry .entry-content > * {
+		float: none;
+		max-width: none;
+	}
+	body.buddypress .site-content {
+		padding-top: 2.5em;
+	}
+	body.buddypress #page #primary {
+		max-width: none;
+	}
+	body.buddypress #page #primary .entry-header,
+	body.buddypress #page #primary .entry-content {
+		float: none;
+		width: auto;
+	}
+}
+
+body.buddypress article.page > .entry-header {
+	margin-bottom: 2em;
+	padding: 0;
+}
+
+body.buddypress article.page > .entry-header .entry-title {
+	font-size: 28px;
+	font-weight: inherit;
+	color: #767676;
+}
+
+@media screen and (min-width: 46.8em) {
+	body.buddypress article.page > .entry-header .entry-title {
+		font-size: 34px;
+	}
+}
+
+/**
+*----------------------------------------------------------
+* @section 2.1 - Navs Object Nav / Sub Nav (bp-list)
+*
+* The main navigational elements for all BP screens
+*----------------------------------------------------------
+*/
+#buddypress .item-list-tabs {
+	background: transparent;
+	clear: both;
+	overflow: hidden;
+}
+
+#buddypress .item-list-tabs ul {
+	margin: 0;
+	padding: 0;
+}
+
+#buddypress .item-list-tabs ul li {
+	list-style: none;
+	margin: 0;
+}
+
+#buddypress .item-list-tabs ul li.last select {
+	max-width: 185px;
+}
+
+#buddypress .item-list-tabs ul li a,
+#buddypress .item-list-tabs ul li span {
+	border: 0;
+	display: block;
+	padding: 5px 10px;
+	text-decoration: none;
+}
+
+#buddypress .item-list-tabs ul li .count {
+	background: #eaeaea;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	color: #555;
+	display: inline;
+	font-size: 12px;
+	margin-right: 2px;
+	padding: 3px 6px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#buddypress .item-list-tabs ul li.selected a,
+#buddypress .item-list-tabs ul li.current a {
+	color: #333;
+	opacity: 1;
+}
+
+body.buddypress.directory {
+	margin-bottom: 20px;
+}
+
+@media screen and (min-width: 46.8em) {
+	#buddypress .item-list-tabs li {
+		float: right;
+	}
+	#buddypress #subnav {
+		float: right;
+	}
+	#buddypress #subnav ul {
+		width: auto;
+	}
+	#buddypress #subsubnav .filter {
+		float: left;
+	}
+}
+
+body.buddypress.directory #buddypress .last label {
+	display: inline;
+}
+
+body.buddypress.single-item #buddypress #subnav {
+	background: none;
+	list-style: none;
+	margin: 15px 0 0;
+	padding: 0;
+}
+
+body.buddypress.single-item #buddypress #subnav div {
+	margin: 0;
+}
+
+body.buddypress.single-item #buddypress #subnav > ul {
+	float: right;
+	list-style: none;
+}
+
+body.buddypress.single-item #buddypress #subnav div {
+	float: none;
+}
+
+body.buddypress.single-item #buddypress #subnav div select,
+body.buddypress.single-item #buddypress #subnav div input[type="search"] {
+	font-size: 16px;
+}
+
+body.buddypress.single-item #buddypress #subnav div #members_search_submit {
+	padding: 5px 0.8em 6px;
+}
+
+/**
+*----------------------------------------------------------
+* @section 2.2 - Pagination
+*----------------------------------------------------------
+*/
+#buddypress .dir-list {
+	background: transparent;
+	border: 0;
+	color: #767676;
+	float: right;
+	font-size: small;
+	margin: 0;
+	padding: 0.5em 0;
+	position: relative;
+	width: 100%;
+}
+
+#buddypress .dir-list .pag-count {
+	float: right;
+}
+
+#buddypress .dir-list .pagination-links {
+	float: left;
+	margin-left: 10px;
+}
+
+#buddypress .dir-list .pagination-links span,
+#buddypress .dir-list .pagination-links a {
+	font-size: small;
+	padding: 0 5px;
+}
+
+#buddypress .dir-list .pagination-links a:focus,
+#buddypress .dir-list .pagination-links a:hover {
+	opacity: 1;
+}
+
+#buddypress .dir-list p {
+	margin: 0;
+}

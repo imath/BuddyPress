@@ -263,6 +263,32 @@ class BP_Legacy extends BP_Theme_Compat {
 				}
 			}
 		}
+
+		// Override stylesheets for specific themes
+		if ( ! $theme ) {
+			$override = $this->locate_asset_in_stack( get_template() . "-override{$min}.css", 'css' );
+			if ( isset( $override['location'] ) ) {
+				$override_handle = sprintf( 'bp-%s-override', get_template() );
+				wp_enqueue_style( $override_handle, $override['location'], array(), $this->version, 'screen' );
+				wp_dequeue_style( $ltr['handle'] );
+
+				if ( ! isset( $theme_rtl ) ) {
+					$override_rtl = $this->locate_asset_in_stack( get_template() . "-override-rtl{$min}.css", 'css' );
+
+					if ( isset( $override_rtl['location'] ) ) {
+						wp_style_add_data( $override_handle, 'rtl', 'replace' );
+
+						if ( isset( $rtl['handle'] ) ) {
+							wp_dequeue_style( $rtl['handle'] );
+						}
+					}
+				}
+
+				if ( $min ) {
+					wp_style_add_data( $override_handle, 'suffix', $min );
+				}
+			}
+		}
 	}
 
 	/**
