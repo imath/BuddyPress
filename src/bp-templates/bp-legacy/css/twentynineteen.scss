@@ -30,7 +30,7 @@ $tablet_width: 768px;
 $desktop_width: 1168px;
 $wide_width: 1379px;
 
-// A simple mixin to handle font-sizing to match 2015 62.5% approach
+// A simple mixin to handle font-sizing.
 @mixin font-size($font-size: 1) {
 	$font__size-ratio: 1.125;
 	font-size: 1em * ($font-size * $font__size-ratio);
@@ -486,7 +486,7 @@ body.buddypress {
 *-------------------------------------------------------------------------------
 */
 
-// Adjusts Meta items and various elements to match 2015 font-family
+// Adjusts Meta items and various elements to match Twenty Nineteen font-family
 #buddypress {
 
 	.item-list {
@@ -509,7 +509,7 @@ body.buddypress {
 // This block:
 // * Manages li items, Stacks them small screen, floated left at wider screens.
 // * Adjusts display of action buttons at small screen mobile up.
-// Adjusts Meta items to match 2015 font-family
+// Adjusts Meta items to match Twenty Nineteen font-family
 
 #buddypress {
 
@@ -2325,7 +2325,7 @@ body.buddypress {
 		margin: $spacing-val-sm 0;
 
 		// Stylise the seach form elements, in part this deals with padding
-		// issues on the submit & sizing issues between bp styles & twentyfifteen
+		// issues on the submit & sizing issues between bp styles & Twenty Nineteen
 
 		form { // *sigh* only to bludgeon over specified rules
 			overflow: hidden;
