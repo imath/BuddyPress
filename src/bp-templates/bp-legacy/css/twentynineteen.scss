@@ -31,10 +31,9 @@ $desktop_width: 1168px;
 $wide_width: 1379px;
 
 // A simple mixin to handle font-sizing to match 2015 62.5% approach
-@mixin font-size($font-size: 16) {
-	$rem-font-value: ($font-size / 10);
-	font-size: ($font-size * 1px);
-	font-size: $rem-font-value + rem;
+@mixin font-size($font-size: 1) {
+	$font__size-ratio: 1.125;
+	font-size: 1em * ($font-size * $font__size-ratio);
 }
 
 // Border border-radius mixins
@@ -118,14 +117,16 @@ $wide_width: 1379px;
 
 // Variables: color definitions
 $content-background: #fff;
-$light-background:   #f7f7f7;
+$light-background:   #f1f1f1;
 $medium-background:  #ccc;
-$dark-background:    #555;
+$dark-background:    #0073aa;
 $border-color:       #999;    // border color is varied using rgba
 $border-light:       #eaeaea; // BP dividers
 $border-med:         #ddd;
-$body-text:          #333;    // 2015 body text color
-$bp-button-hover:    #ededed; // this is the default BP button hover background
+$body-text:          #111;    // 2019 body text color
+$bp-button:          #0073aa;
+$bp-button-hover:    #111;
+$bp-button-text:     #fff;
 $notice-error:       #c85a6e;
 $notice-warning:     #d05656;
 $notice-info:        #9fd1e2;
@@ -200,7 +201,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 *-------------------------------------------------------------------------------
 */
 
-// Twentyfifteen  adds a generic grouped ruleset of clear:both;
+// Twenty Nineteen  adds a generic grouped ruleset of clear:both;
 // for all heading h# elements this is problematic where floats are concerned
 // We reset this here under our #buddypress namespace
 #buddypress {
@@ -215,46 +216,15 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	}
 }
 
-// As BP screens have specific content lets adjust the themes primary elements
-// to maximise the screen real estate for BP pages.
+body.buddypress {
 
-.buddypress {
+	@media screen and (max-width: $wide_width ) {
 
-	div.clear {
-		display: none;
-	}
-
-	.site-content {
-
-		@media screen and (min-width: $desktop_width) {
+		.entry .entry-content > * {
+			float: none;
+			max-width: none;
 		}
-	}
-
-	main {
-		padding-top: 4%;
-
-		article {
-			margin: 0 4%;
-			padding-top: 8.3333%;
-
-			@media screen and (min-width: $wide_width) {
-				margin: 0 4.3333% 0 8.3333%;
-			}
-
-			.entry-header,
-			.entry-content {
-				padding: 0 3rem 3rem;
-			}
-
-			#buddypress {
-				margin-bottom: $spacing-val-lg;
-			}
-		} // .article
-	} // .main
-
-	.site-footer {
-		margin: 0 4%;
-	}
+	} // close @media
 } // .buddypress (body class)
 
 /**
@@ -262,35 +232,6 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 * @section 2.0 - Navigation - General
 *-------------------------------------------------------------------------------
 */
-
-// Remove 2015 border bottom on BP links/spans
-
-.buddypress #buddypress {
-
-	.item-list-tabs,
-	.activity-header,
-	.activity-inner,
-	.activity-comments,
-	.item-title,
-	.load-more,
-	.field-visibility-settings-toggle,
-	#latest-update,
-	table,
-	.avatar-nav-items {
-
-		a {
-			border-bottom: 0;
-		}
-	}
-
-	.pagination-links {
-
-		a,
-		span {
-			border-bottom: 0;
-		}
-	}
-} // close .buddypress #buddypress
 
 /**
 *----------------------------------------------------------
@@ -324,18 +265,22 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	div.item-list-tabs {
 
 		ul {
-			background-color: $light-background;
-			border-bottom: 1px solid rgba($border-light, 0.9);
-			border-top: 1px solid rgba($border-light, 0.9);
+			background-color: $content-background;
 			overflow: hidden;
 			padding: $spacing-val-xs 0;
 
 			li {
 
 				a {
+					font-weight: 600;
 
 					span {
 						border-radius: 25%;
+					}
+
+					&:hover {
+						background: $bp-button-hover;
+						color: $bp-button-text;
 					}
 				}
 			}
@@ -356,6 +301,10 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 				a {
 					opacity: 0.7;
+
+					&:hover {
+						opacity: 1;
+					}
 				}
 			}
 
@@ -372,7 +321,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 		margin-top: 0;
 
 		ul {
-			background-color: $light-background;
+			background-color: $content-background;
 			border-bottom: 0;
 			padding: 0;
 
@@ -393,7 +342,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 				label,
 				option {
 
-					@include font-size(14);
+					@include font-size(0.8);
 				}
 
 				select {
@@ -434,12 +383,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 // This block contains rules to re-factor the item-body structural element
 // to sit alongside the vert menu
 
-@media screen and (min-width: 55em) {
-
-	.bp-user #buddypress,
-	.single-item.groups #buddypress {
-		background: $light-background;
-	}
+@media screen and (min-width: $desktop_width) {
 
 	#buddypress {
 
@@ -674,6 +618,21 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 			line-height: 1.4;
 		}
 
+		#whats-new {
+
+			&:focus {
+				border-color: $bp-button;
+				outline: thin solid rgba(0, 115, 170, 0.15);
+				outline-offset: -4px;
+			}
+		}
+
+		#whats-new-submit input {
+			line-height: 1.2;
+			outline: none;
+			padding: 0.76rem 1rem;
+		}
+
 		// corrective measure for clipped elements due to JS inline styling
 
 		@media screen and (max-width: 30em) {
@@ -682,7 +641,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 				select {
 
-					@include font-size(14);
+					@include font-size(0.8);
 					max-width: 120px;
 				}
 			}
@@ -786,12 +745,12 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 					display: inline-block;
 
 					img.avatar {
-						display: inline;
+						display: inline-block;
 						float: none;
-						height: 60px;
+						height: 50px;
+						width: 50px;
 						margin-bottom: $spacing-val-md;
 						margin-left: 0;
-						width: 60px;
 					}
 				}
 			} // close .activity-avatar
@@ -801,7 +760,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 				.activity-header {
 
-					@include font-size(14);
+					@include font-size(0.6);
 				}
 			}
 
@@ -823,7 +782,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 					.activity-header {
 
-						@include font-size(16);
+						@include font-size(0.8);
 					}
 				}
 
@@ -840,6 +799,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 					img.avatar {
 						height: 30px;
 						margin-left: 15px;
+						margin-top: 5px;
 						width: 30px;
 					}
 				}
@@ -849,7 +809,15 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 				.activity-header {
 
-					@include font-size(13);
+					@include font-size(0.6);
+				}
+
+				@media screen and (min-width: $tablet_width) {
+
+					.activity-header {
+
+						@include font-size(0.8);
+					}
 				}
 			}
 		}
@@ -924,15 +892,25 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 				padding: $spacing-val-md 0;
 			}
 
+			.activity-avatar img.avatar {
+				width: auto;
+				height: auto;
+			}
+
 			li.mini {
+
+				.activity-avatar img.avatar {
+					width: 65px;
+					height: 65px;
+				}
 
 				.activity-header {
 
-					@include font-size(16);
+					@include font-size(0.6);
 
 					@media screen and (min-width: $tablet_width) {
 
-						@include font-size(20);
+						@include font-size(0.8);
 					}
 
 					margin-bottom: $spacing-val-lg;
@@ -1049,29 +1027,32 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 				}
 			}
 
+			.ac-reply-avatar img {
+				border: none;
+			}
+
 			.ac-form {
 
 				input[type="submit"],
 				.ac-reply-cancel {
-					color: rgba($body-text, 0.8);
 					display: inline-block;
-					font-family: inherit;
 
-					@include font-size(12);
-					font-weight: 400;
+					@include font-size(0.6);
 					line-height: 1.2;
 					padding: 4px 10px;
-					text-transform: lowercase;
 					width: 100px;
 				}
 
 				.ac-reply-cancel {
-					border: 1px solid rgba($border-color, 0.7);
-					text-align: center;
 
-					&:focus,
+					@include headings-font();
+					text-align: center;
+					vertical-align: bottom;
+					color: #0073aa;
+
 					&:hover {
-						background: $bp-button-hover;
+						color: darken(#0073aa, 10%);
+						text-decoration: underline;
 					}
 				}
 
@@ -1124,6 +1105,21 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	}
 
 	#buddypress {
+
+		#item-header-content {
+
+			h2:before {
+				display: none;
+			}
+		}
+
+		#item-header-avatar {
+
+			img.avatar {
+				width: auto;
+				height: auto;
+			}
+		}
 
 		@media screen and (max-width: $tablet_width) {
 
@@ -1227,11 +1223,11 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 					background: $dark-background;
 					color: $content-background;
 
-					@include font-size(14);
+					@include font-size(0.8);
 
 					@media screen and (min-width: $tablet_width) {
 
-						@include font-size(16);
+						@include font-size(1);
 					}
 
 					padding: 0.2em;
@@ -1283,6 +1279,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 			#item-header-avatar {
 				text-align: center;
 				width: 100%;
+				height: 100%;
 
 				a {
 					border-bottom: 0;
@@ -1399,7 +1396,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 			background: none;
 			color: inherit;
 
-			@include font-size(14);
+			@include font-size(0.8);
 			width: auto;
 		}
 
@@ -1421,7 +1418,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 			ul {
 				color: #767676;
 
-				@include font-size(14);
+				@include font-size(0.8);
 			}
 		}
 
@@ -1514,7 +1511,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 				h5 {
 					display: inline-block;
 
-					@include font-size(14);
+					@include font-size(0.8);
 
 					margin: 0;
 
@@ -1525,7 +1522,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 				span.activity {
 
-					@include font-size(12);
+					@include font-size(0.5);
 				}
 
 				.action {
@@ -1672,24 +1669,24 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 			th {
 
-				@include font-size(14);
+				@include font-size(0.8);
 			}
 
 			td {
 
-				@include font-size(12);
+				@include font-size(0.5);
 			}
 
 			@media screen and (min-width: $tablet_width) {
 
 				th {
 
-					@include font-size(16);
+					@include font-size(1);
 				}
 
 				td {
 
-					@include font-size(14);
+					@include font-size(0.8);
 				}
 			}
 
@@ -1697,12 +1694,12 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 				th {
 
-					@include font-size(18);
+					@include font-size(1.2);
 				}
 
 				td {
 
-					@include font-size(16);
+					@include font-size(1);
 				}
 			}
 		}
@@ -1723,7 +1720,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 			select,
 			input {
 
-				@include font-size(14);
+				@include font-size(0.8);
 				outline: 0;
 				padding: 0;
 			}
@@ -1829,14 +1826,14 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 						background: none;
 						border: 0;
 
-						@include font-size(18);
+						@include font-size(1.2);
 					}
 				} //.button-nav
 
 				.field-visibility-settings-toggle,
 				.field-visibility-settings {
 
-					@include font-size(14);
+					@include font-size(0.8);
 				}
 
 				.field-visibility-settings-close,
@@ -1979,7 +1976,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 				td {
 					background: $content-background;
 					display: inline-block;
-					float: left;
+					float: none;
 				}
 
 				td.thread-star,
@@ -2022,7 +2019,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 					a {
 
-						@include font-size(12);
+						@include font-size(0.5);
 						line-height: 2.2;
 					}
 				}
@@ -2039,7 +2036,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 					@media screen and (max-width: $mobile_width) {
 						clear: both;
 
-						@include font-size(11);
+						@include font-size(0.4);
 						width: 100%;
 					}
 				}
@@ -2102,7 +2099,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 					img {
 						// this is the tiny user avatar
-						display: inline;
+						display: inline-block;
 						height: 20px;
 						vertical-align: middle;
 						width: 20px !important; // override inline style
@@ -2194,7 +2191,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 			// 'p' = email notification screen sub heading
 			> p {
 
-				@include font-size(20);
+				@include font-size(1.5);
 				margin: $spacing-val-md 0 $spacing-val-sm;
 			}
 		}
@@ -2252,8 +2249,21 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 #buddypress {
 
-	// Match BP form elements to Themes(2015) styling where styles
-	// are not inherited or being overriden.
+	input[type="submit"],
+	input[type="button"] {
+
+		@include font-size(0.8);
+		color: $bp-button-text;
+		background-color: $bp-button;
+		transition: background 150ms ease-in-out;
+		border: none;
+
+		&:hover {
+			color: $bp-button-text;
+			background-color: $bp-button-hover;
+			border: none;
+		}
+	}
 
 	div.activity-comments {
 
@@ -2318,7 +2328,6 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 		// issues on the submit & sizing issues between bp styles & twentyfifteen
 
 		form { // *sigh* only to bludgeon over specified rules
-			border: 1px solid rgba($border-color, 0.4);
 			overflow: hidden;
 
 			label {
@@ -2328,20 +2337,20 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 			input[type="text"] {
 				float: left;
-				margin: 0;
+				margin: 0 1em 0 0;
 				width: 80%;
+				outline-color: #fff;
 			}
 
 			input[type="text"],
 			input[type="submit"] {
 
-				@include font-size(14);
+				@include font-size(0.8);
 				border: 0;
 				line-height: inherit;
 			}
 
 			input[type="text"] {
-				border-right: 1px solid rgba($border-color, 0.4);
 				padding: 0.2em 0 0.2em 0.2em;
 			}
 
@@ -2386,12 +2395,12 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 				input[type="text"] {
 
-					@include font-size(16);
+					@include font-size(1);
 				}
 
 				input[type="submit"] {
 
-					@include font-size(16);
+					@include font-size(1);
 				}
 			}
 		}
@@ -2413,7 +2422,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 	table {
 
-		@include font-size(14);
+		@include font-size(0.8);
 		margin: $spacing-val-md 0;
 
 		tr th {
@@ -2432,7 +2441,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 		table {
 
-			@include font-size(16);
+			@include font-size(1);
 		}
 	}
 }
@@ -2513,7 +2522,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 		p {
 
-			@include font-size(18);
+			@include font-size(1);
 			font-weight: 700;
 		}
 
@@ -2558,3 +2567,40 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 * @section 10.0 - Ajax Loading, Widgets, General classes
 *-------------------------------------------------------------------------------
 */
+
+#buddypress {
+
+	a.button {
+
+		@include font-size(0.6);
+
+		color: $bp-button-text;
+		background-color: $bp-button;
+		transition: background 150ms ease-in-out;
+		border: none;
+		padding: 8px;
+
+		span {
+			color: $bp-button;
+			background-color: $bp-button-text;
+		}
+
+		&:hover {
+			color: $bp-button-text;
+			background-color: $bp-button-hover;
+			border: none;
+
+			span {
+				color: $bp-button;
+				background-color: $bp-button-text;
+			}
+		}
+	}
+
+	div.activity-meta {
+
+		a.button {
+			padding: 8px;
+		}
+	}
+}

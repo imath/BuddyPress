@@ -70,36 +70,11 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	clear: none;
 }
 
-.buddypress div.clear {
-	display: none;
-}
-
-.buddypress main {
-	padding-top: 4%;
-}
-
-.buddypress main article {
-	margin: 0 4%;
-	padding-top: 8.3333%;
-}
-
-@media screen and (min-width: 1379px) {
-	.buddypress main article {
-		margin: 0 8.3333% 0 4.3333%;
+@media screen and (max-width: 1379px) {
+	body.buddypress .entry .entry-content > * {
+		float: none;
+		max-width: none;
 	}
-}
-
-.buddypress main article .entry-header,
-.buddypress main article .entry-content {
-	padding: 0 3rem 3rem;
-}
-
-.buddypress main article #buddypress {
-	margin-bottom: 40px;
-}
-
-.buddypress .site-footer {
-	margin: 0 4%;
 }
 
 /**
@@ -107,24 +82,6 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 * @section 2.0 - Navigation - General
 *-------------------------------------------------------------------------------
 */
-.buddypress #buddypress .item-list-tabs a,
-.buddypress #buddypress .activity-header a,
-.buddypress #buddypress .activity-inner a,
-.buddypress #buddypress .activity-comments a,
-.buddypress #buddypress .item-title a,
-.buddypress #buddypress .load-more a,
-.buddypress #buddypress .field-visibility-settings-toggle a,
-.buddypress #buddypress #latest-update a,
-.buddypress #buddypress table a,
-.buddypress #buddypress .avatar-nav-items a {
-	border-bottom: 0;
-}
-
-.buddypress #buddypress .pagination-links a,
-.buddypress #buddypress .pagination-links span {
-	border-bottom: 0;
-}
-
 /**
 *----------------------------------------------------------
 * @section 2.1 - Navs Object Nav / Sub Nav (item-list-tabs)
@@ -137,21 +94,28 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 #buddypress div.item-list-tabs ul li.selected a {
-	background: #555;
+	background: #0073aa;
 	color: #fff;
 	opacity: 1;
 }
 
 #buddypress div.item-list-tabs ul {
-	background-color: #f7f7f7;
-	border-bottom: 1px solid rgba(234, 234, 234, 0.9);
-	border-top: 1px solid rgba(234, 234, 234, 0.9);
+	background-color: #fff;
 	overflow: hidden;
 	padding: 5px 0;
 }
 
+#buddypress div.item-list-tabs ul li a {
+	font-weight: 600;
+}
+
 #buddypress div.item-list-tabs ul li a span {
 	border-radius: 25%;
+}
+
+#buddypress div.item-list-tabs ul li a:hover {
+	background: #111;
+	color: #fff;
 }
 
 #buddypress #object-nav ul {
@@ -166,6 +130,10 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	opacity: 0.7;
 }
 
+#buddypress #object-nav ul li:not(.selected) a:hover {
+	opacity: 1;
+}
+
 @media screen and (min-width: 600px) {
 	#buddypress #object-nav ul li {
 		float: right;
@@ -177,7 +145,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 #buddypress div#subnav.item-list-tabs ul {
-	background-color: #f7f7f7;
+	background-color: #fff;
 	border-bottom: 0;
 	padding: 0;
 }
@@ -199,8 +167,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 #buddypress div#subnav.item-list-tabs ul li.last select,
 #buddypress div#subnav.item-list-tabs ul li.last label,
 #buddypress div#subnav.item-list-tabs ul li.last option {
-	font-size: 14px;
-	font-size: 1.4rem;
+	font-size: 0.9em;
 }
 
 #buddypress div#subnav.item-list-tabs ul li.last select {
@@ -215,17 +182,13 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 #buddypress div.item-list-tabs ul li.selected a,
 #buddypress div.item-list-tabs ul li.current a {
-	background: #555;
+	background: #0073aa;
 	color: #fff;
 	opacity: 1;
 }
 
 /*__ Vertical menu User Account / Group single screens __*/
-@media screen and (min-width: 55em) {
-	.bp-user #buddypress,
-	.single-item.groups #buddypress {
-		background: #f7f7f7;
-	}
+@media screen and (min-width: 1168px) {
 	#buddypress #item-header,
 	#buddypress #item-body {
 		background: #fff;
@@ -413,10 +376,21 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	line-height: 1.4;
 }
 
+#buddypress form#whats-new-form #whats-new:focus {
+	border-color: #0073aa;
+	outline: thin solid rgba(0, 115, 170, 0.15);
+	outline-offset: -4px;
+}
+
+#buddypress form#whats-new-form #whats-new-submit input {
+	line-height: 1.2;
+	outline: none;
+	padding: 0.76rem 1rem;
+}
+
 @media screen and (max-width: 30em) {
 	#buddypress form#whats-new-form #whats-new-post-in-box select {
-		font-size: 14px;
-		font-size: 1.4rem;
+		font-size: 0.9em;
 		max-width: 120px;
 	}
 }
@@ -496,12 +470,12 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 #buddypress #activity-stream li .activity-avatar a img.avatar {
-	display: inline;
+	display: inline-block;
 	float: none;
-	height: 60px;
+	height: 50px;
+	width: 50px;
 	margin-bottom: 20px;
 	margin-right: 0;
-	width: 60px;
 }
 
 #buddypress #activity-stream li .activity-content {
@@ -509,8 +483,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 #buddypress #activity-stream li .activity-content .activity-header {
-	font-size: 14px;
-	font-size: 1.4rem;
+	font-size: 0.675em;
 }
 
 @media screen and (min-width: 768px) {
@@ -527,20 +500,25 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 		overflow: hidden;
 	}
 	#buddypress #activity-stream li .activity-content .activity-header {
-		font-size: 16px;
-		font-size: 1.6rem;
+		font-size: 0.9em;
 	}
 }
 
 #buddypress #activity-stream li.mini .activity-avatar a img.avatar {
 	height: 30px;
 	margin-right: 15px;
+	margin-top: 5px;
 	width: 30px;
 }
 
 #buddypress #activity-stream li.mini .activity-content .activity-header {
-	font-size: 13px;
-	font-size: 1.3rem;
+	font-size: 0.675em;
+}
+
+@media screen and (min-width: 768px) {
+	#buddypress #activity-stream li.mini .activity-content .activity-header {
+		font-size: 0.9em;
+	}
 }
 
 #buddypress #activity-stream .activity-content {
@@ -553,7 +531,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 #buddypress #activity-stream .activity-content .activity-header p {
-	background-color: #f7f7f7;
+	background-color: #f1f1f1;
 	border: 1px solid rgba(234, 234, 234, 0.6);
 	color: #717171;
 	padding: 0 0.2em;
@@ -577,13 +555,13 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 #buddypress #activity-stream .load-more {
-	background: #f7f7f7;
+	background: #f1f1f1;
 	border: 1px solid transparent;
 	padding: 10px;
 }
 
 #buddypress #activity-stream .load-more:focus, #buddypress #activity-stream .load-more:hover {
-	background: #f4f4f4;
+	background: #eeeeee;
 	border: 1px solid rgba(159, 209, 226, 0.3);
 }
 
@@ -604,16 +582,24 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	padding: 20px 0;
 }
 
+.activity-permalink #buddypress #activity-stream .activity-avatar img.avatar {
+	width: auto;
+	height: auto;
+}
+
+.activity-permalink #buddypress #activity-stream li.mini .activity-avatar img.avatar {
+	width: 65px;
+	height: 65px;
+}
+
 .activity-permalink #buddypress #activity-stream li.mini .activity-header {
-	font-size: 16px;
-	font-size: 1.6rem;
+	font-size: 0.675em;
 	margin-bottom: 40px;
 }
 
 @media screen and (min-width: 768px) {
 	.activity-permalink #buddypress #activity-stream li.mini .activity-header {
-		font-size: 20px;
-		font-size: 2rem;
+		font-size: 0.9em;
 	}
 }
 
@@ -643,7 +629,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 #buddypress #activity-stream .activity-comments > ul {
-	background: rgba(247, 247, 247, 0.6);
+	background: rgba(241, 241, 241, 0.6);
 	margin: 15px 2px 0 0;
 }
 
@@ -715,27 +701,29 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	}
 }
 
+#buddypress #activity-stream .activity-comments .ac-reply-avatar img {
+	border: none;
+}
+
 #buddypress #activity-stream .activity-comments .ac-form input[type="submit"],
 #buddypress #activity-stream .activity-comments .ac-form .ac-reply-cancel {
-	color: rgba(51, 51, 51, 0.8);
 	display: inline-block;
-	font-family: inherit;
-	font-size: 12px;
-	font-size: 1.2rem;
-	font-weight: 400;
+	font-size: 0.675em;
 	line-height: 1.2;
 	padding: 4px 10px;
-	text-transform: lowercase;
 	width: 100px;
 }
 
 #buddypress #activity-stream .activity-comments .ac-form .ac-reply-cancel {
-	border: 1px solid rgba(153, 153, 153, 0.7);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 	text-align: center;
+	vertical-align: bottom;
+	color: #0073aa;
 }
 
-#buddypress #activity-stream .activity-comments .ac-form .ac-reply-cancel:focus, #buddypress #activity-stream .activity-comments .ac-form .ac-reply-cancel:hover {
-	background: #ededed;
+#buddypress #activity-stream .activity-comments .ac-form .ac-reply-cancel:hover {
+	color: #005177;
+	text-decoration: underline;
 }
 
 /**
@@ -767,6 +755,17 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	.single-item.groups #item-header-content {
 		text-align: center;
 	}
+}
+
+.bp-user #buddypress #item-header-content h2:before,
+.single-item.groups #buddypress #item-header-content h2:before {
+	display: none;
+}
+
+.bp-user #buddypress #item-header-avatar img.avatar,
+.single-item.groups #buddypress #item-header-avatar img.avatar {
+	width: auto;
+	height: auto;
 }
 
 @media screen and (max-width: 768px) {
@@ -847,17 +846,15 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .single-item.groups #buddypress div#item-header div#item-actions h2 {
-	background: #555;
+	background: #0073aa;
 	color: #fff;
-	font-size: 14px;
-	font-size: 1.4rem;
+	font-size: 0.9em;
 	padding: 0.2em;
 }
 
 @media screen and (min-width: 768px) {
 	.single-item.groups #buddypress div#item-header div#item-actions h2 {
-		font-size: 16px;
-		font-size: 1.6rem;
+		font-size: 1.125em;
 	}
 }
 
@@ -893,6 +890,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 .bp-user #buddypress #item-header #item-header-avatar {
 	text-align: center;
 	width: 100%;
+	height: 100%;
 }
 
 .bp-user #buddypress #item-header #item-header-avatar a {
@@ -953,7 +951,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 *-----------------------------------------
 */
 .groups #group-settings-form h3 {
-	background: #555;
+	background: #0073aa;
 	color: #fff;
 	padding: 0.2em;
 }
@@ -964,7 +962,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .groups.edit-details #group-settings-form label {
-	background: #555;
+	background: #0073aa;
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
 	background-clip: padding-box;
@@ -984,8 +982,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 .groups.edit-details #group-settings-form textarea + p label {
 	background: none;
 	color: inherit;
-	font-size: 14px;
-	font-size: 1.4rem;
+	font-size: 0.9em;
 	width: auto;
 }
 
@@ -998,8 +995,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 .groups.group-settings #group-settings-form div.radio ul,
 .groups.group-settings #create-group-form div.radio ul {
 	color: #767676;
-	font-size: 14px;
-	font-size: 1.4rem;
+	font-size: 0.9em;
 }
 
 .groups.group-avatar form > p {
@@ -1064,8 +1060,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 .groups.group-members #buddypress #members-group-list li h5 {
 	display: inline-block;
-	font-size: 14px;
-	font-size: 1.4rem;
+	font-size: 0.9em;
 	margin: 0;
 }
 
@@ -1074,8 +1069,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .groups.group-members #buddypress #members-group-list li span.activity {
-	font-size: 12px;
-	font-size: 1.2rem;
+	font-size: 0.5625em;
 }
 
 .groups.group-members #buddypress #members-group-list li .action {
@@ -1164,34 +1158,28 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 *--------------------------------------------
 */
 .bp-user #buddypress table th {
-	font-size: 14px;
-	font-size: 1.4rem;
+	font-size: 0.9em;
 }
 
 .bp-user #buddypress table td {
-	font-size: 12px;
-	font-size: 1.2rem;
+	font-size: 0.5625em;
 }
 
 @media screen and (min-width: 768px) {
 	.bp-user #buddypress table th {
-		font-size: 16px;
-		font-size: 1.6rem;
+		font-size: 1.125em;
 	}
 	.bp-user #buddypress table td {
-		font-size: 14px;
-		font-size: 1.4rem;
+		font-size: 0.9em;
 	}
 }
 
 @media screen and (min-width: 1168px) {
 	.bp-user #buddypress table th {
-		font-size: 18px;
-		font-size: 1.8rem;
+		font-size: 1.35em;
 	}
 	.bp-user #buddypress table td {
-		font-size: 16px;
-		font-size: 1.6rem;
+		font-size: 1.125em;
 	}
 }
 
@@ -1216,8 +1204,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 .bp-user #buddypress .notifications-options-nav input,
 .bp-user #buddypress .messages-options-nav select,
 .bp-user #buddypress .messages-options-nav input {
-	font-size: 14px;
-	font-size: 1.4rem;
+	font-size: 0.9em;
 	outline: 0;
 	padding: 0;
 }
@@ -1264,7 +1251,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	*-------------------------------------------
 	*/
 .bp-user #buddypress .profile .bp-widget h2 {
-	background: #6f6e6e;
+	background: #0096dd;
 	color: #fff;
 	margin-bottom: 0;
 	padding: 0.4em;
@@ -1304,19 +1291,17 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 .bp-user #buddypress .profile #profile-edit-form ul.button-nav a {
 	background: none;
 	border: 0;
-	font-size: 18px;
-	font-size: 1.8rem;
+	font-size: 1.35em;
 }
 
 .bp-user #buddypress .profile #profile-edit-form .field-visibility-settings-toggle,
 .bp-user #buddypress .profile #profile-edit-form .field-visibility-settings {
-	font-size: 14px;
-	font-size: 1.4rem;
+	font-size: 0.9em;
 }
 
 .bp-user #buddypress .profile #profile-edit-form .field-visibility-settings-close,
 .bp-user #buddypress .profile #profile-edit-form .visibility-toggle-link {
-	background: #555;
+	background: #0073aa;
 	color: #fff;
 	padding: 0.2em 0.5em;
 }
@@ -1347,7 +1332,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .bp-user #buddypress #message-thread #message-subject {
-	background: #6f6e6e;
+	background: #0096dd;
 	color: #fff;
 	padding: 0.3em 0.2em 0.3em 0;
 }
@@ -1384,7 +1369,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .bp-user #buddypress #message-thread .message-content {
-	background: #f7f7f7;
+	background: #f1f1f1;
 	border: 1px solid #eaeaea;
 	margin: 10px 0 0 0;
 	padding: 0.3em;
@@ -1400,13 +1385,13 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .bp-user #buddypress #message-threads thead tr {
-	background: #6f6e6e;
+	background: #0096dd;
 }
 
 .bp-user #buddypress #message-threads tr td {
 	background: #fff;
 	display: inline-block;
-	float: right;
+	float: none;
 }
 
 .bp-user #buddypress #message-threads tr td.thread-star,
@@ -1454,8 +1439,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .bp-user #buddypress #message-threads tr td.thread-options a {
-	font-size: 12px;
-	font-size: 1.2rem;
+	font-size: 0.5625em;
 	line-height: 2.2;
 }
 
@@ -1472,8 +1456,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 @media screen and (max-width: 600px) {
 	.bp-user #buddypress #message-threads tr span.activity {
 		clear: both;
-		font-size: 11px;
-		font-size: 1.1rem;
+		font-size: 0.45em;
 		width: 100%;
 	}
 }
@@ -1531,7 +1514,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .bp-user #buddypress .acfb-holder li.friend-tab a img {
-	display: inline;
+	display: inline-block;
 	height: 20px;
 	vertical-align: middle;
 	width: 20px !important;
@@ -1542,7 +1525,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .bp-user #buddypress #message-threads.sitewide-notices td strong {
-	background: #6f6e6e;
+	background: #0096dd;
 	color: #fff;
 	display: block;
 	margin-bottom: 0.4em;
@@ -1601,8 +1584,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	*------------------------------
 	*/
 .bp-user #buddypress #settings-form > p {
-	font-size: 20px;
-	font-size: 2rem;
+	font-size: 1.6875em;
 	margin: 20px 0 10px;
 }
 
@@ -1645,8 +1627,24 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 * @section 7.0 - Forms  - General
 *-------------------------------------------------------------------------------
 */
+#buddypress input[type="submit"],
+#buddypress input[type="button"] {
+	font-size: 0.9em;
+	color: #fff;
+	background-color: #0073aa;
+	transition: background 150ms ease-in-out;
+	border: none;
+}
+
+#buddypress input[type="submit"]:hover,
+#buddypress input[type="button"]:hover {
+	color: #fff;
+	background-color: #111;
+	border: none;
+}
+
 #buddypress div.activity-comments form .ac-textarea {
-	background: #f7f7f7;
+	background: #f1f1f1;
 	border: 1px solid rgba(153, 153, 153, 0.3);
 }
 
@@ -1690,7 +1688,6 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 #buddypress div.dir-search form,
 #buddypress div.message-search form,
 #buddypress li.groups-members-search form {
-	border: 1px solid rgba(153, 153, 153, 0.4);
 	overflow: hidden;
 }
 
@@ -1705,8 +1702,9 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 #buddypress div.message-search form input[type="text"],
 #buddypress li.groups-members-search form input[type="text"] {
 	float: right;
-	margin: 0;
+	margin: 0 0 0 1em;
 	width: 80%;
+	outline-color: #fff;
 }
 
 #buddypress div.dir-search form input[type="text"],
@@ -1715,8 +1713,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 #buddypress div.message-search form input[type="submit"],
 #buddypress li.groups-members-search form input[type="text"],
 #buddypress li.groups-members-search form input[type="submit"] {
-	font-size: 14px;
-	font-size: 1.4rem;
+	font-size: 0.9em;
 	border: 0;
 	line-height: inherit;
 }
@@ -1724,7 +1721,6 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 #buddypress div.dir-search form input[type="text"],
 #buddypress div.message-search form input[type="text"],
 #buddypress li.groups-members-search form input[type="text"] {
-	border-left: 1px solid rgba(153, 153, 153, 0.4);
 	padding: 0.2em 0.2em 0.2em 0;
 }
 
@@ -1762,13 +1758,11 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 @media screen and (min-width: 1168px) {
 	#buddypress .dir-search form input[type="text"],
 	#buddypress .message-search form input[type="text"] {
-		font-size: 16px;
-		font-size: 1.6rem;
+		font-size: 1.125em;
 	}
 	#buddypress .dir-search form input[type="submit"],
 	#buddypress .message-search form input[type="submit"] {
-		font-size: 16px;
-		font-size: 1.6rem;
+		font-size: 1.125em;
 	}
 }
 
@@ -1778,13 +1772,12 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 *-------------------------------------------------------------------------------
 */
 #buddypress table {
-	font-size: 14px;
-	font-size: 1.4rem;
+	font-size: 0.9em;
 	margin: 20px 0;
 }
 
 #buddypress table tr th {
-	background: #6f6e6e;
+	background: #0096dd;
 	border-color: #b7b7b7;
 	color: #fff;
 }
@@ -1795,8 +1788,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 @media screen and (min-width: 55em) {
 	#buddypress table {
-		font-size: 16px;
-		font-size: 1.6rem;
+		font-size: 1.125em;
 	}
 }
 
@@ -1859,8 +1851,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 #buddypress div#message p {
-	font-size: 18px;
-	font-size: 1.8rem;
+	font-size: 1.125em;
 	font-weight: 700;
 }
 
@@ -1887,3 +1878,31 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 * @section 10.0 - Ajax Loading, Widgets, General classes
 *-------------------------------------------------------------------------------
 */
+#buddypress a.button {
+	font-size: 0.675em;
+	color: #fff;
+	background-color: #0073aa;
+	transition: background 150ms ease-in-out;
+	border: none;
+	padding: 8px;
+}
+
+#buddypress a.button span {
+	color: #0073aa;
+	background-color: #fff;
+}
+
+#buddypress a.button:hover {
+	color: #fff;
+	background-color: #111;
+	border: none;
+}
+
+#buddypress a.button:hover span {
+	color: #0073aa;
+	background-color: #fff;
+}
+
+#buddypress div.activity-meta a.button {
+	padding: 8px;
+}
