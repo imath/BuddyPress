@@ -5,11 +5,6 @@
 // Sub sections might not exist but can be added as required
 // as per BP Lists - 'activity' section.
 
-// We follow the dictats of the parent theme in respect of media queries,
-// font sizing etc. Media queries are used in a modular sense (OOCSS)
-// rather than described as blocks to the end of the sheet, this aids ease
-// of managing media queries, scalability & flexibility .
-
 // Twenty Nineteen Media Queries / Breakpoints
 // @media screen and (min-width: 600px)  // Mobile width
 // @media screen and (min-width: 768px)  // Tablet width
@@ -124,9 +119,6 @@ $border-color:       #999;    // border color is varied using rgba
 $border-light:       #eaeaea; // BP dividers
 $border-med:         #ddd;
 $body-text:          #111;    // 2019 body text color
-$bp-button:          #0073aa;
-$bp-button-hover:    #111;
-$bp-button-text:     #fff;
 $notice-error:       #c85a6e;
 $notice-warning:     #d05656;
 $notice-info:        #9fd1e2;
@@ -140,14 +132,14 @@ $link-action:        #c82b2b;
 
 	@include headings-font();
 	@include font-size($font-size);
-	background-color: $bp-button;
-	color: $bp-button-text;
+	background-color: $dark-background;
+	color: $content-background;
 	border: none;
 	transition: background 150ms ease-in-out;
 
 	&:hover {
-		color: $bp-button-text;
-		background-color: $bp-button-hover;
+		color: $content-background;
+		background-color: $body-text;
 		border: none;
 	}
 }
@@ -157,7 +149,7 @@ $link-action:        #c82b2b;
 This is the BuddyPress companion stylesheet for
 the WordPress Twenty Nineteen theme.
 
-@version 3.0.0
+@version 5.0.0
 
 This sheet supports the primary BuddyPress styles in buddypress.css
 
@@ -295,8 +287,8 @@ body.buddypress {
 					}
 
 					&:hover {
-						background: $bp-button-hover;
-						color: $bp-button-text;
+						background: $body-text;
+						color: $content-background;
 					}
 				}
 			}
@@ -540,7 +532,8 @@ body.buddypress {
 
 				@media screen and (min-width: $mobile_width) {
 					margin-bottom: 0;
-				}
+				}  // close @media
+
 				text-align: center;
 
 				a {
@@ -554,7 +547,7 @@ body.buddypress {
 					@media screen and (min-width: $mobile_width) {
 						display: block;
 						float: left;
-					}
+					}  // close @media
 				}
 			}
 
@@ -645,7 +638,7 @@ body.buddypress {
 		#whats-new {
 
 			&:focus {
-				border-color: $bp-button;
+				border-color: $dark-background;
 				outline: thin solid rgba(0, 115, 170, 0.15);
 				outline-offset: -4px;
 			}
@@ -669,7 +662,7 @@ body.buddypress {
 					max-width: 120px;
 				}
 			}
-		}
+		} // close @media
 
 		@media screen and (max-width: $mobile_width) {
 
@@ -731,7 +724,7 @@ body.buddypress {
 				#whats-new-submit {
 					float: right;
 				}
-			}
+			} // close @media
 
 		} // close #whats-new-options
 
@@ -842,7 +835,7 @@ body.buddypress {
 
 						@include font-size(0.8);
 					}
-				}
+				} // close @media
 			}
 		}
 
@@ -854,8 +847,6 @@ body.buddypress {
 				margin-right: 0;
 
 				p {
-					background-color: $light-background;
-					border: 1px solid rgba($border-light, 0.6);
 					color: #717171;
 					padding: 0 0.2em;
 				}
@@ -877,26 +868,36 @@ body.buddypress {
 					@media screen and (min-width: $mobile_width) {
 						display: inline-block;
 						margin: 0;
-					}
+					} // close @media
 				}
 
 				a.button {
 					padding: 8px;
+					background-color: $content-background;
+					color: $dark-background;
+
+					span {
+						color: $content-background;
+						background-color: $dark-background;
+					}
+
+					&:hover {
+						text-decoration: underline;
+						color: darken($dark-background, 10%);
+					}
 				}
 
 				a.button.bp-secondary-action {
-					padding-bottom: 7px;
+					border: none;
 				}
 
 				a.button.delete-activity,
 				a.button.delete-activity-single {
-					color: $link-action;
-					background-color: $bp-button-text;
-					border-color: $bp-button-text;
+					color: $notice-warning;
 
 					&:hover {
 						text-decoration: underline;
-						color: darken($link-action, 10%);
+						color: darken($notice-warning, 10%);
 					}
 				}
 			}
@@ -957,7 +958,7 @@ body.buddypress {
 					@media screen and (min-width: $tablet_width) {
 
 						@include font-size(0.8);
-					}
+					} // close @media
 
 					margin-bottom: $spacing-val-lg;
 
@@ -1000,7 +1001,7 @@ body.buddypress {
 
 				@media screen and (min-width: $mobile_width) {
 					margin-left: 70px;
-				}
+				} // close @media
 
 				ul {
 					// all nested ul margins & padding flattened initially
@@ -1010,7 +1011,7 @@ body.buddypress {
 					@media screen and (min-width: 30em) {
 						margin-left: 1%;
 						padding-left: 1em;
-					}
+					} // close @media
 				}
 
 				ul li {
@@ -1071,7 +1072,7 @@ body.buddypress {
 				.ac-reply-content {
 					overflow: hidden;
 				}
-			}
+			} // close @media
 
 			.ac-reply-avatar img {
 				border: none;
@@ -1140,7 +1141,7 @@ body.buddypress {
 				padding-bottom: 1rem;
 			}
 		}
-	}
+	} // close @media
 
 	@media screen and (max-width: $mobile_width) {
 
@@ -1148,7 +1149,7 @@ body.buddypress {
 		#item-header-content {
 			text-align: center;
 		}
-	}
+	} // close @media
 
 	#buddypress {
 
@@ -1190,7 +1191,7 @@ body.buddypress {
 					margin: 1.5em 0 0;
 				}
 			}
-		}
+		} // close @media
 
 		@media screen and (max-width: $mobile_width) {
 
@@ -1208,7 +1209,7 @@ body.buddypress {
 			#item-header-content {
 				width: 100%;
 			}
-		}
+		} // close @media
 	}
 }
 
@@ -1232,7 +1233,7 @@ body.buddypress {
 					margin-bottom: $spacing-val-md;
 				}
 			}
-		}
+		} // close @media
 
 		// Move visual flow of avatar & item-actions at narrow width,
 		// avatar first after group title
@@ -1277,18 +1278,18 @@ body.buddypress {
 					clear: none;
 					float: right;
 					width: 50%;
-				}
+				} // close @media
 
 				h2 {
-					background: $dark-background;
-					color: $content-background;
+					background: $content-background;
+					color: $body-text;
 
 					@include font-size(0.8);
 
 					@media screen and (min-width: $tablet_width) {
 
 						@include font-size(1);
-					}
+					} // close @media
 
 					padding: 0.2em;
 				}
@@ -1417,8 +1418,8 @@ body.buddypress {
 	#group-settings-form {
 
 		h3 {
-			background: $dark-background;
-			color: $content-background;
+			background: $content-background;
+			color: $body-text;
 			padding: 0.2em;
 		}
 		// remove backgrounds from request list member names.
@@ -1437,10 +1438,10 @@ body.buddypress {
 	#group-settings-form {
 
 		label {
-			background: $dark-background;
+			background: $light-background;
 
 			@include border-top-radius(4px);
-			color: $content-background;
+			color: $body-text;
 			display: inline-block;
 			margin-bottom: 0;
 			padding: 0.2em;
@@ -1448,7 +1449,7 @@ body.buddypress {
 
 			@media screen and (min-width: $mobile_width) {
 				width: 60%;
-			}
+			} // close @media
 
 		}
 
@@ -1524,7 +1525,7 @@ body.buddypress {
 
 						@media screen and (min-width: $mobile_width) {
 							width: auto;
-						}
+						} // close @media
 					}
 				}
 
@@ -1532,6 +1533,11 @@ body.buddypress {
 					margin: 0;
 				}
 
+				div.action {
+					position: relative;
+					top: auto;
+					right: auto;
+				}
 			}
 		}
 	}
@@ -1566,7 +1572,7 @@ body.buddypress {
 							float: none;
 						}
 					}
-				}
+				} // close @media
 
 				h5 {
 					display: inline-block;
@@ -1593,7 +1599,7 @@ body.buddypress {
 	}
 }
 
-// Massage the members search for groups nav specifically.
+// Manage the members search for groups nav specifically.
 .groups.group-members {
 
 	#subnav {
@@ -1603,7 +1609,7 @@ body.buddypress {
 			@media screen and (max-width: $mobile_width) {
 				background: $content-background;
 				padding: $spacing-val-md 0;
-			}
+			} // close @media
 
 			width: 100%;
 
@@ -1620,7 +1626,7 @@ body.buddypress {
 							width: 100%;
 						}
 					}
-				}
+				} // close @media
 
 				margin: $spacing-val-xs $spacing-val-xs 0 0;
 			}
@@ -1657,7 +1663,7 @@ body.buddypress {
 				}
 			}
 		}
-	}
+	} // close @media
 
 	@media screen and (min-width: 55em) {
 
@@ -1667,7 +1673,7 @@ body.buddypress {
 				margin-top: 0;
 			}
 		}
-	}
+	} // close @media
 
 	#item-body {
 
@@ -1748,7 +1754,7 @@ body.buddypress {
 
 					@include font-size(0.8);
 				}
-			}
+			} // close @media
 
 			@media screen and (min-width: $desktop_width) {
 
@@ -1761,7 +1767,7 @@ body.buddypress {
 
 					@include font-size(1);
 				}
-			}
+			} // close @media
 		}
 
 		.pag-count {
@@ -1775,7 +1781,7 @@ body.buddypress {
 
 			@media screen and (min-width: 30em) {
 				width: 50%;
-			}
+			} // close @media
 
 			select,
 			input {
@@ -1792,7 +1798,7 @@ body.buddypress {
 
 				@media screen and (min-width: 30em) {
 					width: 60%;
-				}
+				} // close @media
 			}
 
 			input {
@@ -1810,7 +1816,7 @@ body.buddypress {
 				@media screen and (min-width: 30em) {
 					margin-top: 0;
 					width: 38%;
-				}
+				} // close @media
 			}
 
 		} // close .notifications-options-nav
@@ -1831,13 +1837,23 @@ body.buddypress {
 
 		.profile {
 
+			h2 {
+				margin-bottom: 1em;
+			}
+
 			.bp-widget {
 
 				h2 {
-					background: lighten($dark-background, 10%);
-					color: #fff;
+
+					@include font-size(1.2);
+					background: lighten($medium-background, 10%);
+					color: $body-text;
 					margin-bottom: 0;
 					padding: 0.4em;
+
+					&:before {
+						display: none;
+					}
 				}
 
 				table {
@@ -1898,8 +1914,8 @@ body.buddypress {
 
 				.field-visibility-settings-close,
 				.visibility-toggle-link {
-					background: $dark-background;
-					color: #fff;
+					background: $light-background;
+					color: $body-text;
 					padding: 0.2em 0.5em;
 				}
 			} // close profile form
@@ -1936,7 +1952,7 @@ body.buddypress {
 					@media screen and (min-width: $desktop_width) {
 						left: 5%;
 						width: 50%;
-					}
+					} // close @media
 				}
 			}
 		}
@@ -1955,6 +1971,16 @@ body.buddypress {
 
 	#buddypress {
 
+		.message-action-unstar {
+
+			span.icon {
+
+				&:before {
+					color: $dark-background;
+				}
+			}
+		}
+
 		#message-thread {
 			//Single message view
 			a {
@@ -1962,8 +1988,8 @@ body.buddypress {
 			}
 
 			#message-subject {
-				background: lighten($dark-background, 10%);
-				color: $content-background;
+				background: $content-background;
+				color: $body-text;
 				padding: 0.3em 0 0.3em 0.2em;
 			}
 
@@ -1993,7 +2019,7 @@ body.buddypress {
 					img.avatar {
 						float: left;
 					}
-				}
+				} // close @media
 
 				.message-star-actions {
 					float: right;
@@ -2027,38 +2053,63 @@ body.buddypress {
 			thead {
 
 				tr {
-					background: lighten($dark-background, 10%);
+					background: lighten($medium-background, 10%);
+				}
+
+				th.bulk-select-all {
+					position: relative;
+					border: none;
+					padding-top: 0;
+
+					label {
+						clip: auto;
+						overflow: visible;
+						display: block;
+						word-break: keep-all;
+						left: 30px;
+						top: 15px;
+						white-space: nowrap;
+
+						@include font-size(0.5);
+					}
 				}
 			}
 
 			tr {
+				border: solid 1px darken($border-light, 20%);
 
 				td {
 					background: $content-background;
 					display: inline-block;
 					float: none;
+					border: none;
 				}
 
 				td.thread-star,
 				td.thread-options {
-					border-bottom-color: darken($border-light, 20%);
-					border-bottom-width: 2px;
 					height: 2.4em;
 					padding-bottom: 0.2em;
 					padding-top: 0.2em;
 
 					@media screen and (max-width: $tablet_width) {
 						padding-top: 0;
-					}
+					} // close @media
 				}
 
 				td.bulk-select-check,
 				td.thread-from {
 					height: 2.6em;
 
+					img.avatar {
+						display: inline-block;
+						width: auto;
+						height: auto;
+						vertical-align: text-top;
+					}
+
 					@media screen and (max-width: $mobile_width) {
 						height: 5.2em;
-					}
+					} // close @media
 				}
 
 				td.thread-from,
@@ -2098,7 +2149,7 @@ body.buddypress {
 
 						@include font-size(0.4);
 						width: 100%;
-					}
+					} // close @media
 				}
 			}
 
@@ -2106,8 +2157,7 @@ body.buddypress {
 
 				td {
 					background: $unread;
-					border-color: darken($border-light, 10%);
-					border-bottom-color: darken($border-light, 20%);
+					border: none;
 				}
 			}
 
@@ -2174,8 +2224,8 @@ body.buddypress {
 				width: 100%;
 
 				strong {
-					background: lighten($dark-background, 10%);
-					color: $content-background;
+					background: lighten($medium-background, 10%);
+					color: $body-text;
 					display: block;
 					margin-bottom: 0.4em;
 					padding-left: 0.2em;
@@ -2252,7 +2302,21 @@ body.buddypress {
 			> p {
 
 				@include font-size(1.5);
+				@include headings-font();
+				font-weight: 700;
+				letter-spacing: -0.02em;
+				line-height: 1.2;
+				-webkit-font-smoothing: antialiased;
 				margin: $spacing-val-md 0 $spacing-val-sm;
+
+				&:before {
+					background: #767676;
+					content: "\020";
+					display: block;
+					height: 2px;
+					margin: 1rem 0;
+					width: 1em;
+				}
 			}
 		}
 
@@ -2265,6 +2329,10 @@ body.buddypress {
 			td.yes,
 			td.no {
 				vertical-align: middle;
+			}
+
+			td {
+				word-break: keep-all;
 			}
 		}
 		// Profile visibility table td widths
@@ -2282,7 +2350,7 @@ body.buddypress {
 				td.field-name {
 					width: 70%;
 				}
-			}
+			} // close @media
 
 			th.title,
 			td.field-visibility {
@@ -2377,6 +2445,10 @@ body.buddypress {
 		.radio label {
 			color: $body-text;
 		}
+
+		.editfield {
+			margin-bottom: 1em;
+		}
 	}
 
 	div.dir-search,
@@ -2465,7 +2537,7 @@ body.buddypress {
 				}
 			}
 		}
-	}
+	} // close @media
 
 } // close #buddypress
 
@@ -2487,9 +2559,9 @@ body.buddypress {
 		margin: $spacing-val-md 0;
 
 		tr th {
-			background: lighten($dark-background, 10%);
+			background: lighten($medium-background, 10%);
 			border-color: darken($border-light, 20%);
-			color: $content-background;
+			color: $body-text;
 		}
 
 		// Reduce the themes inherited paragraph margins in tables
@@ -2498,13 +2570,13 @@ body.buddypress {
 		}
 	}
 
-	@media screen and (min-width: 55em) {
+	@media screen and (min-width: $desktop_width) {
 
 		table {
 
-			@include font-size(1);
+			@include font-size(0.8);
 		}
-	}
+	} // close @media
 }
 
 /*__ User Account tables __*/
@@ -2540,18 +2612,6 @@ body.buddypress {
 			}
 		}
 
-		// Notices action buttons, this maybe better moved, temp for now to address
-		// styling issues - this will need styling ideas
-		td {
-
-			.button {
-				border: 0;
-				display: block;
-				padding: 0;
-				text-align: center;
-			}
-		}
-
 	} // .notifications, .message-notices
 
 } // #buddypress
@@ -2573,9 +2633,9 @@ body.buddypress {
 		div#message {
 			margin-top: $spacing-val-md;
 
-			@media screen and (min-width: 55em) {
+			@media screen and (min-width: $desktop_width) {
 				margin-right: $spacing-val-md;
-			}
+			} // close @media
 		}
 	}
 
@@ -2637,27 +2697,27 @@ body.buddypress {
 		padding: 8px;
 
 		span {
-			color: $bp-button;
-			background-color: $bp-button-text;
+			color: $dark-background;
+			background-color: $content-background;
 		}
 
 		&:hover {
 
 			span {
-				color: $bp-button;
-				background-color: $bp-button-text;
+				color: $dark-background;
+				background-color: $content-background;
 			}
 		}
 
 		&.bp-secondary-action {
-			color: $bp-button;
-			background-color: $bp-button-text;
-			border: solid 1px $bp-button;
+			color: $dark-background;
+			background-color: $content-background;
+			border: solid 1px $dark-background;
 
 			&:hover {
-				color: $bp-button-text;
-				background-color: $bp-button-hover;
-				border-color: $bp-button-hover;
+				color: $content-background;
+				background-color: $body-text;
+				border-color: $body-text;
 			}
 		}
 	}

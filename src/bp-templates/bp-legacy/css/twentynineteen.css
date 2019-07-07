@@ -3,7 +3,7 @@
 This is the BuddyPress companion stylesheet for
 the WordPress Twenty Nineteen theme.
 
-@version 3.0.0
+@version 5.0.0
 
 This sheet supports the primary BuddyPress styles in buddypress.css
 
@@ -547,8 +547,6 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 #buddypress #activity-stream .activity-content .activity-header p {
-	background-color: #f1f1f1;
-	border: 1px solid rgba(234, 234, 234, 0.6);
 	color: #717171;
 	padding: 0 0.2em;
 }
@@ -574,23 +572,33 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 #buddypress #activity-stream .activity-content .activity-meta a.button {
 	padding: 8px;
+	background-color: #fff;
+	color: #0073aa;
+}
+
+#buddypress #activity-stream .activity-content .activity-meta a.button span {
+	color: #fff;
+	background-color: #0073aa;
+}
+
+#buddypress #activity-stream .activity-content .activity-meta a.button:hover {
+	text-decoration: underline;
+	color: #005177;
 }
 
 #buddypress #activity-stream .activity-content .activity-meta a.button.bp-secondary-action {
-	padding-bottom: 7px;
+	border: none;
 }
 
 #buddypress #activity-stream .activity-content .activity-meta a.button.delete-activity,
 #buddypress #activity-stream .activity-content .activity-meta a.button.delete-activity-single {
-	color: #c82b2b;
-	background-color: #fff;
-	border-color: #fff;
+	color: #d05656;
 }
 
 #buddypress #activity-stream .activity-content .activity-meta a.button.delete-activity:hover,
 #buddypress #activity-stream .activity-content .activity-meta a.button.delete-activity-single:hover {
 	text-decoration: underline;
-	color: #9e2222;
+	color: #be3535;
 }
 
 #buddypress #activity-stream .load-more {
@@ -906,8 +914,8 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .single-item.groups #buddypress div#item-header div#item-actions h2 {
-	background: #0073aa;
-	color: #fff;
+	background: #fff;
+	color: #111;
 	font-size: 0.9em;
 	padding: 0.2em;
 }
@@ -1011,8 +1019,8 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 *-----------------------------------------
 */
 .groups #group-settings-form h3 {
-	background: #0073aa;
-	color: #fff;
+	background: #fff;
+	color: #111;
 	padding: 0.2em;
 }
 
@@ -1022,11 +1030,11 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .groups.edit-details #group-settings-form label {
-	background: #0073aa;
+	background: #f1f1f1;
 	border-top-right-radius: 4px;
 	border-top-left-radius: 4px;
 	background-clip: padding-box;
-	color: #fff;
+	color: #111;
 	display: inline-block;
 	margin-bottom: 0;
 	padding: 0.2em;
@@ -1097,6 +1105,12 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 .groups.manage-members #group-settings-form .item-list li h5 {
 	margin: 0;
+}
+
+.groups.manage-members #group-settings-form .item-list li div.action {
+	position: relative;
+	top: auto;
+	right: auto;
 }
 
 /**
@@ -1310,11 +1324,20 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	* @subsection 6.2.2.2 - Extended Profiles
 	*-------------------------------------------
 	*/
+.bp-user #buddypress .profile h2 {
+	margin-bottom: 1em;
+}
+
 .bp-user #buddypress .profile .bp-widget h2 {
-	background: #0096dd;
-	color: #fff;
+	font-size: 1.35em;
+	background: #e6e5e5;
+	color: #111;
 	margin-bottom: 0;
 	padding: 0.4em;
+}
+
+.bp-user #buddypress .profile .bp-widget h2:before {
+	display: none;
 }
 
 .bp-user #buddypress .profile .bp-widget table {
@@ -1361,8 +1384,8 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 .bp-user #buddypress .profile #profile-edit-form .field-visibility-settings-close,
 .bp-user #buddypress .profile #profile-edit-form .visibility-toggle-link {
-	background: #0073aa;
-	color: #fff;
+	background: #f1f1f1;
+	color: #111;
 	padding: 0.2em 0.5em;
 }
 
@@ -1387,13 +1410,17 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	* @subsection 6.2.2.5 - Private Messaging
 	*-------------------------------------------
 	*/
+.bp-user #buddypress .message-action-unstar span.icon:before {
+	color: #0073aa;
+}
+
 .bp-user #buddypress #message-thread a {
 	border-bottom: 0;
 }
 
 .bp-user #buddypress #message-thread #message-subject {
-	background: #0096dd;
-	color: #fff;
+	background: #fff;
+	color: #111;
 	padding: 0.3em 0 0.3em 0.2em;
 }
 
@@ -1445,19 +1472,39 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .bp-user #buddypress #message-threads thead tr {
-	background: #0096dd;
+	background: #e6e5e5;
+}
+
+.bp-user #buddypress #message-threads thead th.bulk-select-all {
+	position: relative;
+	border: none;
+	padding-top: 0;
+}
+
+.bp-user #buddypress #message-threads thead th.bulk-select-all label {
+	clip: auto;
+	overflow: visible;
+	display: block;
+	word-break: keep-all;
+	left: 30px;
+	top: 15px;
+	white-space: nowrap;
+	font-size: 0.5625em;
+}
+
+.bp-user #buddypress #message-threads tr {
+	border: solid 1px #b7b7b7;
 }
 
 .bp-user #buddypress #message-threads tr td {
 	background: #fff;
 	display: inline-block;
 	float: none;
+	border: none;
 }
 
 .bp-user #buddypress #message-threads tr td.thread-star,
 .bp-user #buddypress #message-threads tr td.thread-options {
-	border-bottom-color: #b7b7b7;
-	border-bottom-width: 2px;
 	height: 2.4em;
 	padding-bottom: 0.2em;
 	padding-top: 0.2em;
@@ -1473,6 +1520,14 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 .bp-user #buddypress #message-threads tr td.bulk-select-check,
 .bp-user #buddypress #message-threads tr td.thread-from {
 	height: 2.6em;
+}
+
+.bp-user #buddypress #message-threads tr td.bulk-select-check img.avatar,
+.bp-user #buddypress #message-threads tr td.thread-from img.avatar {
+	display: inline-block;
+	width: auto;
+	height: auto;
+	vertical-align: text-top;
 }
 
 @media screen and (max-width: 600px) {
@@ -1523,8 +1578,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 .bp-user #buddypress #message-threads tr.unread td {
 	background: #dce5ff;
-	border-color: #d1d0d0;
-	border-bottom-color: #b7b7b7;
+	border: none;
 }
 
 .bp-user #buddypress #message-threads th {
@@ -1585,8 +1639,8 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 .bp-user #buddypress #message-threads.sitewide-notices td strong {
-	background: #0096dd;
-	color: #fff;
+	background: #e6e5e5;
+	color: #111;
 	display: block;
 	margin-bottom: 0.4em;
 	padding-left: 0.2em;
@@ -1645,7 +1699,21 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	*/
 .bp-user #buddypress #settings-form > p {
 	font-size: 1.6875em;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+	-webkit-font-smoothing: antialiased;
 	margin: 20px 0 10px;
+}
+
+.bp-user #buddypress #settings-form > p:before {
+	background: #767676;
+	content: "\020";
+	display: block;
+	height: 2px;
+	margin: 1rem 0;
+	width: 1em;
 }
 
 .bp-user #buddypress table.notification-settings th.title {
@@ -1655,6 +1723,10 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 .bp-user #buddypress table.notification-settings td.yes,
 .bp-user #buddypress table.notification-settings td.no {
 	vertical-align: middle;
+}
+
+.bp-user #buddypress table.notification-settings td {
+	word-break: keep-all;
 }
 
 .bp-user #buddypress table.profile-settings {
@@ -1751,6 +1823,11 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 #buddypress .standard-form .radio label,
 #buddypress .group-create-form .radio label {
 	color: #111;
+}
+
+#buddypress .standard-form .editfield,
+#buddypress .group-create-form .editfield {
+	margin-bottom: 1em;
 }
 
 #buddypress div.dir-search,
@@ -1852,18 +1929,18 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 #buddypress table tr th {
-	background: #0096dd;
+	background: #e6e5e5;
 	border-color: #b7b7b7;
-	color: #fff;
+	color: #111;
 }
 
 #buddypress table p {
 	margin-bottom: 0.5em;
 }
 
-@media screen and (min-width: 55em) {
+@media screen and (min-width: 1168px) {
 	#buddypress table {
-		font-size: 1.125em;
+		font-size: 0.9em;
 	}
 }
 
@@ -1902,14 +1979,6 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	padding: 0;
 }
 
-#buddypress .notifications td .button,
-#buddypress .messages-notices td .button {
-	border: 0;
-	display: block;
-	padding: 0;
-	text-align: center;
-}
-
 /**
 *-------------------------------------------------------------------------------
 * @section 9.0 - Error / Success messages
@@ -1919,7 +1988,7 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	margin-top: 20px;
 }
 
-@media screen and (min-width: 55em) {
+@media screen and (min-width: 1168px) {
 	#buddypress #item-body div#message {
 		margin-right: 20px;
 	}
