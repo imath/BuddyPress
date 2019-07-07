@@ -136,6 +136,22 @@ $stripe-even:        #dbe5ff;
 $unread:             #dce5ff;
 $link-action:        #c82b2b;
 
+@mixin button($font-size: 1) {
+
+	@include headings-font();
+	@include font-size($font-size);
+	background-color: $bp-button;
+	color: $bp-button-text;
+	border: none;
+	transition: background 150ms ease-in-out;
+
+	&:hover {
+		color: $bp-button-text;
+		background-color: $bp-button-hover;
+		border: none;
+	}
+}
+
 /*------------------------------------------------------------------------------
 
 This is the BuddyPress companion stylesheet for
@@ -543,29 +559,28 @@ body.buddypress {
 			}
 
 			.item {
-				margin-left: 25%;
+				margin-left: 70px;
+
+				.item-title {
+
+					span.update {
+						display: block;
+					}
+				}
 
 				span.activity {
+					display: block;
 					font-style: italic;
 				}
 
 				.item-desc {
 					margin-left: 0;
-					width: 70%;
 				}
 			}
 
 			div.action {
-				clear: left;
-				float: none;
-				margin-bottom: -$spacing-val-md;
 				// remove BP margin left
 				margin-left: 0;
-				padding: $spacing-val-md 0 $spacing-val-xs;
-
-				position: relative;
-				text-align: left;
-				top: 0;
 
 				div {
 					display: inline-block;
@@ -575,9 +590,11 @@ body.buddypress {
 					a {
 						display: block;
 						width: 100%;
+
+						@include button(0.6);
+						@include border-radius(5px);
+						font-weight: 600;
 					}
-					// Provisionally lets keep the 'action' div
-					//position but inline-block the buttons
 
 					@media screen and (min-width: $mobile_width) {
 						// keep buttons to a row small tablet up
@@ -594,6 +611,13 @@ body.buddypress {
 			} // close .action
 
 		} // close li
+
+		li.bp-single-group {
+
+			.meta {
+				display: block;
+			}
+		}
 	} // close .item-list
 } // close #buddypress
 
@@ -838,7 +862,9 @@ body.buddypress {
 
 				img.avatar {
 					display: inline-block;
-					margin-bottom: 0 !important; // have to match to BP
+					vertical-align: text-top;
+					width: 20px;
+					height: 20px;
 				}
 			} // close .activity-header
 
@@ -851,6 +877,26 @@ body.buddypress {
 					@media screen and (min-width: $mobile_width) {
 						display: inline-block;
 						margin: 0;
+					}
+				}
+
+				a.button {
+					padding: 8px;
+				}
+
+				a.button.bp-secondary-action {
+					padding-bottom: 7px;
+				}
+
+				a.button.delete-activity,
+				a.button.delete-activity-single {
+					color: $link-action;
+					background-color: $bp-button-text;
+					border-color: $bp-button-text;
+
+					&:hover {
+						text-decoration: underline;
+						color: darken($link-action, 10%);
 					}
 				}
 			}
@@ -1110,6 +1156,20 @@ body.buddypress {
 
 			h2:before {
 				display: none;
+			}
+
+			#item-buttons {
+
+				.generic-button {
+
+					a {
+
+						@include button(0.6);
+						@include border-radius(5px);
+						font-weight: 600;
+						padding: 8px;
+					}
+				}
 			}
 		}
 
@@ -2252,17 +2312,7 @@ body.buddypress {
 	input[type="submit"],
 	input[type="button"] {
 
-		@include font-size(0.8);
-		color: $bp-button-text;
-		background-color: $bp-button;
-		transition: background 150ms ease-in-out;
-		border: none;
-
-		&:hover {
-			color: $bp-button-text;
-			background-color: $bp-button-hover;
-			border: none;
-		}
+		@include button(0.8);
 	}
 
 	div.activity-comments {
@@ -2315,6 +2365,17 @@ body.buddypress {
 		input[type="text"],
 		textarea {
 			width: 100%;
+		}
+
+		input[type="submit"],
+		input[type="button"]#group-creation-previous {
+			line-height: 1.2;
+			outline: none;
+			padding: 0.76rem 1rem;
+		}
+
+		.radio label {
+			color: $body-text;
 		}
 	}
 
@@ -2572,12 +2633,7 @@ body.buddypress {
 
 	a.button {
 
-		@include font-size(0.6);
-
-		color: $bp-button-text;
-		background-color: $bp-button;
-		transition: background 150ms ease-in-out;
-		border: none;
+		@include button(0.6);
 		padding: 8px;
 
 		span {
@@ -2586,21 +2642,23 @@ body.buddypress {
 		}
 
 		&:hover {
-			color: $bp-button-text;
-			background-color: $bp-button-hover;
-			border: none;
 
 			span {
 				color: $bp-button;
 				background-color: $bp-button-text;
 			}
 		}
-	}
 
-	div.activity-meta {
+		&.bp-secondary-action {
+			color: $bp-button;
+			background-color: $bp-button-text;
+			border: solid 1px $bp-button;
 
-		a.button {
-			padding: 8px;
+			&:hover {
+				color: $bp-button-text;
+				background-color: $bp-button-hover;
+				border-color: $bp-button-hover;
+			}
 		}
 	}
 }

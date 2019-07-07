@@ -317,27 +317,24 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 }
 
 #buddypress ul.item-list li .item {
-	margin-left: 25%;
+	margin-left: 70px;
+}
+
+#buddypress ul.item-list li .item .item-title span.update {
+	display: block;
 }
 
 #buddypress ul.item-list li .item span.activity {
+	display: block;
 	font-style: italic;
 }
 
 #buddypress ul.item-list li .item .item-desc {
 	margin-left: 0;
-	width: 70%;
 }
 
 #buddypress ul.item-list li div.action {
-	clear: left;
-	float: none;
-	margin-bottom: -20px;
 	margin-left: 0;
-	padding: 20px 0 5px;
-	position: relative;
-	text-align: left;
-	top: 0;
 }
 
 #buddypress ul.item-list li div.action div {
@@ -349,6 +346,21 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 #buddypress ul.item-list li div.action div a {
 	display: block;
 	width: 100%;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+	font-size: 0.675em;
+	background-color: #0073aa;
+	color: #fff;
+	border: none;
+	transition: background 150ms ease-in-out;
+	border-radius: 5px;
+	background-clip: padding-box;
+	font-weight: 600;
+}
+
+#buddypress ul.item-list li div.action div a:hover {
+	color: #fff;
+	background-color: #111;
+	border: none;
 }
 
 @media screen and (min-width: 600px) {
@@ -360,6 +372,10 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 #buddypress ul.item-list li div.action .meta {
 	font-style: italic;
+}
+
+#buddypress ul.item-list li.bp-single-group .meta {
+	display: block;
 }
 
 /**
@@ -539,7 +555,9 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 
 #buddypress #activity-stream .activity-content .activity-header img.avatar {
 	display: inline-block;
-	margin-bottom: 0 !important;
+	vertical-align: text-top;
+	width: 20px;
+	height: 20px;
 }
 
 #buddypress #activity-stream .activity-content .activity-meta a {
@@ -552,6 +570,27 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 		display: inline-block;
 		margin: 0;
 	}
+}
+
+#buddypress #activity-stream .activity-content .activity-meta a.button {
+	padding: 8px;
+}
+
+#buddypress #activity-stream .activity-content .activity-meta a.button.bp-secondary-action {
+	padding-bottom: 7px;
+}
+
+#buddypress #activity-stream .activity-content .activity-meta a.button.delete-activity,
+#buddypress #activity-stream .activity-content .activity-meta a.button.delete-activity-single {
+	color: #c82b2b;
+	background-color: #fff;
+	border-color: #fff;
+}
+
+#buddypress #activity-stream .activity-content .activity-meta a.button.delete-activity:hover,
+#buddypress #activity-stream .activity-content .activity-meta a.button.delete-activity-single:hover {
+	text-decoration: underline;
+	color: #9e2222;
 }
 
 #buddypress #activity-stream .load-more {
@@ -760,6 +799,27 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 .bp-user #buddypress #item-header-content h2:before,
 .single-item.groups #buddypress #item-header-content h2:before {
 	display: none;
+}
+
+.bp-user #buddypress #item-header-content #item-buttons .generic-button a,
+.single-item.groups #buddypress #item-header-content #item-buttons .generic-button a {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+	font-size: 0.675em;
+	background-color: #0073aa;
+	color: #fff;
+	border: none;
+	transition: background 150ms ease-in-out;
+	border-radius: 5px;
+	background-clip: padding-box;
+	font-weight: 600;
+	padding: 8px;
+}
+
+.bp-user #buddypress #item-header-content #item-buttons .generic-button a:hover,
+.single-item.groups #buddypress #item-header-content #item-buttons .generic-button a:hover {
+	color: #fff;
+	background-color: #111;
+	border: none;
 }
 
 .bp-user #buddypress #item-header-avatar img.avatar,
@@ -1629,11 +1689,12 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 */
 #buddypress input[type="submit"],
 #buddypress input[type="button"] {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 	font-size: 0.9em;
-	color: #fff;
 	background-color: #0073aa;
-	transition: background 150ms ease-in-out;
+	color: #fff;
 	border: none;
+	transition: background 150ms ease-in-out;
 }
 
 #buddypress input[type="submit"]:hover,
@@ -1676,6 +1737,20 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 #buddypress .group-create-form input[type="text"],
 #buddypress .group-create-form textarea {
 	width: 100%;
+}
+
+#buddypress .standard-form input[type="submit"],
+#buddypress .standard-form input[type="button"]#group-creation-previous,
+#buddypress .group-create-form input[type="submit"],
+#buddypress .group-create-form input[type="button"]#group-creation-previous {
+	line-height: 1.2;
+	outline: none;
+	padding: 0.76rem 1rem;
+}
+
+#buddypress .standard-form .radio label,
+#buddypress .group-create-form .radio label {
+	color: #111;
 }
 
 #buddypress div.dir-search,
@@ -1879,17 +1954,13 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 *-------------------------------------------------------------------------------
 */
 #buddypress a.button {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 	font-size: 0.675em;
-	color: #fff;
 	background-color: #0073aa;
-	transition: background 150ms ease-in-out;
+	color: #fff;
 	border: none;
+	transition: background 150ms ease-in-out;
 	padding: 8px;
-}
-
-#buddypress a.button span {
-	color: #0073aa;
-	background-color: #fff;
 }
 
 #buddypress a.button:hover {
@@ -1898,11 +1969,24 @@ http://codex.buddypress.org/themes/buddypress-companion-stylesheets/
 	border: none;
 }
 
+#buddypress a.button span {
+	color: #0073aa;
+	background-color: #fff;
+}
+
 #buddypress a.button:hover span {
 	color: #0073aa;
 	background-color: #fff;
 }
 
-#buddypress div.activity-meta a.button {
-	padding: 8px;
+#buddypress a.button.bp-secondary-action {
+	color: #0073aa;
+	background-color: #fff;
+	border: solid 1px #0073aa;
+}
+
+#buddypress a.button.bp-secondary-action:hover {
+	color: #fff;
+	background-color: #111;
+	border-color: #111;
 }
