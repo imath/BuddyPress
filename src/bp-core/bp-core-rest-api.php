@@ -135,8 +135,6 @@ function bp_rest_version() {
 /**
  * Get user URL.
  *
- * @todo Update members path to the filterable one.
- *
  * @since 5.0.0
  *
  * @param  int $user_id User ID.
@@ -334,4 +332,61 @@ function bp_rest_get_user( $user_id ) {
 	}
 
 	return $user;
+}
+
+/**
+ * Registers a new field on an existing BuddyPress object.
+ *
+ * @since 5.0.0
+ *
+ * @param string $component_id The name of the *active* component (eg: `activity`, `groups`, `xprofile`).
+ *                             Required.
+ * @param string $attribute    The attribute name. Required.
+ * @param array  $args {
+ *     Optional. An array of arguments used to handle the registered field.
+ *     @see `register_rest_field()` for a full description.
+ * }
+ * @param string $object_type  The xProfile object type to get. This parameter is only required for
+ *                             the Extended Profiles component. Not used for all other components.
+ *                             Possible values are `data`, `field` or `group`.
+ * @return bool                True if the field has been registered successfully. False otherwise.
+ */
+function bp_rest_register_field( $component_id, $attribute, $args = array(), $object_type = '' ) {
+	$registered_fields = false;
+
+	if ( ! $component_id || ! bp_is_active( $component_id ) || ! $attribute ) {
+		return $registered_fields;
+	}
+
+	// Use the `bp_` prefix as we're using a WordPress global used for Post Types.
+	$field_name = 'bp_' . $component_id;
+
+	// Use the meta type as a suffix for the field name.
+	if ( 'xprofile' === $component_id ) {
+		if ( ! in_array( $object_type, array( 'data', 'field', 'group' ), true ) ) {
+			return $registered_fields;
+		}
+
+		$field_name .= '_' . $object_type;
+	}
+
+	$args = bp_parse_args(
+		$args,
+		array(
+			'get_callback'    => null,
+			'update_callback' => null,
+			'schema'          => null,
+		),
+		'rest_register_field'
+	);
+
+	// Register the field.
+	register_rest_field( $field_name, $attribute, $args );
+
+	if ( isset( $GLOBALS['wp_rest_additional_fields'][ $field_name ] ) ) {
+		$registered_fields = $GLOBALS['wp_rest_additional_fields'][ $field_name ];
+	}
+
+	// Check it has been registered.
+	return isset( $registered_fields[ $attribute ] );
 }
