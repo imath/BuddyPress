@@ -891,6 +891,11 @@ function bp_the_profile_field_visibility_level_label() {
 
 		$fields = bp_xprofile_get_visibility_levels();
 
+		// Fallback on public if the level does not exist.
+		if ( ! isset( $fields[ $level ]['label'] ) ) {
+			$level = 'public';
+		}
+
 		/**
 		 * Filters the profile field visibility level label.
 		 *

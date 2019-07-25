@@ -496,7 +496,7 @@ function xprofile_set_field_visibility_level( $field_id = 0, $user_id = 0, $visi
 	// Stored in an array in usermeta.
 	$current_visibility_levels = bp_get_user_meta( $user_id, 'bp_xprofile_visibility_levels', true );
 
-	if ( !$current_visibility_levels ) {
+	if ( ! is_array( $current_visibility_levels ) ) {
 		$current_visibility_levels = array();
 	}
 
@@ -1284,6 +1284,9 @@ function bp_xprofile_get_fields_by_visibility_levels( $user_id, $levels = array(
 	}
 
 	$user_visibility_levels = bp_get_user_meta( $user_id, 'bp_xprofile_visibility_levels', true );
+	if ( ! is_array( $user_visibility_levels ) ) {
+		$user_visibility_levels = array();
+	}
 
 	// Parse the user-provided visibility levels with the default levels, which may take
 	// precedence.

@@ -1143,6 +1143,13 @@ class BP_Admin {
 				'dependencies' => array(),
 				'footer'       => true,
 			),
+
+			// 5.0
+			'bp-warning-js' => array(
+				'file'         => "{$url}warning{$min}.js",
+				'dependencies' => array(),
+				'footer'       => true,
+			),
 		) );
 
 		$version = bp_get_version();

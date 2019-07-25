@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 2.0.0
  */
 function bp_core_admin_tools() {
+	$warnings = array();
 	?>
 	<div class="wrap">
 
@@ -26,14 +27,20 @@ function bp_core_admin_tools() {
 		</p>
 		<p class="description"><?php esc_html_e( 'Some of these tools create substantial database overhead. Avoid running more than one repair job at a time.', 'buddypress' ); ?></p>
 
-		<form class="settings" method="post" action="">
+		<form class="settings" method="post" action="" id="bp-admin-repair-tools">
 
 			<fieldset>
 				<legend><?php esc_html_e( 'Repair tools', 'buddypress' ) ?></legend>
 
 				<div class="checkbox">
-				<?php foreach ( bp_admin_repair_list() as $item ) : ?>
-					<label for="<?php echo esc_attr( str_replace( '_', '-', $item[0] ) ); ?>"><input type="checkbox" class="checkbox" name="<?php echo esc_attr( $item[0] ) . '" id="' . esc_attr( str_replace( '_', '-', $item[0] ) ); ?>" value="1" /> <?php echo esc_html( $item[1] ); ?></label>
+				<?php foreach ( bp_admin_repair_list() as $item ) :
+					$repair_id = esc_attr( str_replace( '_', '-', $item[0] ) );
+
+					if ( isset( $item[3] ) ) {
+						$warnings[ $repair_id ] = esc_html( $item[3] );
+					}	
+				?>
+					<label for="<?php echo esc_attr( str_replace( '_', '-', $item[0] ) ); ?>"><input type="checkbox" class="checkbox" name="<?php echo esc_attr( $item[0] ) . '" id="' . $repair_id; ?>" value="1" /> <?php echo esc_html( $item[1] ); ?></label>
 				<?php endforeach; ?>
 				</div>
 
@@ -49,6 +56,16 @@ function bp_core_admin_tools() {
 	</div>
 
 	<?php
+	// Adds a JavaScript confirmation prompt if needed.
+	if ( $warnings ) {
+		wp_enqueue_script( 'bp-warning-js' );
+		wp_localize_script( 'bp-warning-js', 'bpAdminRepairStrings', array(
+			'warnings' => $warnings,
+			'title'    => _n( esc_html__( 'Warning!', 'buddypress' ), esc_html__( 'Warnings!', 'buddypress' ), count( $warnings ) ),
+			'confirm'  => esc_html__( 'Do you confirm?', 'buddypress' ),
+			'formId'   => 'bp-admin-repair-tools',
+		) );
+	}
 }
 
 /**
@@ -146,6 +163,17 @@ function bp_admin_repair_list() {
 		__( 'Reinstall emails (delete and restore from defaults).', 'buddypress' ),
 		'bp_admin_reinstall_emails',
 	);
+
+	// Extended profiles:
+	// - Reset custom field visibilities for all users.
+	if ( bp_is_active( 'xprofile' ) ) {
+		$repair_list[110] = array(
+			'bp-xprofile-user-visibilities',
+			__( 'Remove custom field visibilities for all users.', 'buddypress' ),
+			'bp_admin_repair_xprofile_field_visibilities',
+			__( 'You selected a repair tool that will completely erase all users custom visibilities.', 'buddypress' ),
+		);
+	}
 
 	ksort( $repair_list );
 
@@ -567,3 +595,16 @@ function bp_core_admin_debug_information( $debug_info = array() ) {
 	return $debug_info;
 }
 add_filter( 'debug_information', 'bp_core_admin_debug_information' );
+
+/**
+ * Remove custom field visibilities for all users.
+ *
+ * @since 5.0.0
+ *
+ * @return array
+ */
+function bp_admin_repair_xprofile_field_visibilities() {
+	$statement = __( 'Removing custom field visibilities for all users&hellip; %s', 'buddypress' );
+	delete_metadata( 'user', 0, 'bp_xprofile_visibility_levels', '', true );
+	return array( 0, sprintf( $statement, __( 'Complete!', 'buddypress' ) ) );
+}
