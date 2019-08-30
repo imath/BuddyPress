@@ -619,69 +619,67 @@ class BP_Admin {
 		}
 	?>
 
-		<div id="bp-hello-backdrop" style="display: none;">
-		</div>
-
-		<div id="bp-hello-container" role="dialog" aria-labelledby="bp-hello-title" style="display: none;">
-			<div class="bp-hello-header" role="document">
-				<div class="bp-hello-close">
-					<button type="button" class="close-modal button bp-tooltip" data-bp-tooltip="<?php esc_attr_e( 'Close pop-up', 'buddypress' ); ?>">
-						<span class="screen-reader-text"><?php esc_html_e( 'Close pop-up', 'buddypress' ); ?></span>
-					</button>
+		<div id="bp-hello-container">
+			<div id="plugin-information-scrollable">
+				<div id='plugin-information-title' class="with-banner">
+					<div class='vignette'></div>
+					<h2><?php esc_html_e( 'BuddyPress', 'buddypress' ); ?></h2>
+				</div>
+				<div id="plugin-information-tabs">
+					<a name="whats-new" href="#whats-new" class="current"><?php printf( esc_html__( 'What\'s new in %s?', 'buddypress' ), bp_get_version() ); ?></a>
+					<a name="changelog" href="#changelog" class="dynamic" data-endpoint="https://codex.buddypress.org/wp-json/wp/v2/pages"><?php esc_html_e( 'Changelog', 'buddypress' ); ?></a>
 				</div>
 
-				<div class="bp-hello-title">
-					<h1 id="bp-hello-title" tabindex="-1"><?php echo esc_html( _x( 'New in BuddyPress', 'section heading', 'buddypress' ) ); ?></h1>
+				<div class="bp-hello-content">
+					<div id="dynamic-content"></div>
+					<div id="top-features">
+						<h2><?php esc_html_e( 'New tools for data control and privacy', 'buddypress' ); ?></h2>
+						<p>
+							<?php esc_html_e( 'BuddyPress boasts a proud history of letting community members and managers control their data, independent of third-party, commercial entities. In this spirit, as well as the spirit of recent regulations like the EU\'s General Data Protection Regulation (GDPR), BuddyPress 4.0 introduces a suite of tools allowing users and site admins to manage member data and privacy.', 'buddypress' ); ?>
+						</p>
+
+						<figure class="bp-hello-alignright">
+							<img class="bp-hello-img-border" src="<?php echo esc_url( buddypress()->plugin_url . 'bp-core/images/data-export.png' ); ?>" alt="<?php esc_attr_e( 'Screenshot of Export Data settings panel', 'buddypress' ); ?>" />
+							<figcaption>
+								<?php esc_html_e( 'Improved user control over data exports', 'buddypress' ); ?>
+							</figcaption>
+						</figure>
+
+						<p><?php esc_html_e( 'The new "Export Data" Settings panel lets users request an export of all BuddyPress data they\'ve created. BuddyPress integrates seamlessly with the data export functionality introduced in WordPress 4.9.8, and BP data is included in exports that are initiated either from the Export Data panel or via WP\'s Tools > Export Personal Data interface.', 'buddypress' ); ?></p>
+
+						<p><?php esc_html_e( 'BuddyPress 4.0 also integrates with WordPress 4.9.8\'s Privacy Policy tools. When you create or update your Privacy Policy, BP will suggest text that\'s specifically tailored to the kinds of social data generated on a BuddyPress site. And will prompt registering users to agree to the Privacy Policy, if your theme supports it.', 'buddypress' ); ?></p>
+
+						<h2><?php esc_html_e( 'Nouveau template improvements', 'buddypress' ); ?></h2>
+						<p><?php esc_html_e( 'BuddyPress 3.0 introduced a new set of default templates, which we call "Nouveau". In 4.0, we\'ve fixed bugs and smoothed the edges in these templates, including more accessible markup and improved appearance on mobile devices.', 'buddypress' ); ?></p>
+
+						<h2><?php esc_html_e( "BuddyPress: leaner, faster, stronger", 'buddypress' ); ?></h2>
+						<p><?php esc_html_e( 'With every BuddyPress version, we strive to make internal improvements to performance and code quality in addition to introducing new features and fixes. In BuddyPress 4.0, we\'ve improved PHP compatibility both in our codebase and in our automated testing tools; we\'ve reworked some automated tests for faster performance; we\'ve ensured compatibility with upcoming changes in WordPress; and we\'ve fixed a number of bugs in the formatting and sending of emails.', 'buddypress' ); ?></p>
+
+						<p><em>
+							<?php
+							printf(
+								__( 'To read the full list of features, fixes, and changes in this version of BuddyPress, <a href="%s">visit Trac</a>.', 'buddypress' ),
+								esc_url( 'https://buddypress.trac.wordpress.org/query?group=status&milestone=4.0' )
+							);
+							?>
+						</em></p>
+
+						<h2><?php echo esc_html( _x( 'Your feedback', 'screen heading', 'buddypress' ) ); ?></h2>
+						<p>
+							<?php
+							printf(
+								__( ' How are you using BuddyPress? Receiving your feedback and suggestions for future versions of BuddyPress genuinely motivates and encourages our contributors. Please <a href="%s">share your feedback</a> about this version of BuddyPress on our website. ', 'buddypress' ),
+								esc_url( 'https://buddypress.org/support/' )
+							);
+							?>
+						</p>
+						<p><?php esc_html_e( 'Thank you for using BuddyPress! 😊', 'buddypress' ); ?></p>
+
+						<br /><br />
+					</div>
 				</div>
 			</div>
-
-			<div class="bp-hello-content">
-				<h2><?php esc_html_e( 'New tools for data control and privacy', 'buddypress' ); ?></h2>
-				<p>
-					<?php esc_html_e( 'BuddyPress boasts a proud history of letting community members and managers control their data, independent of third-party, commercial entities. In this spirit, as well as the spirit of recent regulations like the EU\'s General Data Protection Regulation (GDPR), BuddyPress 4.0 introduces a suite of tools allowing users and site admins to manage member data and privacy.', 'buddypress' ); ?>
-				</p>
-
-				<figure class="bp-hello-alignright">
-					<img class="bp-hello-img-border" src="<?php echo esc_url( buddypress()->plugin_url . 'bp-core/images/data-export.png' ); ?>" alt="<?php esc_attr_e( 'Screenshot of Export Data settings panel', 'buddypress' ); ?>" />
-					<figcaption>
-						<?php esc_html_e( 'Improved user control over data exports', 'buddypress' ); ?>
-					</figcaption>
-				</figure>
-
-				<p><?php esc_html_e( 'The new "Export Data" Settings panel lets users request an export of all BuddyPress data they\'ve created. BuddyPress integrates seamlessly with the data export functionality introduced in WordPress 4.9.8, and BP data is included in exports that are initiated either from the Export Data panel or via WP\'s Tools > Export Personal Data interface.', 'buddypress' ); ?></p>
-
-				<p><?php esc_html_e( 'BuddyPress 4.0 also integrates with WordPress 4.9.8\'s Privacy Policy tools. When you create or update your Privacy Policy, BP will suggest text that\'s specifically tailored to the kinds of social data generated on a BuddyPress site. And will prompt registering users to agree to the Privacy Policy, if your theme supports it.', 'buddypress' ); ?></p>
-
-				<h2><?php esc_html_e( 'Nouveau template improvements', 'buddypress' ); ?></h2>
-				<p><?php esc_html_e( 'BuddyPress 3.0 introduced a new set of default templates, which we call "Nouveau". In 4.0, we\'ve fixed bugs and smoothed the edges in these templates, including more accessible markup and improved appearance on mobile devices.', 'buddypress' ); ?></p>
-
-				<h2><?php esc_html_e( "BuddyPress: leaner, faster, stronger", 'buddypress' ); ?></h2>
-				<p><?php esc_html_e( 'With every BuddyPress version, we strive to make internal improvements to performance and code quality in addition to introducing new features and fixes. In BuddyPress 4.0, we\'ve improved PHP compatibility both in our codebase and in our automated testing tools; we\'ve reworked some automated tests for faster performance; we\'ve ensured compatibility with upcoming changes in WordPress; and we\'ve fixed a number of bugs in the formatting and sending of emails.', 'buddypress' ); ?></p>
-
-				<p><em>
-					<?php
-					printf(
-						__( 'To read the full list of features, fixes, and changes in this version of BuddyPress, <a href="%s">visit Trac</a>.', 'buddypress' ),
-						esc_url( 'https://buddypress.trac.wordpress.org/query?group=status&milestone=4.0' )
-					);
-					?>
-				</em></p>
-
-				<h2><?php echo esc_html( _x( 'Your feedback', 'screen heading', 'buddypress' ) ); ?></h2>
-				<p>
-					<?php
-					printf(
-						__( ' How are you using BuddyPress? Receiving your feedback and suggestions for future versions of BuddyPress genuinely motivates and encourages our contributors. Please <a href="%s">share your feedback</a> about this version of BuddyPress on our website. ', 'buddypress' ),
-						esc_url( 'https://buddypress.org/support/' )
-					);
-					?>
-				</p>
-				<p><?php esc_html_e( 'Thank you for using BuddyPress! 😊', 'buddypress' ); ?></p>
-
-				<br /><br />
-			</div>
-
-			<div class="bp-hello-footer">
+			<div id="plugin-information-footer">
 				<div class="bp-hello-social-cta">
 					<p>
 						<?php
@@ -1097,7 +1095,7 @@ class BP_Admin {
 			// 3.0
 			'bp-hello-css' => array(
 				'file'         => "{$url}hello{$min}.css",
-				'dependencies' => array( 'bp-admin-common-css' ),
+				'dependencies' => array( 'bp-admin-common-css', 'thickbox' ),
 			),
 		) );
 
@@ -1140,7 +1138,7 @@ class BP_Admin {
 			// 3.0
 			'bp-hello-js' => array(
 				'file'         => "{$url}hello{$min}.js",
-				'dependencies' => array(),
+				'dependencies' => array( 'thickbox', 'wp-util' ),
 				'footer'       => true,
 			),
 		) );
