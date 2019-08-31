@@ -627,7 +627,8 @@ class BP_Admin {
 				</div>
 				<div id="plugin-information-tabs">
 					<a name="whats-new" href="#whats-new" class="current"><?php printf( esc_html__( 'What\'s new in %s?', 'buddypress' ), bp_get_version() ); ?></a>
-					<a name="changelog" href="#changelog" class="dynamic" data-endpoint="https://codex.buddypress.org/wp-json/wp/v2/pages"><?php esc_html_e( 'Changelog', 'buddypress' ); ?></a>
+					<a name="changelog" href="#changelog" class="dynamic" data-slug="version-4-4-0" data-endpoint="https://codex.buddypress.org/wp-json/wp/v2/pages"><?php esc_html_e( 'Changelog', 'buddypress' ); ?></a>
+					<a name="get-involved" href="#get-involved" class="dynamic" data-slug="participate-and-contribute" data-endpoint="https://codex.buddypress.org/wp-json/wp/v2/pages"><?php esc_html_e( 'Get involved', 'buddypress' ); ?></a>
 				</div>
 
 				<div class="bp-hello-content">
@@ -684,7 +685,8 @@ class BP_Admin {
 					<p>
 						<?php
 						printf(
-							_n( 'Built by <a href="%s">%s volunteer</a>.', 'Built by <a href="%s">%s volunteers</a>.', 35, 'buddypress' ),
+							_n( 'Built with %1$s by <a href="%2$s">%3$d volunteer</a>.', 'Built with %1$s by <a href="%2$s">%3$d volunteers</a>.', 35, 'buddypress' ),
+							'<span class="dashicons dashicons-heart"></span>',
 							esc_url( bp_get_admin_url( 'admin.php?page=bp-credits' ) ),
 							number_format_i18n( 35 )
 						);
@@ -1138,7 +1140,7 @@ class BP_Admin {
 			// 3.0
 			'bp-hello-js' => array(
 				'file'         => "{$url}hello{$min}.js",
-				'dependencies' => array( 'thickbox', 'wp-util' ),
+				'dependencies' => array( 'thickbox', 'bp-api-request' ),
 				'footer'       => true,
 			),
 		) );
