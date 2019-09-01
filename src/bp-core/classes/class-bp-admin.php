@@ -540,6 +540,9 @@ class BP_Admin {
 		if ( 0 === strpos( get_current_screen()->id, 'dashboard' ) && ! empty( $_GET['hello'] ) && $_GET['hello'] === 'buddypress' ) {
 			wp_enqueue_style( 'bp-hello-css' );
 			wp_enqueue_script( 'bp-hello-js' );
+			wp_localize_script( 'bp-hello-js', 'bpHelloStrings', array(
+				'pageNotFound' => __( 'Sorry, the page you requested was not found', 'buddypress' ),
+			) );
 		}
 	}
 
@@ -617,6 +620,10 @@ class BP_Admin {
 		if ( 0 !== strpos( get_current_screen()->id, 'dashboard' ) || empty( $_GET['hello'] ) || $_GET['hello'] !== 'buddypress' ) {
 			return;
 		}
+
+		// Get BuddyPress stable version.
+		$version      =  preg_replace( '/-.*/', '', bp_get_version() );
+		$version_slug = 'version-' . str_replace( '.', '-', $version );
 	?>
 
 		<div id="bp-hello-container">
@@ -626,8 +633,8 @@ class BP_Admin {
 					<h2><?php esc_html_e( 'BuddyPress', 'buddypress' ); ?></h2>
 				</div>
 				<div id="plugin-information-tabs">
-					<a name="whats-new" href="#whats-new" class="current"><?php printf( esc_html__( 'What\'s new in %s?', 'buddypress' ), bp_get_version() ); ?></a>
-					<a name="changelog" href="#changelog" class="dynamic" data-slug="version-4-4-0" data-endpoint="https://codex.buddypress.org/wp-json/wp/v2/pages"><?php esc_html_e( 'Changelog', 'buddypress' ); ?></a>
+					<a name="whats-new" href="#whats-new" class="current"><?php printf( esc_html__( 'What\'s new in %s?', 'buddypress' ), $version ); ?></a>
+					<a name="changelog" href="#changelog" class="dynamic" data-slug="<?php echo esc_attr( $version_slug ); ?>" data-endpoint="https://codex.buddypress.org/wp-json/wp/v2/pages"><?php esc_html_e( 'Changelog', 'buddypress' ); ?></a>
 					<a name="get-involved" href="#get-involved" class="dynamic" data-slug="participate-and-contribute" data-endpoint="https://codex.buddypress.org/wp-json/wp/v2/pages"><?php esc_html_e( 'Get involved', 'buddypress' ); ?></a>
 				</div>
 

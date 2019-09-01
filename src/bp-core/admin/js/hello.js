@@ -4,10 +4,15 @@
  * @since 3.0.0
  */
 (function( $, bp ) {
+	// Bail if not set
+	if ( typeof bpHelloStrings === 'undefined' ) {
+		return;
+	}
+
 	/**
 	 * Open the BuddyPress Hello modal.
 	 */
-	var bp_hello_open_modal = function() {
+	var bpHelloOpenModal = function() {
 		if ( 'function' !== typeof window.tb_show ) {
 			return false;
 		}
@@ -21,9 +26,29 @@
 						.addClass( 'plugin-details-modal' )
 						.removeClass( 'thickbox-loading' );
 
-		$("#TB_ajaxContent").prop( 'style', 'height: 100%; width: auto; padding: 0; border: none;' );
+		$( '#TB_ajaxContent' ).prop( 'style', 'height: 100%; width: auto; padding: 0; border: none;' );
 	};
 
+	/**
+	 * Prints an error message.
+	 *
+	 * @param {string} message The error message to display.
+	 */
+	var printErrorMessage = function( message ) {
+		if ( ! message ) {
+			message = bpHelloStrings.pageNotFound;
+		}
+
+		$( '#dynamic-content' ).html(
+			$('<div></div>' ).prop( 'id', 'message' )
+					.addClass( 'notice notice-error error' )
+					.html(
+						$( '<p></p>' ).html( message )
+					)
+		);
+	};
+
+	// Listen to Tab Menu clicks to display the different screens.
 	$( '#plugin-information-tabs').on( 'click', 'a', function( event ) {
 		event.preventDefault();
 
@@ -49,12 +74,24 @@
 				}
 			} ).done( function( data ) {
 				var page = _.first( data );
-				target.html( page.content.rendered );
 
-				$( '#TB_window' ).removeClass( 'thickbox-loading' );
+				if ( page && page.content ) {
+					target.html( page.content.rendered );
+				} else {
+					printErrorMessage();
+				}
+
 			} ).fail( function( error ) {
-				console.log( error );
+				if ( ! error || ! error.message ) {
+					return false;
+				}
+
+				printErrorMessage( error.message );
+
+			} ).always( function() {
+				$( '#TB_window' ).removeClass( 'thickbox-loading' );
 			} );
+
 		} else {
 			$( '#top-features' ).show();
 			target.html( '' );
@@ -64,6 +101,7 @@
 
 	// Init modal after the screen's loaded.
 	$( document ).ready( function() {
-		bp_hello_open_modal();
-	} )
+		bpHelloOpenModal();
+	} );
+
 }( jQuery, window.bp || {} ) );
