@@ -630,10 +630,10 @@ class BP_Admin {
 			<div id="plugin-information-scrollable">
 				<div id='plugin-information-title' class="with-banner">
 					<div class='vignette'></div>
-					<h2><?php esc_html_e( 'BuddyPress', 'buddypress' ); ?></h2>
+					<h2><?php printf( esc_html__( 'BuddyPress %s', 'buddypress' ), $version ); ?></h2>
 				</div>
 				<div id="plugin-information-tabs">
-					<a name="whats-new" href="#whats-new" class="current"><?php printf( esc_html__( 'What\'s new in %s?', 'buddypress' ), $version ); ?></a>
+					<a name="whats-new" href="#whats-new" class="current"><?php esc_html_e( 'What\'s new?', 'buddypress' ); ?></a>
 					<a name="changelog" href="#changelog" class="dynamic" data-slug="<?php echo esc_attr( $version_slug ); ?>" data-endpoint="https://codex.buddypress.org/wp-json/wp/v2/pages"><?php esc_html_e( 'Changelog', 'buddypress' ); ?></a>
 					<a name="get-involved" href="#get-involved" class="dynamic" data-slug="participate-and-contribute" data-endpoint="https://codex.buddypress.org/wp-json/wp/v2/pages"><?php esc_html_e( 'Get involved', 'buddypress' ); ?></a>
 				</div>
@@ -641,36 +641,88 @@ class BP_Admin {
 				<div class="bp-hello-content">
 					<div id="dynamic-content"></div>
 					<div id="top-features">
-						<h2><?php esc_html_e( 'New tools for data control and privacy', 'buddypress' ); ?></h2>
+						<h2><?php esc_html_e( 'Introducing the BP REST API', 'buddypress' ); ?></h2>
+						<figure class="bp-hello-alignleft">
+							<div class="dashicons dashicons-rest-api big"></div>
+						</figure>
 						<p>
-							<?php esc_html_e( 'BuddyPress boasts a proud history of letting community members and managers control their data, independent of third-party, commercial entities. In this spirit, as well as the spirit of recent regulations like the EU\'s General Data Protection Regulation (GDPR), BuddyPress 4.0 introduces a suite of tools allowing users and site admins to manage member data and privacy.', 'buddypress' ); ?>
+							<?php esc_html_e( 'BuddyPress 5.0.0 comes with REST API endpoints for members, groups, activities, users, private messages, screen notifications and extended profiles', 'buddypress' ); ?>
+							<?php esc_html_e( '(The remaining endpoints are planned to ship in our next major release).', 'buddypress' ); ?>
+						</p>
+						<p>
+							<?php esc_html_e( 'BuddyPress endpoints provide machine-readable external access to your WordPress site with a clear, standards-driven interface, paving the way for new and innovative methods of interacting with your community through plugins, themes, apps, and beyond.', 'buddypress' ); ?>
+							<?php printf(
+								esc_html__( 'Ready to get started with development? Check out the %s.', 'buddypress' ),
+								sprintf(
+									'<a href="%1$s">%2$s</a>',
+									'https://imath-buddydocs.pf1.wpserveur.net/bp-rest-api/', // @todo replace with the URL to the definitive site.
+									esc_html__( 'BP REST API reference', 'buddypress' )
+								)
+							); ?>
 						</p>
 
-						<figure class="bp-hello-alignright">
-							<img class="bp-hello-img-border" src="<?php echo esc_url( buddypress()->plugin_url . 'bp-core/images/data-export.png' ); ?>" alt="<?php esc_attr_e( 'Screenshot of Export Data settings panel', 'buddypress' ); ?>" />
-							<figcaption>
-								<?php esc_html_e( 'Improved user control over data exports', 'buddypress' ); ?>
-							</figcaption>
+						<hr class="bp-hello-divider"/>
+
+						<h2><?php esc_html_e( 'A new UI to manage Group members.', 'buddypress' ); ?></h2>
+						<p>
+							<?php esc_html_e( 'The best way to show the great powers of the BP REST API is to start using it for one of our Core features.', 'buddypress' ); ?>
+						</p>
+						<figure class="bp-hello-aligncenter">
+							<img src="https://cldup.com/5YjHovFxjy.png" alt="<?php esc_attr_e( 'Screenshot of the Group Members management interface in the administration and on the front-end of your site.', 'buddypress' ); ?>" />
 						</figure>
+						<p>
+							<?php esc_html_e( 'Whether you need to manage group members from the group screen of your WordPress Administration or from the single group management area on front-end: it\'s now more dynamic & faster in both places.', 'buddypress' ); ?>
+							<?php esc_html_e( 'Thanks to the BP REST API and JavaScript, the same UI is used in both contexts!', 'buddypress' ); ?>
+						</p>
 
-						<p><?php esc_html_e( 'The new "Export Data" Settings panel lets users request an export of all BuddyPress data they\'ve created. BuddyPress integrates seamlessly with the data export functionality introduced in WordPress 4.9.8, and BP data is included in exports that are initiated either from the Export Data panel or via WP\'s Tools > Export Personal Data interface.', 'buddypress' ); ?></p>
+						<hr class="bp-hello-divider"/>
 
-						<p><?php esc_html_e( 'BuddyPress 4.0 also integrates with WordPress 4.9.8\'s Privacy Policy tools. When you create or update your Privacy Policy, BP will suggest text that\'s specifically tailored to the kinds of social data generated on a BuddyPress site. And will prompt registering users to agree to the Privacy Policy, if your theme supports it.', 'buddypress' ); ?></p>
+						<h2><?php esc_html_e( 'Improved Group invites and membership requests.', 'buddypress' ); ?></h2>
+						<figure class="bp-hello-alignright">
+							<div class="dashicons dashicons-buddicons-groups big"></div>
+						</figure>
+						<p>
+							<?php esc_html_e( 'Thanks to the new BP Invitations API, Group invites and membership requests are now managed in a more consistent way.', 'buddypress' ); ?>
+						</p>
+						<p>
+							<?php esc_html_e( 'The BP Invitations API abstracts how these two actions are handled and allow developers to use them for any object of your site (eg: Sites of a WordPress network).', 'buddypress' ); ?>
+						</p>
 
-						<h2><?php esc_html_e( 'Nouveau template improvements', 'buddypress' ); ?></h2>
-						<p><?php esc_html_e( 'BuddyPress 3.0 introduced a new set of default templates, which we call "Nouveau". In 4.0, we\'ve fixed bugs and smoothed the edges in these templates, including more accessible markup and improved appearance on mobile devices.', 'buddypress' ); ?></p>
+						<hr class="bp-hello-divider"/>
 
-						<h2><?php esc_html_e( "BuddyPress: leaner, faster, stronger", 'buddypress' ); ?></h2>
+						<h2><?php esc_html_e( 'Help our support volunteers help you.', 'buddypress' ); ?></h2>
+						<p>
+							<?php esc_html_e( 'Knowing your WordPress & BuddyPress configuration is very important when one of our beloved support volunteers tries to help you fix an issue. That\'s why we added a BuddyPress section to the Site Health Info Administration screen.', 'buddypress' ); ?>
+						</p>
+						<figure class="bp-hello-aligncenter">
+							<img src="https://cldup.com/tSdzjxw2RK.png" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress section of the Site Health Info Administration screen.', 'buddypress' ); ?>" />
+						</figure>
+						<p>
+							<?php esc_html_e( 'The panel is displayed at the bottom of the screen. It includes the BuddyPress version, active components, active template pack, and a list of other component-specific settings information.', 'buddypress' ); ?>
+						</p>
+
+						<hr class="bp-hello-divider"/>
+
+						<h2><?php esc_html_e( 'Improved Integrations with WordPress', 'buddypress' ); ?></h2>
+						<figure class="bp-hello-alignright">
+							<img src="https://cldup.com/Syt_c1aw7A.png" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress members directory in Twenty Ninteen.', 'buddypress' ); ?>" />
+						</figure>
+						<h3><?php esc_html_e( 'The BP Nouveau template pack looks great in Twenty Nineteen!', 'buddypress' ); ?></h3>
 						<p><?php esc_html_e( 'With every BuddyPress version, we strive to make internal improvements to performance and code quality in addition to introducing new features and fixes. In BuddyPress 4.0, we\'ve improved PHP compatibility both in our codebase and in our automated testing tools; we\'ve reworked some automated tests for faster performance; we\'ve ensured compatibility with upcoming changes in WordPress; and we\'ve fixed a number of bugs in the formatting and sending of emails.', 'buddypress' ); ?></p>
 
-						<p><em>
-							<?php
-							printf(
-								__( 'To read the full list of features, fixes, and changes in this version of BuddyPress, <a href="%s">visit Trac</a>.', 'buddypress' ),
-								esc_url( 'https://buddypress.trac.wordpress.org/query?group=status&milestone=4.0' )
-							);
-							?>
-						</em></p>
+						<figure class="bp-hello-alignleft">
+							<img src="https://cldup.com/FFF6Ergbi0.png" alt="<?php esc_attr_e( 'Screenshot of the Password control.', 'buddypress' ); ?>" />
+						</figure>
+						<h3><?php esc_html_e( 'The BP Nouveau template pack is now using the same password control as the one used in WordPress Core.', 'buddypress' ); ?></h3>
+						<p><?php esc_html_e( 'Your members will now be able to set their passwords using WordPress’ interface on the registration page and on the user’s general settings page.', 'buddypress' ); ?>
+
+						<figure class="bp-hello-alignright">
+							<img src="https://cldup.com/gtIaHT6wnQ.png" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress block category.', 'buddypress' ); ?>" />
+						</figure>
+						<h3><?php esc_html_e( 'A category for Storing BuddyPress Blocks', 'buddypress' ); ?></h3>
+						<p><?php esc_html_e( 'With every BuddyPress version, we strive to make internal improvements to performance and code quality in addition to introducing new features and fixes. In BuddyPress 4.0, we\'ve improved PHP compatibility both in our codebase and in our automated testing tools; we\'ve reworked some automated tests for faster performance; we\'ve ensured compatibility with upcoming changes in WordPress; and we\'ve fixed a number of bugs in the formatting and sending of emails.', 'buddypress' ); ?></p>
+
+						<hr class="bp-hello-divider"/>
 
 						<h2><?php echo esc_html( _x( 'Your feedback', 'screen heading', 'buddypress' ) ); ?></h2>
 						<p>
