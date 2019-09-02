@@ -704,23 +704,32 @@ class BP_Admin {
 						<hr class="bp-hello-divider"/>
 
 						<h2><?php esc_html_e( 'Improved Integrations with WordPress', 'buddypress' ); ?></h2>
-						<figure class="bp-hello-alignright">
-							<img src="https://cldup.com/Syt_c1aw7A.png" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress members directory in Twenty Ninteen.', 'buddypress' ); ?>" />
+						<figure class="bp-hello-aligncenter">
+							<img src="https://cldup.com/0ZByeFT35M.png" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress members directory & Password control in Twenty Ninteen.', 'buddypress' ); ?>" />
 						</figure>
-						<h3><?php esc_html_e( 'The BP Nouveau template pack looks great in Twenty Nineteen!', 'buddypress' ); ?></h3>
-						<p><?php esc_html_e( 'With every BuddyPress version, we strive to make internal improvements to performance and code quality in addition to introducing new features and fixes. In BuddyPress 4.0, we\'ve improved PHP compatibility both in our codebase and in our automated testing tools; we\'ve reworked some automated tests for faster performance; we\'ve ensured compatibility with upcoming changes in WordPress; and we\'ve fixed a number of bugs in the formatting and sending of emails.', 'buddypress' ); ?></p>
 
-						<figure class="bp-hello-alignleft">
-							<img src="https://cldup.com/FFF6Ergbi0.png" alt="<?php esc_attr_e( 'Screenshot of the Password control.', 'buddypress' ); ?>" />
-						</figure>
-						<h3><?php esc_html_e( 'The BP Nouveau template pack is now using the same password control as the one used in WordPress Core.', 'buddypress' ); ?></h3>
-						<p><?php esc_html_e( 'Your members will now be able to set their passwords using WordPress’ interface on the registration page and on the user’s general settings page.', 'buddypress' ); ?>
+						<p>
+							<?php esc_html_e( 'First, we\'ve polished The BP Nouveau template pack\'s integration with the Twenty Nineteen WordPress theme.', 'buddypress' ); ?>
+							<?php esc_html_e( 'Second, this template pack is now using the same password control as the one used in WordPress Core.', 'buddypress' ); ?>
+						</p>
 
-						<figure class="bp-hello-alignright">
+						<p>
+							<strong><?php esc_html_e( 'Third, we made available a new BuddyPress Blocks category in the Block Editor.', 'buddypress' ); ?></strong>
+						</p>
+						<figure class="bp-hello-aligncenter">
 							<img src="https://cldup.com/gtIaHT6wnQ.png" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress block category.', 'buddypress' ); ?>" />
 						</figure>
-						<h3><?php esc_html_e( 'A category for Storing BuddyPress Blocks', 'buddypress' ); ?></h3>
-						<p><?php esc_html_e( 'With every BuddyPress version, we strive to make internal improvements to performance and code quality in addition to introducing new features and fixes. In BuddyPress 4.0, we\'ve improved PHP compatibility both in our codebase and in our automated testing tools; we\'ve reworked some automated tests for faster performance; we\'ve ensured compatibility with upcoming changes in WordPress; and we\'ve fixed a number of bugs in the formatting and sending of emails.', 'buddypress' ); ?></p>
+						<p>
+							<?php esc_html_e( 'Keeping things organized inside the block inserter is important. Having a specific BuddyPress category will help our end-users find BuddyPress blocks faster.', 'buddypress' ); ?>
+							<?php printf(
+								esc_html__( 'If you\'re a Block developer, please use this category for your BuddyPress blocks. You can read more about it in this %s.', 'buddypress' ),
+								sprintf(
+									'<a href="%1$s">%2$s</a>',
+									'https://bpdevel.wordpress.com/2019/07/31/a-category-to-store-your-buddypress-blocks/',
+									esc_html__( 'development note', 'buddypress' )
+								)
+							); ?>
+						</p>
 
 						<hr class="bp-hello-divider"/>
 
