@@ -536,12 +536,12 @@ class BP_Admin {
 	public function enqueue_scripts() {
 		wp_enqueue_style( 'bp-admin-common-css' );
 
-		// BuddyPress Hello
+		// BuddyPress Hello.
 		if ( 0 === strpos( get_current_screen()->id, 'dashboard' ) && ! empty( $_GET['hello'] ) && $_GET['hello'] === 'buddypress' ) {
 			wp_enqueue_style( 'bp-hello-css' );
 			wp_enqueue_script( 'bp-hello-js' );
 			wp_localize_script( 'bp-hello-js', 'bpHelloStrings', array(
-				'pageNotFound' => __( 'Sorry, the page you requested was not found', 'buddypress' ),
+				'pageNotFound' => __( 'Sorry, the page you requested was not found.', 'buddypress' ),
 			) );
 		}
 	}
@@ -549,7 +549,7 @@ class BP_Admin {
 	/**
 	 * Registers BuddyPress's suggested privacy policy language.
 	 *
-	 * @since 3.x.y
+	 * @since 4.0.0
 	 */
 	public function add_privacy_policy_content() {
 		// Nothing to do if we're running < WP 4.9.6.
@@ -630,7 +630,13 @@ class BP_Admin {
 			<div id="plugin-information-scrollable">
 				<div id='plugin-information-title' class="with-banner">
 					<div class='vignette'></div>
-					<h2><?php printf( esc_html__( 'BuddyPress %s', 'buddypress' ), $version ); ?></h2>
+					<h2>
+						<?php printf(
+							/* translators: %s is the placehoder for the BuddyPress version number. */
+							esc_html__( 'BuddyPress %s', 'buddypress' ),
+							$version
+						); ?>
+					</h2>
 				</div>
 				<div id="plugin-information-tabs">
 					<a name="whats-new" href="#whats-new" class="current"><?php esc_html_e( 'What\'s new?', 'buddypress' ); ?></a>
@@ -646,16 +652,16 @@ class BP_Admin {
 							<div class="dashicons dashicons-rest-api big"></div>
 						</figure>
 						<p>
-							<?php esc_html_e( 'BuddyPress 5.0.0 comes with REST API endpoints for members, groups, activities, users, private messages, screen notifications and extended profiles', 'buddypress' ); ?>
-							<?php esc_html_e( '(The remaining endpoints are planned to ship in our next major release).', 'buddypress' ); ?>
+							<?php esc_html_e( 'BuddyPress 5.0.0 comes with REST API endpoints for members, groups, activities, users, private messages, screen notifications and extended profiles.', 'buddypress' ); ?>
 						</p>
 						<p>
 							<?php esc_html_e( 'BuddyPress endpoints provide machine-readable external access to your WordPress site with a clear, standards-driven interface, paving the way for new and innovative methods of interacting with your community through plugins, themes, apps, and beyond.', 'buddypress' ); ?>
 							<?php printf(
+								/* translators: %s is the placehoder for the link to the BP REST API documentation site. */
 								esc_html__( 'Ready to get started with development? Check out the %s.', 'buddypress' ),
 								sprintf(
 									'<a href="%1$s">%2$s</a>',
-									'https://imath-buddydocs.pf1.wpserveur.net/bp-rest-api/', // @todo replace with the URL to the definitive site.
+									'https://developer.buddypress.org/bp-rest-api/',
 									esc_html__( 'BP REST API reference', 'buddypress' )
 								)
 							); ?>
@@ -663,16 +669,15 @@ class BP_Admin {
 
 						<hr class="bp-hello-divider"/>
 
-						<h2><?php esc_html_e( 'A new UI to manage Group members.', 'buddypress' ); ?></h2>
+						<h2><?php esc_html_e( 'A new interface for managing group members.', 'buddypress' ); ?></h2>
 						<p>
-							<?php esc_html_e( 'The best way to show the great powers of the BP REST API is to start using it for one of our Core features.', 'buddypress' ); ?>
+							<?php esc_html_e( 'The best way to show the power of the BP REST API is to start using it for one of our Core features.', 'buddypress' ); ?>
 						</p>
 						<figure class="bp-hello-aligncenter">
-							<img src="https://cldup.com/5YjHovFxjy.png" alt="<?php esc_attr_e( 'Screenshot of the Group Members management interface in the administration and on the front-end of your site.', 'buddypress' ); ?>" />
+							<img src="<?php echo esc_url( buddypress()->plugin_url . 'bp-core/images/manage-members-interface.png' ); ?>" alt="<?php esc_attr_e( 'Screenshot of the Group Members management interface in the administration and on the front-end of your site.', 'buddypress' ); ?>" />
 						</figure>
 						<p>
-							<?php esc_html_e( 'Whether you need to manage group members from the group screen of your WordPress Administration or from the single group management area on front-end: it\'s now more dynamic & faster in both places.', 'buddypress' ); ?>
-							<?php esc_html_e( 'Thanks to the BP REST API and JavaScript, the same UI is used in both contexts!', 'buddypress' ); ?>
+							<?php esc_html_e( 'Group administrators will love our new interface for managing group membership. Whether you\'re working as a group admin on the front-end Manage tab, or as the site admin on the Dashboard, the new REST API-based tools are faster, easier to use, and more consistent.', 'buddypress' ); ?>
 						</p>
 
 						<hr class="bp-hello-divider"/>
@@ -685,17 +690,26 @@ class BP_Admin {
 							<?php esc_html_e( 'Thanks to the new BP Invitations API, Group invites and membership requests are now managed in a more consistent way.', 'buddypress' ); ?>
 						</p>
 						<p>
-							<?php esc_html_e( 'The BP Invitations API abstracts how these two actions are handled and allow developers to use them for any object of your site (eg: Sites of a WordPress network).', 'buddypress' ); ?>
+							<?php esc_html_e( 'The BP Invitations API abstracts how these two actions are handled and allows developers to use them for any object on your site (e.g., Sites of a WordPress network).', 'buddypress' ); ?>
+							<?php printf(
+								/* translators: %s is the placehoder for the link to the BP Invitations API development note. */
+								esc_html__( 'Read more about the %s.', 'buddypress' ),
+								sprintf(
+									'<a href="%1$s">%2$s</a>',
+									'https://bpdevel.wordpress.com/2019/09/16/new-invitations-api-coming-in-buddypress-5-0/',
+									esc_html__( 'BP Invitations API', 'buddypress' )
+								)
+							); ?>
 						</p>
 
 						<hr class="bp-hello-divider"/>
 
 						<h2><?php esc_html_e( 'Help our support volunteers help you.', 'buddypress' ); ?></h2>
 						<p>
-							<?php esc_html_e( 'Knowing your WordPress & BuddyPress configuration is very important when one of our beloved support volunteers tries to help you fix an issue. That\'s why we added a BuddyPress section to the Site Health Info Administration screen.', 'buddypress' ); ?>
+							<?php esc_html_e( 'Knowing your WordPress and BuddyPress configuration is very important when one of our beloved support volunteers tries to help you fix an issue. That\'s why we added a BuddyPress section to the Site Health Info Administration screen.', 'buddypress' ); ?>
 						</p>
 						<figure class="bp-hello-aligncenter">
-							<img src="https://cldup.com/tSdzjxw2RK.png" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress section of the Site Health Info Administration screen.', 'buddypress' ); ?>" />
+							<img src="<?php echo esc_url( buddypress()->plugin_url . 'bp-core/images/site-health-buddypress-section.png' ); ?>" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress section of the Site Health Info Administration screen.', 'buddypress' ); ?>" />
 						</figure>
 						<p>
 							<?php esc_html_e( 'The panel is displayed at the bottom of the screen. It includes the BuddyPress version, active components, active template pack, and a list of other component-specific settings information.', 'buddypress' ); ?>
@@ -703,29 +717,30 @@ class BP_Admin {
 
 						<hr class="bp-hello-divider"/>
 
-						<h2><?php esc_html_e( 'Improved Integrations with WordPress', 'buddypress' ); ?></h2>
+						<h2><?php esc_html_e( 'Improved integrations with WordPress', 'buddypress' ); ?></h2>
 						<figure class="bp-hello-aligncenter">
-							<img src="https://cldup.com/0ZByeFT35M.png" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress members directory & Password control in Twenty Ninteen.', 'buddypress' ); ?>" />
+							<img src="<?php echo esc_url( buddypress()->plugin_url . 'bp-core/images/bp-nouveau-improvements.png' );?>" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress members directory & Password control in Twenty Ninteen.', 'buddypress' ); ?>" />
 						</figure>
 
 						<p>
-							<?php esc_html_e( 'First, we\'ve polished The BP Nouveau template pack\'s integration with the Twenty Nineteen WordPress theme.', 'buddypress' ); ?>
-							<?php esc_html_e( 'Second, this template pack is now using the same password control as the one used in WordPress Core.', 'buddypress' ); ?>
+							<?php esc_html_e( 'In BuddyPress 5.0.0, the BP Nouveau template pack looks better than ever with the Twenty Nineteen theme.', 'buddypress' ); ?>
+							<?php esc_html_e( 'Nouveau also now uses the same password control as the one used in WordPress Core, for better consistency between BuddyPress and WordPress spaces.', 'buddypress' ); ?>
 						</p>
 
 						<p>
-							<strong><?php esc_html_e( 'Third, we made available a new BuddyPress Blocks category in the Block Editor.', 'buddypress' ); ?></strong>
+							<strong><?php esc_html_e( 'BuddyPress Blocks now have their own category into the Block Editor.', 'buddypress' ); ?></strong>
 						</p>
 						<figure class="bp-hello-aligncenter">
-							<img src="https://cldup.com/gtIaHT6wnQ.png" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress block category.', 'buddypress' ); ?>" />
+							<img src="<?php echo esc_url( buddypress()->plugin_url . 'bp-core/images/buddypress-blocks-category.png' ); ?>" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress block category.', 'buddypress' ); ?>" />
 						</figure>
 						<p>
-							<?php esc_html_e( 'Keeping things organized inside the block inserter is important. Having a specific BuddyPress category will help our end-users find BuddyPress blocks faster.', 'buddypress' ); ?>
+							<?php esc_html_e( 'Developers building tools for the Block Editor can now add their blocks to the BuddyPress category. This change provides a foundation for organizing custom BuddyPress blocks.', 'buddypress' ); ?>
 							<?php printf(
-								esc_html__( 'If you\'re a Block developer, please use this category for your BuddyPress blocks. You can read more about it in this %s.', 'buddypress' ),
+								/* translators: %s is the placehoder for the link to the blocks category development note. */
+								esc_html__( 'Read more about this feature in the %s.', 'buddypress' ),
 								sprintf(
 									'<a href="%1$s">%2$s</a>',
-									'https://bpdevel.wordpress.com/2019/07/31/a-category-to-store-your-buddypress-blocks/',
+									esc_url( 'https://bpdevel.wordpress.com/2019/07/31/a-category-to-store-your-buddypress-blocks/' ),
 									esc_html__( 'development note', 'buddypress' )
 								)
 							); ?>
@@ -737,8 +752,13 @@ class BP_Admin {
 						<p>
 							<?php
 							printf(
-								__( ' How are you using BuddyPress? Receiving your feedback and suggestions for future versions of BuddyPress genuinely motivates and encourages our contributors. Please <a href="%s">share your feedback</a> about this version of BuddyPress on our website. ', 'buddypress' ),
-								esc_url( 'https://buddypress.org/support/' )
+								/* translators: %s is the placehoder for the link to BuddyPress support forums. */
+								esc_html__( ' How are you using BuddyPress? Receiving your feedback and suggestions for future versions of BuddyPress genuinely motivates and encourages our contributors. Please %s about this version of BuddyPress on our website. ', 'buddypress' ),
+								sprintf(
+									'<a href="%1$s">%2$s</a>',
+									esc_url( 'https://buddypress.org/support/' ),
+									esc_html__( 'share your feedback', 'buddypress' )
+								)
 							);
 							?>
 						</p>
