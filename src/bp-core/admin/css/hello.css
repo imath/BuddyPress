@@ -18,6 +18,7 @@ TABLE OF CONTENTS:
 5.0 - Media
 6.0 - Media Queries
 	6.1 - Desktop Medium
+	6.2 - Desktop Large
 ------------------------------------------------------------------------------*/
 /*------------------------------------------------------------------------------
  * 1.0 - Typography and colour
@@ -32,7 +33,8 @@ TABLE OF CONTENTS:
 	font-size: 16px;
 }
 
-.bp-hello-content ul, .bp-hello-content ol {
+.bp-hello-content ul,
+.bp-hello-content ol {
 	list-style: inherit;
 }
 
@@ -44,7 +46,6 @@ TABLE OF CONTENTS:
 /*------------------------------------------------------------------------------
  * 2.0 - Dashicons
  *----------------------------------------------------------------------------*/
-
 .bp-hello-social li a:before {
 	color: #23282d;
 	/* wp toolbar */
@@ -69,13 +70,14 @@ TABLE OF CONTENTS:
 }
 
 div.dashicons {
+	width: -webkit-fit-content;
 	width: fit-content;
 }
 
 div.dashicons.big {
 	font-size: 128px;
 	display: block;
-	color: var(--bp-hello-color-primary );
+	color: var(--bp-hello-color-primary);
 	height: 128px;
 	width: 128px;
 }
@@ -140,12 +142,14 @@ div.dashicons.big {
 }
 
 .plugin-details-modal #TB_title {
+	/* stylelint-disable-line */
 	height: 0;
 	background: none;
 	border: none;
 }
 
 #TB_window.plugin-details-modal.thickbox-loading:before {
+	/* stylelint-disable-line */
 	z-index: 10;
 	margin-top: 40px;
 	background-color: none;
@@ -159,8 +163,8 @@ div.dashicons.big {
 	float: left;
 }
 
-.bp-hello-alignleft::after {
-	content: '';
+.bp-hello-alignleft:after {
+	content: "";
 	clear: left;
 }
 
@@ -168,8 +172,8 @@ div.dashicons.big {
 	float: right;
 }
 
-.bp-hello-alignright::after {
-	content: '';
+.bp-hello-alignright:after {
+	content: "";
 	clear: right;
 }
 
@@ -185,7 +189,6 @@ div.dashicons.big {
 /*
  * 4.1 - Footer content
  */
-
 .bp-hello-social-cta {
 	text-align: left;
 }
@@ -202,13 +205,7 @@ div.dashicons.big {
  * 4.2 - Header content
  */
 #plugin-information-title.with-banner {
-	background-image: url( 'https://ps.w.org/buddypress/assets/banner-772x250.png' );
-}
-
-@media only screen and ( -webkit-min-device-pixel-ratio: 1.5 ) {
-	#plugin-information-title.with-banner {
-		background-image: url( 'https://ps.w.org/buddypress/assets/banner-1544x500.png' );
-	}
+	background-image: url(https://ps.w.org/buddypress/assets/banner-772x250.png);
 }
 
 /*
@@ -230,8 +227,8 @@ div.dashicons.big {
 	width: 100%;
 }
 
-.bp-hello-alignleft img,
-.bp-hello-alignright img {
+.bp-hello-content .bp-hello-alignleft img,
+.bp-hello-content .bp-hello-alignright img {
 	max-width: 200px;
 }
 
@@ -247,5 +244,14 @@ div.dashicons.big {
 	}
 	.bp-hello-content p {
 		font-size: 14px;
+	}
+}
+
+/**
+ * 6.2 - Desktop Large
+ */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+	#plugin-information-title.with-banner {
+		background-image: url(https://ps.w.org/buddypress/assets/banner-1544x500.png);
 	}
 }

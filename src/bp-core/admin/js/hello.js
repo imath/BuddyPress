@@ -1,3 +1,4 @@
+/* global bpHelloStrings */
 /**
  * Loads for BuddyPress Hello in wp-admin for query string `hello=buddypress`.
  *
@@ -21,7 +22,7 @@
 
 		$( '#TB_window' ).attr( {
 							'role': 'dialog',
-							'aria-label': plugininstallL10n.plugin_modal_label
+							'aria-label': bpHelloStrings.modalLabel
 						} )
 						.addClass( 'plugin-details-modal' )
 						.removeClass( 'thickbox-loading' );
@@ -70,7 +71,7 @@
 				data: {
 					context: 'view',
 					slug: anchor.data( 'slug' ),
-					_wpnonce: 'none',
+					_wpnonce: 'none'
 				}
 			} ).done( function( data ) {
 				var page = _.first( data );

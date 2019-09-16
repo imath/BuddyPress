@@ -542,6 +542,7 @@ class BP_Admin {
 			wp_enqueue_script( 'bp-hello-js' );
 			wp_localize_script( 'bp-hello-js', 'bpHelloStrings', array(
 				'pageNotFound' => __( 'Sorry, the page you requested was not found.', 'buddypress' ),
+				'modalLabel'   => __( 'Hello BuddyPress', 'buddypress' ),
 			) );
 		}
 	}
