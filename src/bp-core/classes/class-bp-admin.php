@@ -662,7 +662,7 @@ class BP_Admin {
 								esc_html__( 'Ready to get started with development? Check out the %s.', 'buddypress' ),
 								sprintf(
 									'<a href="%1$s">%2$s</a>',
-									'https://developer.buddypress.org/bp-rest-api/',
+									esc_url( 'https://developer.buddypress.org/bp-rest-api/' ),
 									esc_html__( 'BP REST API reference', 'buddypress' )
 								)
 							); ?>
@@ -697,7 +697,7 @@ class BP_Admin {
 								esc_html__( 'Read more about the %s.', 'buddypress' ),
 								sprintf(
 									'<a href="%1$s">%2$s</a>',
-									'https://bpdevel.wordpress.com/2019/09/16/new-invitations-api-coming-in-buddypress-5-0/',
+									esc_url( 'https://bpdevel.wordpress.com/2019/09/16/new-invitations-api-coming-in-buddypress-5-0/' ),
 									esc_html__( 'BP Invitations API', 'buddypress' )
 								)
 							); ?>
