@@ -201,7 +201,11 @@ function bp_core_admin_components_options() {
 						</th>
 						<td class="plugin-title column-primary">
 							<label for="<?php echo esc_attr( "bp_components[$name]" ); ?>">
-								<span aria-hidden="true"></span>
+								<?php if ( isset( $labels['icon'] ) && $labels['icon'] ) : ?>
+									<span class="dashicons <?php echo sanitize_html_class( $labels['icon'] ); ?>" aria-hidden="true"></span>
+								<?php else : ?>
+									<span aria-hidden="true"></span>
+								<?php endif ; ?>
 								<strong><?php echo esc_html( $labels['title'] ); ?></strong>
 							</label>
 						</td>

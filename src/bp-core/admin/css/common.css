@@ -222,14 +222,16 @@ TABLE OF CONTENTS:
 /*
  * 2.2 Settings - Components
  */
-.settings_page_bp-components td.plugin-title span {
+.settings_page_bp-components td.plugin-title span,
+.settings_page_bp-components .plugins .plugin-title .dashicons {
 	float: left;
 	width: 18px;
 	height: 18px;
 	margin-right: 5px;
 }
 
-.settings_page_bp-components td.plugin-title span:before {
+.settings_page_bp-components td.plugin-title span:before,
+.settings_page_bp-components .plugins .plugin-title .dashicons:before {
 	font-family: dashicons;
 	font-size: 18px;
 }
@@ -272,6 +274,17 @@ TABLE OF CONTENTS:
 
 .settings_page_bp-components tr.members td.plugin-title span:before {
 	content: "\f307";
+}
+
+.settings_page_bp-components .plugins .plugin-title .dashicons {
+	padding: 0;
+}
+
+.settings_page_bp-components .plugins .plugin-title .dashicons:before {
+	padding: 0;
+	background: none;
+	box-shadow: none;
+	color: inherit;
 }
 
 #bp-admin-component-form .wp-list-table.plugins .plugin-title {

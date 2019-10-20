@@ -2437,6 +2437,55 @@ function bp_core_get_minified_asset_suffix() {
 }
 
 /**
+ * Return a list of installed BuddyPress components.
+ *
+ * @since 6.0.0
+ *
+ * @return array The list of installed BuddyPress components.
+ */
+function bp_core_get_installed_components() {
+	$bp_plugins = get_site_transient( 'bp_plugins' );
+
+	if ( ! $bp_plugins ) {
+		$get_bp_plugins = wp_remote_get( set_url_scheme( 'https://gist.githubusercontent.com/imath/5442cfa3799ee116b7cb03d3c3635b58/raw/4de92236f5f5b446547f2d3081a179340093e84e/bp-plugins.json', 'https' ) );
+
+		if ( ! is_wp_error( $get_bp_plugins ) && 200 === wp_remote_retrieve_response_code( $get_bp_plugins ) ) {
+			$bp_plugins = (array) json_decode( wp_remote_retrieve_body( $get_bp_plugins ) );
+
+			// Avoid too much external requests.
+			set_site_transient( 'bp_plugins', $bp_plugins, 2 * DAY_IN_SECONDS );
+		} else {
+			$bp_plugins = array();
+		}
+	}
+
+	$installed_components = array();
+	if ( isset( $bp_plugins[0]->component_id ) ) {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$plugins = get_plugins();
+
+		// Look for installed BuddyPress components.
+		foreach ( $bp_plugins as $installed_component ) {
+			if ( ! isset( $plugins[ $installed_component->basename ] ) ) {
+				continue;
+			}
+
+			$installed_components[ $installed_component->component_id ] = array(
+				'title'       => $installed_component->title,
+				// Use the WP Plugin description to benefit from translations.
+				'description' => $plugins[ $installed_component->basename ]['Description'],
+				'icon'        => $installed_component->icon,
+			);
+		}
+	}
+
+	return $installed_components;
+}
+
+/**
  * Return a list of component information.
  *
  * @since 2.6.0
@@ -2497,6 +2546,12 @@ function bp_core_get_components( $type = 'all' ) {
 	// Add blogs tracking if multisite.
 	if ( is_multisite() ) {
 		$optional_components['blogs']['description'] = __( 'Record activity for new sites, posts, and comments across your network.', 'buddypress' );
+	}
+
+	// Check if Components as BuddyPress Supported Plugins are installed.
+	$installed_components = bp_core_get_installed_components();
+	if ( $installed_components ) {
+		$optional_components += $installed_components;
 	}
 
 	switch ( $type ) {
