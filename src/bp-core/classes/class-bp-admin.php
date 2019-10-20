@@ -497,7 +497,22 @@ class BP_Admin {
 	public function modify_plugin_action_links( $links, $file ) {
 
 		// Return normal links if not BuddyPress.
-		if ( plugin_basename( buddypress()->basename ) != $file ) {
+		if ( plugin_basename( buddypress()->basename ) !== $file ) {
+
+			/**
+			 * Makes sure the installed BuddyPress plugins are activated at the
+			 * same level than BuddyPress
+			 */
+			if ( bp_is_network_activated() ) {
+				$basenames = wp_list_pluck( bp_core_get_installed_components(), 'basename' );
+
+				if ( $basenames && in_array( $file, $basenames, true ) ) {
+					$links = array(
+						'network_only' => __( 'Network Only', 'buddypress' ),
+					);
+				}
+			}
+
 			return $links;
 		}
 
