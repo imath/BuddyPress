@@ -17,6 +17,17 @@ defined( 'ABSPATH' ) || exit;
  *
  */
 function bp_core_admin_components_settings() {
+	$is_installable_components = isset( $_GET['action'] ) && 'installable' === $_GET['action'];
+
+	$form_action = '';
+	if ( $is_installable_components ) {
+		$form_action = add_query_arg(
+			array(
+				'action' => 'install_bp_components',
+			),
+			network_admin_url( 'update.php' )
+		);
+	}
 ?>
 
 	<div class="wrap">
@@ -24,13 +35,19 @@ function bp_core_admin_components_settings() {
 		<h1><?php _e( 'BuddyPress Settings', 'buddypress' ); ?> </h1>
 
 		<h2 class="nav-tab-wrapper"><?php bp_core_admin_tabs( __( 'Components', 'buddypress' ) ); ?></h2>
-		<form action="" method="post" id="bp-admin-component-form">
+		<form action="<?php echo esc_url( $form_action ); ?>" method="post" id="bp-admin-component-form">
 
 			<?php bp_core_admin_components_options(); ?>
 
-			<p class="submit clear">
-				<input class="button-primary" type="submit" name="bp-admin-component-submit" id="bp-admin-component-submit" value="<?php esc_attr_e( 'Save Settings', 'buddypress' ) ?>"/>
-			</p>
+			<?php if ( $is_installable_components ) : ?>
+				<p class="submit clear">
+					<input class="button-primary" type="submit" name="bp-admin-component-install" id="bp-admin-component-install" value="<?php esc_attr_e( 'Install', 'buddypress' ) ?>"/>
+				</p>
+			<?php else : ?>
+				<p class="submit clear">
+					<input class="button-primary" type="submit" name="bp-admin-component-submit" id="bp-admin-component-submit" value="<?php esc_attr_e( 'Save Settings', 'buddypress' ) ?>"/>
+				</p>
+			<?php endif ; ?>
 
 			<?php wp_nonce_field( 'bp-admin-component-setup' ); ?>
 
@@ -408,3 +425,64 @@ function bp_core_admin_get_components( $type = 'all' ) {
 	 */
 	return apply_filters( 'bp_core_admin_get_components', $components, $type );
 }
+
+/**
+ * Bulk install installable components using JavaScript.
+ *
+ * @since 1.0.0
+ *
+ * @global string $parent_file
+ * @global string $submenu_file
+ */
+function bp_core_admin_install_components() {
+	global $parent_file, $submenu_file;
+
+	if ( ! current_user_can( 'install_plugins' ) ) {
+		wp_die( __( 'Sorry, you are not allowed to install plugins on this site.', 'buddypress' ) );
+	}
+
+	check_admin_referer( 'bp-admin-component-setup' );
+
+	$bp_plugins = array();
+	if ( isset( $_POST['bp_components'] ) ) {
+		$bp_plugins = array_diff_key(
+			$_POST['bp_components'],
+			array( 'members' => 1 )
+		);
+	}
+
+	$wp_die_title = __( 'Component Installation error', 'buddypress' );
+
+	if ( ! $bp_plugins ) {
+		wp_die(
+			__( 'Sorry, there are no selected components to install.', 'buddypress' ),
+			$wp_die_title,
+			array( 'back_link' => true )
+		);
+	}
+
+	$installable_components = bp_core_get_installable_components( 'bp_plugins' );
+	$installable_plugins    = wp_list_pluck( $installable_components, 'basename', 'component_id' );
+	$bp_supported_plugins   = array_intersect_key( $installable_plugins, $bp_plugins );
+
+	if ( ! $bp_supported_plugins ) {
+		wp_die(
+			__( 'Sorry, there are no components supported by the BuddyPress community to install.', 'buddypress' ),
+			$wp_die_title,
+			array( 'back_link' => true )
+		);
+	}
+
+	// Set the active menu & submenu.
+	$parent_file  = bp_core_do_network_admin() ? 'settings.php' : 'options-general.php';;
+	$submenu_file = 'bp-components';
+
+	require_once ABSPATH . 'wp-admin/admin-header.php';
+	?>
+	<div class="wrap">
+		<h1><?php esc_html_e( 'Component Installation', 'buddypress' ); ?></h1>
+	</div>
+	<?php
+	include ABSPATH . 'wp-admin/admin-footer.php';
+}
+add_action( 'update-custom_install_bp_components', 'bp_core_admin_install_components' );
