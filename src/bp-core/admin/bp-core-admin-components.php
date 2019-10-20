@@ -77,9 +77,9 @@ function bp_core_admin_components_options() {
 		),
 	);
 
-	$optional_components = bp_core_admin_get_components( 'optional' );
-	$required_components = bp_core_admin_get_components( 'required' );
-	$retired_components  = bp_core_admin_get_components( 'retired'  );
+	$optional_components    = bp_core_admin_get_components( 'optional'    );
+	$required_components    = bp_core_admin_get_components( 'required'    );
+	$installable_components = bp_core_admin_get_components( 'installable' );
 
 	// Merge optional and required together.
 	$all_components = $optional_components + $required_components;
@@ -139,8 +139,8 @@ function bp_core_admin_components_options() {
 		case 'mustuse' :
 			$current_components = $required_components;
 			break;
-		case 'retired' :
-			$current_components = $retired_components;
+		case 'installable' :
+			$current_components = $installable_components;
 			break;
 	} ?>
 
@@ -150,11 +150,11 @@ function bp_core_admin_components_options() {
 	?></h3>
 
 	<ul class="subsubsub">
-		<li><a href="<?php echo esc_url( add_query_arg( array( 'page' => 'bp-components', 'action' => 'all'      ), bp_get_admin_url( $page ) ) ); ?>" <?php if ( $action === 'all'      ) : ?>class="current"<?php endif; ?>><?php printf( _nx( 'All <span class="count">(%s)</span>',      'All <span class="count">(%s)</span>',      $all_count,         'plugins', 'buddypress' ), number_format_i18n( $all_count                    ) ); ?></a> | </li>
-		<li><a href="<?php echo esc_url( add_query_arg( array( 'page' => 'bp-components', 'action' => 'active'   ), bp_get_admin_url( $page ) ) ); ?>" <?php if ( $action === 'active'   ) : ?>class="current"<?php endif; ?>><?php printf( _n(  'Active <span class="count">(%s)</span>',   'Active <span class="count">(%s)</span>',   count( $active_components   ), 'buddypress' ), number_format_i18n( count( $active_components   ) ) ); ?></a> | </li>
-		<li><a href="<?php echo esc_url( add_query_arg( array( 'page' => 'bp-components', 'action' => 'inactive' ), bp_get_admin_url( $page ) ) ); ?>" <?php if ( $action === 'inactive' ) : ?>class="current"<?php endif; ?>><?php printf( _n(  'Inactive <span class="count">(%s)</span>', 'Inactive <span class="count">(%s)</span>', count( $inactive_components ), 'buddypress' ), number_format_i18n( count( $inactive_components ) ) ); ?></a> | </li>
-		<li><a href="<?php echo esc_url( add_query_arg( array( 'page' => 'bp-components', 'action' => 'mustuse'  ), bp_get_admin_url( $page ) ) ); ?>" <?php if ( $action === 'mustuse'  ) : ?>class="current"<?php endif; ?>><?php printf( _n(  'Must-Use <span class="count">(%s)</span>', 'Must-Use <span class="count">(%s)</span>', count( $required_components ), 'buddypress' ), number_format_i18n( count( $required_components ) ) ); ?></a> | </li>
-		<li><a href="<?php echo esc_url( add_query_arg( array( 'page' => 'bp-components', 'action' => 'retired'  ), bp_get_admin_url( $page ) ) ); ?>" <?php if ( $action === 'retired'  ) : ?>class="current"<?php endif; ?>><?php printf( _n(  'Retired <span class="count">(%s)</span>',  'Retired <span class="count">(%s)</span>',  count( $retired_components ),  'buddypress' ), number_format_i18n( count( $retired_components  ) ) ); ?></a></li>
+		<li><a href="<?php echo esc_url( add_query_arg( array( 'page' => 'bp-components', 'action' => 'all'         ), bp_get_admin_url( $page ) ) ); ?>" <?php if ( $action === 'all'         ) : ?>class="current"<?php endif; ?>><?php printf( _nx( 'All <span class="count">(%s)</span>',         'All <span class="count">(%s)</span>',         $all_count,            'plugins', 'buddypress' ), number_format_i18n( $all_count                        ) ); ?></a> | </li>
+		<li><a href="<?php echo esc_url( add_query_arg( array( 'page' => 'bp-components', 'action' => 'active'      ), bp_get_admin_url( $page ) ) ); ?>" <?php if ( $action === 'active'      ) : ?>class="current"<?php endif; ?>><?php printf( _n(  'Active <span class="count">(%s)</span>',      'Active <span class="count">(%s)</span>',      count( $active_components      ), 'buddypress' ), number_format_i18n( count( $active_components       ) ) ); ?></a> | </li>
+		<li><a href="<?php echo esc_url( add_query_arg( array( 'page' => 'bp-components', 'action' => 'inactive'    ), bp_get_admin_url( $page ) ) ); ?>" <?php if ( $action === 'inactive'    ) : ?>class="current"<?php endif; ?>><?php printf( _n(  'Inactive <span class="count">(%s)</span>',    'Inactive <span class="count">(%s)</span>',    count( $inactive_components    ), 'buddypress' ), number_format_i18n( count( $inactive_components     ) ) ); ?></a> | </li>
+		<li><a href="<?php echo esc_url( add_query_arg( array( 'page' => 'bp-components', 'action' => 'mustuse'     ), bp_get_admin_url( $page ) ) ); ?>" <?php if ( $action === 'mustuse'     ) : ?>class="current"<?php endif; ?>><?php printf( _n(  'Must-Use <span class="count">(%s)</span>',    'Must-Use <span class="count">(%s)</span>',    count( $required_components    ), 'buddypress' ), number_format_i18n( count( $required_components     ) ) ); ?></a> | </li>
+		<li><a href="<?php echo esc_url( add_query_arg( array( 'page' => 'bp-components', 'action' => 'installable' ), bp_get_admin_url( $page ) ) ); ?>" <?php if ( $action === 'installable' ) : ?>class="current"<?php endif; ?>><?php printf( _n(  'Installable <span class="count">(%s)</span>', 'Installable <span class="count">(%s)</span>', count( $installable_components ), 'buddypress' ), number_format_i18n( count( $installable_components  ) ) ); ?></a></li>
 	</ul>
 
 	<h3 class="screen-reader-text"><?php

@@ -2437,13 +2437,14 @@ function bp_core_get_minified_asset_suffix() {
 }
 
 /**
- * Return a list of installed BuddyPress components.
+ * Return a list of installable BuddyPress components.
  *
  * @since 6.0.0
  *
- * @return array The list of installed BuddyPress components.
+ * @param string $get Whether to get a list of `components` or of `bp_plugins`.
+ * @return array      The list of installable BuddyPress components.
  */
-function bp_core_get_installed_components() {
+function bp_core_get_installable_components( $get = 'components' ) {
 	$bp_plugins = get_site_transient( 'bp_plugins' );
 
 	if ( ! $bp_plugins ) {
@@ -2458,6 +2459,34 @@ function bp_core_get_installed_components() {
 			$bp_plugins = array();
 		}
 	}
+
+	if ( 'bp_plugins' === $get ) {
+		return $bp_plugins;
+	}
+
+	$installable_components = array();
+	if ( isset( $bp_plugins[0]->component_id ) ) {
+		foreach ( $bp_plugins as $installable_component ) {
+			$installable_components[ $installable_component->component_id ] = array(
+				'title'       => $installable_component->title,
+				'description' => $installable_component->description,
+				'icon'        => $installable_component->icon,
+			);
+		}
+	}
+
+	return $installable_components;
+}
+
+/**
+ * Return a list of installed BuddyPress components.
+ *
+ * @since 6.0.0
+ *
+ * @return array The list of installed BuddyPress components.
+ */
+function bp_core_get_installed_components() {
+	$bp_plugins = bp_core_get_installable_components( 'bp_plugins' );
 
 	$installed_components = array();
 	if ( isset( $bp_plugins[0]->component_id ) ) {
@@ -2505,8 +2534,7 @@ function bp_core_get_components( $type = 'all' ) {
 		),
 	);
 
-	$retired_components = array(
-	);
+	$installable_components = bp_core_get_installable_components();
 
 	$optional_components = array(
 		'xprofile' => array(
@@ -2552,6 +2580,9 @@ function bp_core_get_components( $type = 'all' ) {
 	$installed_components = bp_core_get_installed_components();
 	if ( $installed_components ) {
 		$optional_components += $installed_components;
+
+		// Remove already installed BuddyPress supported plugins.
+		$installable_components = array_diff_key( $installable_components, $installed_components );
 	}
 
 	switch ( $type ) {
@@ -2561,12 +2592,12 @@ function bp_core_get_components( $type = 'all' ) {
 		case 'optional' :
 			$components = $optional_components;
 			break;
-		case 'retired' :
-			$components = $retired_components;
+		case 'installable' :
+			$components = $installable_components;
 			break;
 		case 'all' :
 		default :
-			$components = array_merge( $required_components, $optional_components, $retired_components );
+			$components = array_merge( $required_components, $optional_components );
 			break;
 	}
 
