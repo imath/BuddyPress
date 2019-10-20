@@ -2507,6 +2507,7 @@ function bp_core_get_installed_components() {
 				// Use the WP Plugin description to benefit from translations.
 				'description' => $plugins[ $installed_component->basename ]['Description'],
 				'icon'        => $installed_component->icon,
+				'basename'    => $installed_component->basename,
 			);
 		}
 	}

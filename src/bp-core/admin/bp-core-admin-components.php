@@ -59,7 +59,7 @@ function bp_core_admin_components_options() {
 	 *
 	 * @param mixed $value Active components.
 	 */
-	$active_components      = apply_filters( 'bp_active_components', bp_get_option( 'bp-active-components' ) );
+	$active_components = apply_filters( 'bp_active_components', bp_get_option( 'bp-active-components' ) );
 
 	// The default components (if none are previously selected).
 	$default_components = array(
@@ -259,12 +259,14 @@ function bp_core_admin_components_options() {
 function bp_core_admin_components_settings_handler() {
 
 	// Bail if not saving settings.
-	if ( ! isset( $_POST['bp-admin-component-submit'] ) )
+	if ( ! isset( $_POST['bp-admin-component-submit'] ) ) {
 		return;
+	}
 
 	// Bail if nonce fails.
-	if ( ! check_admin_referer( 'bp-admin-component-setup' ) )
+	if ( ! check_admin_referer( 'bp-admin-component-setup' ) ) {
 		return;
+	}
 
 	// Settings form submitted, now save the settings. First, set active components.
 	if ( isset( $_POST['bp_components'] ) ) {
@@ -278,6 +280,34 @@ function bp_core_admin_components_settings_handler() {
 
 		$submitted = stripslashes_deep( $_POST['bp_components'] );
 		$bp->active_components = bp_core_admin_get_active_components_from_submitted_settings( $submitted );
+
+		// Get the installed BuddyPress plugins basenames.
+		$basenames = wp_list_pluck( bp_core_get_installed_components(), 'basename' );
+
+		if ( $basenames ) {
+			// Find the components who have been activated or deactivated.
+			$active_components = bp_get_option( 'bp-active-components', array() );
+			$activated         = array_diff_key( $bp->active_components, $active_components );
+			$deactivated       = array_diff_key( $active_components, $bp->active_components );
+
+			// Activate plugins if needed.
+			if ( $activated ) {
+				$activate_plugins = array_intersect_key( $basenames, $activated );
+
+				if ( $activate_plugins ) {
+					activate_plugins( $activate_plugins, '', bp_is_network_activated() );
+				}
+			}
+
+			// Deactivate plugins if needed.
+			if ( $deactivated ) {
+				$deactivate_plugins = array_intersect_key( $basenames, $deactivated );
+
+				if ( $deactivate_plugins ) {
+					deactivate_plugins( $deactivate_plugins, '', bp_is_network_activated() );
+				}
+			}
+		}
 
 		bp_core_install( $bp->active_components );
 		bp_core_add_page_mappings( $bp->active_components );
