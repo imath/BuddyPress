@@ -478,11 +478,16 @@ function bp_core_admin_install_components() {
 	$submenu_file = 'bp-components';
 
 	require_once ABSPATH . 'wp-admin/admin-header.php';
+
+	wp_enqueue_script( 'bp-install-js' );
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Component Installation', 'buddypress' ); ?></h1>
 	</div>
 	<?php
+	wp_print_request_filesystem_credentials_modal();
+	wp_print_admin_notice_templates();
+
 	include ABSPATH . 'wp-admin/admin-footer.php';
 }
 add_action( 'update-custom_install_bp_components', 'bp_core_admin_install_components' );

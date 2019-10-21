@@ -2448,7 +2448,7 @@ function bp_core_get_installable_components( $get = 'components' ) {
 	$bp_plugins = get_site_transient( 'bp_plugins' );
 
 	if ( ! $bp_plugins ) {
-		$get_bp_plugins = wp_remote_get( set_url_scheme( 'https://gist.githubusercontent.com/imath/5442cfa3799ee116b7cb03d3c3635b58/raw/4de92236f5f5b446547f2d3081a179340093e84e/bp-plugins.json', 'https' ) );
+		$get_bp_plugins = wp_remote_get( set_url_scheme( 'https://gist.githubusercontent.com/imath/5442cfa3799ee116b7cb03d3c3635b58/raw/430234128af0a1d6e8636478d91173e885754220/bp-plugins.json', 'https' ) );
 
 		if ( ! is_wp_error( $get_bp_plugins ) && 200 === wp_remote_retrieve_response_code( $get_bp_plugins ) ) {
 			$bp_plugins = (array) json_decode( wp_remote_retrieve_body( $get_bp_plugins ) );

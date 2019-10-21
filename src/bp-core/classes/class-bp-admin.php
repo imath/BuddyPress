@@ -1239,6 +1239,13 @@ class BP_Admin {
 				'dependencies' => array( 'thickbox', 'bp-api-request' ),
 				'footer'       => true,
 			),
+
+			// 6.0.0
+			'bp-install-js' => array(
+				'file' =>"{$url}install{$min}.js",
+				'dependencies' => array( 'updates' ),
+				'footer'       => true,
+			),
 		) );
 
 		$version = bp_get_version();
