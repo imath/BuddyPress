@@ -433,9 +433,10 @@ function bp_core_admin_get_components( $type = 'all' ) {
  *
  * @global string $parent_file
  * @global string $submenu_file
+ * @global string $title
  */
 function bp_core_admin_install_components() {
-	global $parent_file, $submenu_file;
+	global $parent_file, $submenu_file, $title;
 
 	if ( ! current_user_can( 'install_plugins' ) ) {
 		wp_die( __( 'Sorry, you are not allowed to install plugins on this site.', 'buddypress' ) );
@@ -476,6 +477,7 @@ function bp_core_admin_install_components() {
 	// Set the active menu & submenu.
 	$parent_file  = bp_core_do_network_admin() ? 'settings.php' : 'options-general.php';;
 	$submenu_file = 'bp-components';
+	$title        = __( 'Component Installation', 'buddypress' );
 
 	require_once ABSPATH . 'wp-admin/admin-header.php';
 
@@ -506,7 +508,7 @@ function bp_core_admin_install_components() {
 	?>
 
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Component Installation', 'buddypress' ); ?></h1>
+		<h1><?php echo esc_html( $title ); ?></h1>
 
 		<p class="description">
 			<?php
