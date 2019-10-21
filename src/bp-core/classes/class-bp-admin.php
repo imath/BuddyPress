@@ -1243,7 +1243,7 @@ class BP_Admin {
 			// 6.0.0
 			'bp-install-js' => array(
 				'file' =>"{$url}install{$min}.js",
-				'dependencies' => array( 'updates' ),
+				'dependencies' => array( 'updates', 'wp-util' ),
 				'footer'       => true,
 			),
 		) );

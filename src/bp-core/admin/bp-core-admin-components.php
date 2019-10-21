@@ -479,15 +479,117 @@ function bp_core_admin_install_components() {
 
 	require_once ABSPATH . 'wp-admin/admin-header.php';
 
+	$base_url = add_query_arg(
+		array( 'action' => 'install-plugin' ),
+		self_admin_url( 'update.php' )
+	);
+
+	foreach ( $installable_components as $key => $component ) {
+		if ( ! isset( $bp_supported_plugins[ $component->component_id ] ) ) {
+			unset( $installable_components[ $key ] );
+		} elseif ( current_user_can( 'install_plugins' ) ) {
+			$installable_components[ $key ]->url = wp_nonce_url(
+				add_query_arg( 'plugin', $component->slug, $base_url ),
+				'install-plugin_' . $component->slug
+			);
+		}
+	}
+
+	$plugin_num        = count( $installable_components );
+	$active_components = bp_get_option( 'bp-active-components', array() );
+	$form_action       = add_query_arg( 'page', 'bp-components', bp_get_admin_url( 'admin.php' ) );
+
 	wp_enqueue_script( 'bp-install-js' );
+	wp_localize_script( 'bp-install-js', 'bpInstallData', array(
+		'bpPlugins' => $installable_components,
+	) );
 	?>
+
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Component Installation', 'buddypress' ); ?></h1>
+
+		<p class="description">
+			<?php
+			/* translators %s is the number of plugins to install */
+			echo esc_html(
+				sprintf(
+					_n(
+						'Please wait until the download and activation of the plugin is finished.',
+						'Please wait until the download and activation of the %s plugins is finished.',
+						$plugin_num,
+						'buddypress'
+					),
+					$plugin_num
+				)
+			);
+			?>
+		</p>
+
+		<form id="plugin-filter" action="<?php echo esc_url( $form_action ); ?>" method="post">
+			<div class="tablenav top">
+				<div class="tablenav-pages one-page">
+					<span class="displaying-num">
+						<?php
+						/* translators %s is the number of plugins to install */
+						echo esc_html( sprintf( _n( '%s component', '%s components', $plugin_num, 'buddypress' ), $plugin_num ) );
+						?>
+					</span>
+				</div>
+				<br class="clear">
+			</div>
+			<div class="wp-list-table widefat plugin-install">
+				<h2 class="screen-reader-text"><?php esc_html_e( 'List of BuddyPress plugins being installed', 'buddypress' ); ?></h2>
+
+				<?php
+				// Makes sure the active components will remain active.
+				foreach ( $active_components as $component => $active ) : ?>
+					<input type="hidden" name="bp_components[<?php echo esc_html( $component ); ?>]" value="<?php echo absint( $active ); ?>">
+				<?php endforeach ; ?>
+
+				<?php
+				// Makes sure the installed components will have their plugins activated.
+				foreach ( $installable_components as $plugin ) : ?>
+					<input type="hidden" name="bp_components[<?php echo esc_html( $plugin->component_id ); ?>]" value="1">
+				<?php endforeach ; ?>
+
+				<input type="hidden" name="bp-admin-component-submit" value="1">
+				<div id="the-list" data-list="buddypress-plugins"></div>
+			</div>
+
+			<?php wp_nonce_field( 'bp-admin-component-setup' ); ?>
+		</form>
 	</div>
+
 	<?php
 	wp_print_request_filesystem_credentials_modal();
 	wp_print_admin_notice_templates();
 
+	// Use the following JS Template to output plugins to install.
+	?>
+	<script type="text/html" id="tmpl-buddypress-plugin">
+		<div class="plugin-card plugin-card-{{data.slug}}">
+			<div class="plugin-card-top">
+				<div class="name column-name">
+					<h3>
+						<span class="plugin-icon dashicons {{data.icon}}"></span>
+						{{data.title}}
+					</h3>
+				</div>
+				<div class="action-links">
+					<ul class="plugin-action-buttons">
+						<li>
+							<a class="install-now button" data-slug="{{data.slug}}" href="{{{data.url}}}" aria-label="<?php esc_attr_e( 'Install now', 'buddypress' ); ?>" data-name="{{data.name}}"><?php esc_html_e( 'Install', 'BuddyPress' ); ?></a>
+						</li>
+					</ul>
+				</div>
+				<div class="desc column-description">
+					<p>{{data.description}}</p>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<?php
 	include ABSPATH . 'wp-admin/admin-footer.php';
 }
 add_action( 'update-custom_install_bp_components', 'bp_core_admin_install_components' );

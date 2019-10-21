@@ -589,3 +589,9 @@ body.post-type-bp-email .categorydiv label {
 #buddypress-update.not-shiny .update-message:before {
 	content: "\f534";
 }
+
+body.buddypress [data-list="buddypress-plugins"] .plugin-icon.dashicons:before {
+	width: 128px;
+	height: 128px;
+	font-size: 128px;
+}
