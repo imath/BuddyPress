@@ -1269,7 +1269,7 @@ function bp_avatar_ajax_set() {
 
 	// Capability check.
 	if ( ! bp_attachments_current_user_can( 'edit_avatar', $avatar_data ) ) {
-		wp_send_json_error( $avatar_data );
+		wp_send_json_error();
 	}
 
 	if ( ! empty( $avatar_data['type'] ) && 'camera' === $avatar_data['type'] && 'user' === $avatar_data['object'] ) {
