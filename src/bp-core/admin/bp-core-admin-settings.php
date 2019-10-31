@@ -163,11 +163,9 @@ function bp_admin_setting_callback_members_section() { }
  * @since 6.0.0 Setting has been moved into the Members section.
  */
 function bp_admin_setting_callback_avatar_uploads() {
-	?>
-
+?>
 	<input id="bp-disable-avatar-uploads" name="bp-disable-avatar-uploads" type="checkbox" value="1" <?php checked( !bp_disable_avatar_uploads( false ) ); ?> />
 	<label for="bp-disable-avatar-uploads"><?php _e( 'Allow registered members to upload avatars', 'buddypress' ); ?></label>
-
 <?php
 }
 
