@@ -214,9 +214,7 @@ class BP_Walker_Nav_Menu_Compat extends Walker_Nav_Menu {
 }
 
 if ( PHP_VERSION_ID >= 50600 ) {
-	require_once dirname( __DIR__ ) . '/compat/php56/trait-bp-compat-walker-nav-menu.php';
-} elseif ( PHP_VERSION_ID >= 50400 ) {
-	require_once dirname( __DIR__ ) . '/compat/php54/trait-bp-compat-walker-nav-menu.php';
-} elseif ( PHP_VERSION_ID >= 50300 ) {
+	require_once dirname( __DIR__ ) . '/compat/php56/class-bp-compat-walker-nav-menu.php';
+} else {
 	require_once dirname( __DIR__ ) . '/compat/php53/class-bp-compat-walker-nav-menu.php';
 }

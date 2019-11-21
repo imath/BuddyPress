@@ -17,15 +17,6 @@ defined( 'ABSPATH' ) || exit;
  */
 class BP_Walker_Nav_Menu extends BP_Walker_Nav_Menu_Compat {
 	/**
-	 * Use the Compat Trait according to PHP version.
-	 *
-	 * @since 5.1.0
-	 */
-	use BP_Compat_Walker_Nav_Menu;
-}
-
-trait BP_Compat_Walker_Nav_Menu { // phpcs:ignore
-	/**
 	 * Compat method to extend Walker_Nav_Menu::walk() in PHP > 5.6.
 	 *
 	 * @since 5.1.0
