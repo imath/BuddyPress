@@ -10,25 +10,13 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-if ( PHP_VERSION_ID >= 50600 ) {
-	require_once dirname( __DIR__ ) . '/compat/php56/trait-bp-compat-walker-nav-menu.php';
-} else {
-	require_once dirname( __DIR__ ) . '/compat/php53/trait-bp-compat-walker-nav-menu.php';
-}
-
 /**
- * Create HTML list of BP nav items.
+ * Compatibility Class to make BP_Walker_Nav_Menu::walk() compatible
+ * from PHP 5.3 to 5.6 and up.
  *
- * @since 1.7.0
+ * @since 5.1.0
  */
-class BP_Walker_Nav_Menu extends Walker_Nav_Menu {
-	/**
-	 * Use the Compat Trait according to PHP version.
-	 *
-	 * @since 5.1.0
-	 */
-	use BP_Compat_Walker_Nav_Menu;
-
+class BP_Walker_Nav_Menu_Compat extends Walker_Nav_Menu {
 	/**
 	 * Description of fields indexes for building markup.
 	 *
@@ -223,4 +211,12 @@ class BP_Walker_Nav_Menu extends Walker_Nav_Menu {
 		 */
 		$output .= apply_filters( 'bp_walker_nav_menu_start_el', $item_output, $item, $depth, $args );
 	}
+}
+
+if ( PHP_VERSION_ID >= 50600 ) {
+	require_once dirname( __DIR__ ) . '/compat/php56/trait-bp-compat-walker-nav-menu.php';
+} elseif ( PHP_VERSION_ID >= 50400 ) {
+	require_once dirname( __DIR__ ) . '/compat/php54/trait-bp-compat-walker-nav-menu.php';
+} elseif ( PHP_VERSION_ID >= 50300 ) {
+	require_once dirname( __DIR__ ) . '/compat/php53/class-bp-compat-walker-nav-menu.php';
 }
