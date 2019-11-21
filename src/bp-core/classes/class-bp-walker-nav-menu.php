@@ -213,8 +213,8 @@ class BP_Walker_Nav_Menu_Compat extends Walker_Nav_Menu {
 	}
 }
 
-if ( PHP_VERSION_ID >= 50600 ) {
-	require_once dirname( __DIR__ ) . '/compat/php56/class-bp-compat-walker-nav-menu.php';
-} else {
+if ( version_compare( bp_get_major_wp_version(), '5.3', '<' ) ) {
 	require_once dirname( __DIR__ ) . '/compat/php53/class-bp-compat-walker-nav-menu.php';
+} else {
+	require_once dirname( __DIR__ ) . '/compat/php56/class-bp-compat-walker-nav-menu.php';
 }
