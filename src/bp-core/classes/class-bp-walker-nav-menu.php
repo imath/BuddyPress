@@ -132,7 +132,7 @@ class BP_Walker_Nav_Menu extends Walker_Nav_Menu {
 	}
 
 	/**
-	 * Compat method to extend Walker_Nav_Menu::walk() in PHP > 5.6.
+	 * Overrides Walker::walk() method.
 	 *
 	 * @since 6.0.0 Formalized the existing `...$args` parameter by adding it
 	 *              to the function signature to match WordPress 5.3.
