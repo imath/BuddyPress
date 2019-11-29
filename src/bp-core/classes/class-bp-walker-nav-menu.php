@@ -11,8 +11,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Compatibility Class to make BP_Walker_Nav_Menu::walk() compatible
- * from PHP 5.3 to 5.6 and up.
+ * Create HTML list of BP nav items.
  *
  * @since 1.7.0
  */
