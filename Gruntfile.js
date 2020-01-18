@@ -33,6 +33,7 @@ module.exports = function( grunt ) {
 
 	require( 'matchdep' ).filterDev( ['grunt-*', '!grunt-legacy-util'] ).forEach( grunt.loadNpmTasks );
 	grunt.util = require( 'grunt-legacy-util' );
+	require( 'phplint' ).gruntPlugin(grunt);
 
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( 'package.json' ),
@@ -269,7 +270,11 @@ module.exports = function( grunt ) {
 			}
 		},
 		phplint: {
-			good: ['src/**/*.php', '!src/bp-core/compat/php56/*.php'].concat( BP_EXCLUDED_MISC )
+			files: ['src/**/*.php', '!src/bp-core/compat/php56/*.php'].concat( BP_EXCLUDED_MISC ),
+			options: {
+				stdout: false,
+				stderr: true
+			}
 		},
 		postcss: {
 			options: {
