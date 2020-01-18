@@ -33,7 +33,7 @@ module.exports = function( grunt ) {
 
 	require( 'matchdep' ).filterDev( ['grunt-*', '!grunt-legacy-util'] ).forEach( grunt.loadNpmTasks );
 	grunt.util = require( 'grunt-legacy-util' );
-	require( 'phplint' ).gruntPlugin(grunt);
+	require( 'phplint' ).gruntPlugin( grunt );
 
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( 'package.json' ),
