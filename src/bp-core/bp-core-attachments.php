@@ -11,22 +11,6 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Check if the current WordPress version is using Plupload 2.1.1
- *
- * Plupload 2.1.1 was introduced in WordPress 3.9. Our bp-plupload.js
- * script requires it. So we need to make sure the current WordPress
- * match with our needs.
- *
- * @since 2.3.0
- * @since 3.0.0 This is always true.
- *
- * @return bool Always true.
- */
-function bp_attachments_is_wp_version_supported() {
-	return true;
-}
-
-/**
  * Get the Attachments Uploads dir data.
  *
  * @since 2.4.0
@@ -645,8 +629,16 @@ function bp_attachments_get_plupload_default_settings() {
  * @return array Plupload default localization strings.
  */
 function bp_attachments_get_plupload_l10n() {
-	// Localization strings.
-	return apply_filters( 'bp_attachments_get_plupload_l10n', array(
+	/**
+	 * Use this filter to edit localization strings.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param array $value An associative array of the localization strings.
+	 */
+	return apply_filters(
+		'bp_attachments_get_plupload_l10n',
+		array(
 			'queue_limit_exceeded'      => __( 'You have attempted to queue too many files.', 'buddypress' ),
 			'file_exceeds_size_limit'   => __( '%s exceeds the maximum upload size for this site.', 'buddypress' ),
 			'zero_byte_file'            => __( 'This file is empty. Please try another.', 'buddypress' ),
@@ -670,7 +662,8 @@ function bp_attachments_get_plupload_l10n() {
 			'unique_file_warning'       => __( 'Make sure to upload a unique file', 'buddypress' ),
 			'error_uploading'           => __( '&#8220;%s&#8221; has failed to upload.', 'buddypress' ),
 			'has_avatar_warning'        => __( 'If you&#39;d like to delete the existing profile photo but not upload a new one, please use the delete tab.', 'buddypress' )
-	) );
+		)
+	);
 }
 
 /**
@@ -1017,6 +1010,25 @@ function bp_attachments_get_cover_image_settings( $component = 'members' ) {
 		$args = (array) $cover_image;
 	}
 
+	// Set default args.
+	$default_args = wp_parse_args(
+		$args,
+		array(
+			'components'    => array(),
+			'width'         => 1300,
+			'height'        => 225,
+			'callback'      => '',
+			'theme_handle'  => '',
+			'default_cover' => '',
+		)
+	);
+
+	// Handle deprecated xProfile fitler.
+	if ( 'members' === $component ) {
+		/** This filter is documented in wp-includes/deprecated.php */
+		$args = apply_filters_deprecated( 'bp_before_xprofile_cover_image_settings_parse_args', array( $default_args ), '6.0.0', 'bp_before_members_cover_image_settings_parse_args' );
+	}
+
 	/**
 	 * Then let people override/set the feature using this dynamic filter
 	 *
@@ -1027,14 +1039,13 @@ function bp_attachments_get_cover_image_settings( $component = 'members' ) {
 	 *
 	 * @param array $settings The cover image settings
 	 */
-	$settings = bp_parse_args( $args, array(
-		'components'    => array(),
-		'width'         => 1300,
-		'height'        => 225,
-		'callback'      => '',
-		'theme_handle'  => '',
-		'default_cover' => '',
-	), $component . '_cover_image_settings' );
+	$settings = bp_parse_args( $args, $default_args, $component . '_cover_image_settings' );
+
+	// Handle deprecated xProfile fitler.
+	if ( 'members' === $component ) {
+		/** This filter is documented in wp-includes/deprecated.php */
+		$settings = apply_filters_deprecated( 'bp_after_xprofile_cover_image_settings_parse_args', array( $settings ), '6.0.0', 'bp_after_members_cover_image_settings_parse_args' );
+	}
 
 	if ( empty( $settings['components'] ) || empty( $settings['callback'] ) || empty( $settings['theme_handle'] ) ) {
 		return false;
@@ -1399,9 +1410,13 @@ function bp_attachments_cover_image_ajax_upload() {
 	}
 
 	// Set the name of the file.
-	$name = $_FILES['file']['name'];
+	$name       = $_FILES['file']['name'];
 	$name_parts = pathinfo( $name );
-	$name = trim( substr( $name, 0, - ( 1 + strlen( $name_parts['extension'] ) ) ) );
+	$name       = trim( substr( $name, 0, - ( 1 + strlen( $name_parts['extension'] ) ) ) );
+
+	// Set some arguments for filters.
+	$item_id   = (int) $bp_params['item_id'];
+	$component = $object_data['component'];
 
 	/**
 	 * Fires if the new cover image was successfully uploaded.
@@ -1420,12 +1435,28 @@ function bp_attachments_cover_image_ajax_upload() {
 	 * @param int    $feedback_code If value not 1, an error occured.
 	 */
 	do_action(
-		$object_data['component'] . '_cover_image_uploaded',
-		(int) $bp_params['item_id'],
+		$component . '_cover_image_uploaded',
+		$item_id,
 		$name,
 		$cover_url,
 		$feedback_code
 	);
+
+	// Handle deprecated xProfile action.
+	if ( 'members' === $component ) {
+		/** This filter is documented in wp-includes/deprecated.php */
+		do_action_deprecated(
+			'xprofile_cover_image_uploaded',
+			array(
+				$item_id,
+				$name,
+				$cover_url,
+				$feedback_code,
+			),
+			'6.0.0',
+			'members_cover_image_deleted'
+		);
+	}
 
 	// Finally return the cover image url to the UI.
 	bp_attachments_json_response( true, $is_html4, array(
@@ -1477,6 +1508,8 @@ function bp_attachments_cover_image_ajax_delete() {
 
 	// Handle delete.
 	if ( bp_attachments_delete_file( array( 'item_id' => $args['item_id'], 'object_dir' => $dir, 'type' => 'cover-image' ) ) ) {
+		$item_id = (int) $args['item_id'];
+
 		/**
 		 * Fires if the cover image was successfully deleted.
 		 *
@@ -1489,7 +1522,13 @@ function bp_attachments_cover_image_ajax_delete() {
 		 *
 		 * @param int $item_id Inform about the item id the cover image was deleted for.
 		 */
-		do_action( "{$component}_cover_image_deleted", (int) $args['item_id'] );
+		do_action( "{$component}_cover_image_deleted", $item_id );
+
+		// Handle deprecated xProfile action.
+		if ( 'members' === $component ) {
+			/** This filter is documented in wp-includes/deprecated.php */
+			do_action_deprecated( 'xprofile_cover_image_deleted', array( $item_id ), '6.0.0', 'members_cover_image_deleted' );
+		}
 
 		$response = array(
 			'reset_url'     => '',
