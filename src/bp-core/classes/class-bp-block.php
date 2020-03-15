@@ -129,6 +129,15 @@ class BP_Block {
 						continue;
 					}
 
+					if ( $min ) {
+						$minified_css  = str_replace( '.css', $min . '.css', $bp_args[ $style_handle_key . '_url' ] );
+						$css_file_path = str_replace( content_url(), WP_CONTENT_DIR, $minified_css );
+
+						if ( file_exists( $css_file_path ) ) {
+							$bp_args[ $style_handle_key . '_url' ] = $minified_css;
+						}
+					}
+
 					$deps = array();
 					if ( isset( $bp_args[ $style_handle_key . '_deps' ] ) && is_array( $bp_args[ $style_handle_key . '_deps' ] ) ) {
 						$deps = $bp_args[ $style_handle_key . '_deps' ];
