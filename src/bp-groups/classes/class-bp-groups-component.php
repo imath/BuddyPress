@@ -130,6 +130,7 @@ class BP_Groups_Component extends BP_Component {
 			'functions',
 			'notifications',
 			'cssjs',
+			'blocks',
 		);
 
 		// Conditional includes.
