@@ -2,9 +2,8 @@
 /**
  * BP Block class.
  *
- * @package bp-blocks
- * @subpackage \inc\classes\class-bp-block
- *
+ * @package BuddyPress
+ * @subpackage Core
  * @since 6.0.0
  */
 
