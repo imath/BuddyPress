@@ -11,7 +11,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Registers the BP Blocks components.
+ * Registers the BP Block components.
  *
  * @since 6.0.0
  */
