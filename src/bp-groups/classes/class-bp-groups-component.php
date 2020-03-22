@@ -962,11 +962,11 @@ class BP_Groups_Component extends BP_Component {
 						'wp-element',
 						'wp-components',
 						'wp-i18n',
-						'wp-api-fetch',
 						'wp-editor',
 						'wp-compose',
 						'wp-data',
 						'wp-block-editor',
+						'bp-block-components',
 					),
 					'style'              => 'bp-group-block',
 					'style_url'          => plugins_url( 'css/blocks/group.css', dirname( __FILE__ ) ),
@@ -993,8 +993,8 @@ class BP_Groups_Component extends BP_Component {
 							'default' => true,
 						),
 					),
-				)
-			),
+				),
+			)
 		);
 	}
 }

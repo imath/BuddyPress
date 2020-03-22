@@ -18,8 +18,10 @@ module.exports = function( grunt ) {
 		],
 
 		BP_EXCLUDED_JS = [
-			'!js/**/*.js',
-			'!**/js/blocks/*.js'
+			'!**/js/blocks/*.js',
+			'!**/js/block-components/*.js',
+			'!**/js/block-components/**/*.js',
+			'!**/js/block-components.js'
 		],
 
 		BP_EXCLUDED_MISC = [
@@ -325,13 +327,13 @@ module.exports = function( grunt ) {
 				command: 'wp i18n make-pot build build/buddypress.pot --headers=\'{"Project-Id-Version": "BuddyPress", "Report-Msgid-Bugs-To": "https://buddypress.trac.wordpress.org", "Last-Translator": "JOHN JAMES JACOBY <jjj@buddypress.org>", "Language-Team": "ENGLISH <jjj@buddypress.org>"}\'',
 				stdout: true
 			},
-			blocks_build: {
-				command: 'npm run build',
+			blocks_src: {
+				command: 'npm run dev',
 				cwd: SOURCE_DIR,
 				stdout: true
 			},
-			blocks_minify: {
-				command: 'npm run minify',
+			blocks_build: {
+				command: 'npm run build',
 				cwd: SOURCE_DIR,
 				stdout: true
 			}
@@ -372,7 +374,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'makepot', ['exec:makepot'] );
 	grunt.registerTask( 'commit',  ['src', 'checktextdomain', 'imagemin', 'phplint', 'exec:phpcompat'] );
 	grunt.registerTask( 'bp_rest', [ 'exec:rest_api', 'copy:bp_rest_components', 'copy:bp_rest_core', 'clean:bp_rest' ] );
-	grunt.registerTask( 'build',   ['commit', 'clean:all', 'copy:files', 'uglify:core', 'jsvalidate:build', 'exec:blocks_build', 'cssmin', 'bp_rest', 'makepot', 'exec:blocks_minify', 'exec:bpdefault', 'exec:cli'] );
+	grunt.registerTask( 'build',   ['commit', 'clean:all', 'copy:files', 'uglify:core', 'jsvalidate:build', 'exec:blocks_src', 'cssmin', 'bp_rest', 'makepot', 'exec:blocks_build', 'exec:bpdefault', 'exec:cli'] );
 	grunt.registerTask( 'release', ['build'] );
 
 	// Testing tasks.

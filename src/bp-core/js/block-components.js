@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"kUj2":[function(require,module,exports) {
+})({"IC7x":[function(require,module,exports) {
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -125,7 +125,7 @@ function _classCallCheck(instance, Constructor) {
 }
 
 module.exports = _classCallCheck;
-},{}],"dMjH":[function(require,module,exports) {
+},{}],"WiqS":[function(require,module,exports) {
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
@@ -143,7 +143,7 @@ function _createClass(Constructor, protoProps, staticProps) {
 }
 
 module.exports = _createClass;
-},{}],"FlpK":[function(require,module,exports) {
+},{}],"xOn8":[function(require,module,exports) {
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
@@ -161,7 +161,7 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-},{}],"oXBW":[function(require,module,exports) {
+},{}],"NS7G":[function(require,module,exports) {
 function _assertThisInitialized(self) {
   if (self === void 0) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -171,7 +171,7 @@ function _assertThisInitialized(self) {
 }
 
 module.exports = _assertThisInitialized;
-},{}],"cbGp":[function(require,module,exports) {
+},{}],"oXYo":[function(require,module,exports) {
 var _typeof = require("../helpers/typeof");
 
 var assertThisInitialized = require("./assertThisInitialized");
@@ -185,7 +185,7 @@ function _possibleConstructorReturn(self, call) {
 }
 
 module.exports = _possibleConstructorReturn;
-},{"../helpers/typeof":"FlpK","./assertThisInitialized":"oXBW"}],"XApn":[function(require,module,exports) {
+},{"../helpers/typeof":"xOn8","./assertThisInitialized":"NS7G"}],"goD2":[function(require,module,exports) {
 function _getPrototypeOf(o) {
   module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
@@ -194,7 +194,7 @@ function _getPrototypeOf(o) {
 }
 
 module.exports = _getPrototypeOf;
-},{}],"Omxx":[function(require,module,exports) {
+},{}],"zqo5":[function(require,module,exports) {
 function _setPrototypeOf(o, p) {
   module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
     o.__proto__ = p;
@@ -205,7 +205,7 @@ function _setPrototypeOf(o, p) {
 }
 
 module.exports = _setPrototypeOf;
-},{}],"PhTw":[function(require,module,exports) {
+},{}],"RISo":[function(require,module,exports) {
 var setPrototypeOf = require("./setPrototypeOf");
 
 function _inherits(subClass, superClass) {
@@ -224,7 +224,7 @@ function _inherits(subClass, superClass) {
 }
 
 module.exports = _inherits;
-},{"./setPrototypeOf":"Omxx"}],"xHsb":[function(require,module,exports) {
+},{"./setPrototypeOf":"zqo5"}],"W80x":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -258,14 +258,14 @@ var _wp = wp,
     apiFetch = _wp.apiFetch;
 var __ = wp.i18n.__;
 
-var BPAutocompleter = /*#__PURE__*/function (_Component) {
-  (0, _inherits2.default)(BPAutocompleter, _Component);
+var AutoCompleter = /*#__PURE__*/function (_Component) {
+  (0, _inherits2.default)(AutoCompleter, _Component);
 
-  function BPAutocompleter() {
+  function AutoCompleter() {
     var _this;
 
-    (0, _classCallCheck2.default)(this, BPAutocompleter);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(BPAutocompleter).apply(this, arguments));
+    (0, _classCallCheck2.default)(this, AutoCompleter);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AutoCompleter).apply(this, arguments));
     _this.state = {
       search: '',
       items: [],
@@ -276,7 +276,7 @@ var BPAutocompleter = /*#__PURE__*/function (_Component) {
     return _this;
   }
 
-  (0, _createClass2.default)(BPAutocompleter, [{
+  (0, _createClass2.default)(AutoCompleter, [{
     key: "searchItemName",
     value: function searchItemName(value) {
       var _this2 = this;
@@ -397,9 +397,42 @@ var BPAutocompleter = /*#__PURE__*/function (_Component) {
       }, itemsList)));
     }
   }]);
-  return BPAutocompleter;
+  return AutoCompleter;
 }(Component);
 
-var _default = BPAutocompleter;
+var _default = AutoCompleter;
 exports.default = _default;
-},{"@babel/runtime/helpers/classCallCheck":"kUj2","@babel/runtime/helpers/createClass":"dMjH","@babel/runtime/helpers/possibleConstructorReturn":"cbGp","@babel/runtime/helpers/getPrototypeOf":"XApn","@babel/runtime/helpers/assertThisInitialized":"oXBW","@babel/runtime/helpers/inherits":"PhTw"}]},{},["xHsb"], null)
+},{"@babel/runtime/helpers/classCallCheck":"IC7x","@babel/runtime/helpers/createClass":"WiqS","@babel/runtime/helpers/possibleConstructorReturn":"oXYo","@babel/runtime/helpers/getPrototypeOf":"goD2","@babel/runtime/helpers/assertThisInitialized":"NS7G","@babel/runtime/helpers/inherits":"RISo"}],"iA92":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _autocompleter = _interopRequireDefault(require("./autocompleter"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Components
+var _default = {
+  AutoCompleter: _autocompleter.default
+};
+exports.default = _default;
+},{"./autocompleter":"W80x"}],"Ee8M":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "blockComponents", {
+  enumerable: true,
+  get: function () {
+    return _components.default;
+  }
+});
+
+var _components = _interopRequireDefault(require("./components"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+},{"./components":"iA92"}]},{},["Ee8M"], "bp")
