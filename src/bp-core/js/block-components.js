@@ -143,6 +143,16 @@ function _createClass(Constructor, protoProps, staticProps) {
 }
 
 module.exports = _createClass;
+},{}],"NS7G":[function(require,module,exports) {
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+module.exports = _assertThisInitialized;
 },{}],"xOn8":[function(require,module,exports) {
 function _typeof(obj) {
   "@babel/helpers - typeof";
@@ -161,16 +171,6 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-},{}],"NS7G":[function(require,module,exports) {
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-module.exports = _assertThisInitialized;
 },{}],"oXYo":[function(require,module,exports) {
 var _typeof = require("../helpers/typeof");
 
@@ -236,15 +236,19 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
 
-var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
-
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _createSuper(Derived) { return function () { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 /**
  * WordPress dependencies.
@@ -261,11 +265,13 @@ var __ = wp.i18n.__;
 var AutoCompleter = /*#__PURE__*/function (_Component) {
   (0, _inherits2.default)(AutoCompleter, _Component);
 
+  var _super = _createSuper(AutoCompleter);
+
   function AutoCompleter() {
     var _this;
 
     (0, _classCallCheck2.default)(this, AutoCompleter);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AutoCompleter).apply(this, arguments));
+    _this = _super.apply(this, arguments);
     _this.state = {
       search: '',
       items: [],
@@ -402,7 +408,7 @@ var AutoCompleter = /*#__PURE__*/function (_Component) {
 
 var _default = AutoCompleter;
 exports.default = _default;
-},{"@babel/runtime/helpers/classCallCheck":"IC7x","@babel/runtime/helpers/createClass":"WiqS","@babel/runtime/helpers/possibleConstructorReturn":"oXYo","@babel/runtime/helpers/getPrototypeOf":"goD2","@babel/runtime/helpers/assertThisInitialized":"NS7G","@babel/runtime/helpers/inherits":"RISo"}],"iA92":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"IC7x","@babel/runtime/helpers/createClass":"WiqS","@babel/runtime/helpers/assertThisInitialized":"NS7G","@babel/runtime/helpers/possibleConstructorReturn":"oXYo","@babel/runtime/helpers/getPrototypeOf":"goD2","@babel/runtime/helpers/inherits":"RISo"}],"iA92":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
