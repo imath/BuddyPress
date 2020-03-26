@@ -550,6 +550,7 @@ class BuddyPress {
 			'BP_Akismet'                => 'activity',
 			'BP_REST_Activity_Endpoint' => 'activity',
 
+			'BP_REST_Blogs_Endpoint'                   => 'blogs',
 			'BP_REST_Attachments_Blog_Avatar_Endpoint' => 'blogs',
 
 			'BP_Admin'                     => 'core',

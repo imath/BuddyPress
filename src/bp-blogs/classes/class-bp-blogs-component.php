@@ -366,13 +366,15 @@ class BP_Blogs_Component extends BP_Component {
 	 *                           description.
 	 */
 	public function rest_api_init( $controllers = array() ) {
-		$controllers = array(
-			'BP_REST_Blogs_Endpoint',
-		);
+		if ( is_multisite() ) {
+			$controllers = array(
+				'BP_REST_Blogs_Endpoint',
+			);
 
-		// Support to Blog Avatar.
-		if ( bp_is_active( 'blogs', 'site-icon' ) ) {
-			$controllers[] = 'BP_REST_Attachments_Blog_Avatar_Endpoint';
+			// Support to Blog Avatar.
+			if ( bp_is_active( 'blogs', 'site-icon' ) ) {
+				$controllers[] = 'BP_REST_Attachments_Blog_Avatar_Endpoint';
+			}
 		}
 
 		parent::rest_api_init( $controllers );
