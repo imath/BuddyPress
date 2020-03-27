@@ -653,7 +653,8 @@ function bp_blog_last_active( $args = array() ) {
 
 		// Backwards compatibility for anyone forcing a 'true' active_format.
 		if ( true === $r['active_format'] ) {
-			$r['active_format'] = __( 'active %s', 'buddypress' );
+			/* translators: %s: human time diff of the last time the site was active. */
+			$r['active_format'] = _x( 'active %s', 'last time the site was active', 'buddypress' );
 		}
 
 		// Blog has been posted to at least once.

@@ -232,13 +232,50 @@ class BP_Groups_Invite_Template {
 			$this->invite->user->profile_data = BP_XProfile_ProfileData::get_all_for_user( $user_id );
 		}
 
-		$this->invite->user->avatar       = bp_core_fetch_avatar( array( 'item_id' => $user_id, 'type' => 'full',  'alt' => sprintf( __( 'Profile photo of %s', 'buddypress' ), $this->invite->user->fullname ) ) );
-		$this->invite->user->avatar_thumb = bp_core_fetch_avatar( array( 'item_id' => $user_id, 'type' => 'thumb', 'alt' => sprintf( __( 'Profile photo of %s', 'buddypress' ), $this->invite->user->fullname ) ) );
-		$this->invite->user->avatar_mini  = bp_core_fetch_avatar( array( 'item_id' => $user_id, 'type' => 'thumb', 'alt' => sprintf( __( 'Profile photo of %s', 'buddypress' ), $this->invite->user->fullname ), 'width' => 30, 'height' => 30 ) );
-		$this->invite->user->email        = $this->invite->user->user_email;
-		$this->invite->user->user_url     = bp_core_get_user_domain( $user_id, $this->invite->user->user_nicename, $this->invite->user->user_login );
-		$this->invite->user->user_link    = "<a href='{$this->invite->user->user_url}'>{$this->invite->user->fullname}</a>";
-		$this->invite->user->last_active  = bp_core_get_last_activity( $this->invite->user->last_activity, __( 'active %s', 'buddypress' ) );
+		$this->invite->user->avatar = bp_core_fetch_avatar(
+			array(
+				'item_id' => $user_id,
+				'type'    => 'full',
+				'alt'     => sprintf(
+					/* translators: %s: member name */
+					__( 'Profile photo of %s', 'buddypress' ),
+					$this->invite->user->fullname
+				)
+			)
+		);
+
+		$this->invite->user->avatar_thumb = bp_core_fetch_avatar(
+			array(
+				'item_id' => $user_id,
+				'type'    => 'thumb',
+				'alt'     => sprintf(
+					/* translators: %s: member name */
+					__( 'Profile photo of %s', 'buddypress' ),
+					$this->invite->user->fullname
+				)
+			)
+		);
+
+		$this->invite->user->avatar_mini = bp_core_fetch_avatar(
+			array(
+				'item_id' => $user_id,
+				'type' => 'thumb',
+				'alt' => sprintf(
+					/* translators: %s: member name */
+					__( 'Profile photo of %s', 'buddypress' ),
+					$this->invite->user->fullname
+				),
+				'width' => 30,
+				'height' => 30
+			)
+		);
+
+		$this->invite->user->email     = $this->invite->user->user_email;
+		$this->invite->user->user_url  = bp_core_get_user_domain( $user_id, $this->invite->user->user_nicename, $this->invite->user->user_login );
+		$this->invite->user->user_link = "<a href='{$this->invite->user->user_url}'>{$this->invite->user->fullname}</a>";
+
+		/* translators: %s: human time diff of the last time the user was active on the site. */
+		$this->invite->user->last_active = bp_core_get_last_activity( $this->invite->user->last_activity, __( 'active %s', 'buddypress' ) );
 
 		if ( bp_is_active( 'groups' ) ) {
 			$total_groups = BP_Groups_Member::total_group_count( $user_id );
