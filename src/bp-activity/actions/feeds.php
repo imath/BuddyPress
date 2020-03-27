@@ -50,7 +50,7 @@ function bp_activity_action_personal_feed() {
 		'id'            => 'personal',
 
 		/* translators: 1: Site Name. 2: User Display Name. */
-		'title'         => sprintf( __( '%1$s | %2$s | Activity', 'buddypress' ), bp_get_site_name(), bp_get_displayed_user_fullname() ),
+		'title'         => sprintf( _x( '%1$s | %2$s | Activity', 'Personal activity feed title', 'buddypress' ), bp_get_site_name(), bp_get_displayed_user_fullname() ),
 		'link'          => trailingslashit( bp_displayed_user_domain() . bp_get_activity_slug() ),
 
 		/* translators: %s: User Display Name */
