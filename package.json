@@ -43,7 +43,8 @@
 		"build": "npm run build:components && parcel build src/js/bp-*/*s/blocks/*.js --out-dir build --no-source-maps",
 		"watch:components": "parcel watch src/js/bp-core/js/block-components/block-components.js --out-dir src/bp-core/js --out-file block-components.js --no-source-maps --global bp",
 		"dev:components": "parcel build src/js/bp-core/js/block-components/block-components.js --out-dir src/bp-core/js --out-file block-components.js --no-source-maps --no-minify --global bp",
-		"build:components": "parcel build src/js/bp-core/js/block-components/block-components.js --out-dir build/bp-core/js --out-file block-components.js --no-source-maps --global bp"
+		"build:components": "parcel build src/js/bp-core/js/block-components/block-components.js --out-dir build/bp-core/js --out-file block-components.js --no-source-maps --global bp",
+		"src:makepot": "wp i18n make-pot src src/buddypress.pot"
 	},
 	"keywords": [
 		"activity",
