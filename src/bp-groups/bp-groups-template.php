@@ -4267,7 +4267,7 @@ function bp_group_member_pagination_count() {
 			$message = __( 'Viewing 1 member', 'buddypress' );
 		} else {
 			/* translators: 1: group member from number. 2: group member to number. 3: total group members. */
-			$message = sprintf( _n( 'Viewing %1$s - %2$s of %3$s member', 'Viewing %1$s - %2$s of %3$s members', $members_template->total_member_count, 'buddypress' ), $from_num, $to_num, $total );
+			$message = sprintf( _nx( 'Viewing %1$s - %2$s of %3$s member', 'Viewing %1$s - %2$s of %3$s members', $members_template->total_member_count, 'group members pagination', 'buddypress' ), $from_num, $to_num, $total );
 		}
 
 		/**
