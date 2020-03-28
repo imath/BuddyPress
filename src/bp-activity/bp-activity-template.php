@@ -1037,7 +1037,7 @@ function bp_activity_avatar( $args = '' ) {
 		// Prepend some descriptive text to alt.
 		$alt_default = __( 'Profile picture', 'buddypress' );
 		if ( ! empty( $dn_default ) ) {
-			/* translators: %s: the activity user display name */
+			/* translators: %s: member name */
 			$alt_default = sprintf( __( 'Profile picture of %s', 'buddypress' ), $dn_default );
 		}
 
@@ -1210,7 +1210,7 @@ function bp_activity_secondary_avatar( $args = '' ) {
 				$link    = bp_core_get_userlink( $item_id, false, true );
 
 				if ( empty( $alt ) ) {
-					/* translators: %s: the activity user display name */
+					/* translators: %s: member name */
 					$alt = sprintf( __( 'Profile picture of %s', 'buddypress' ), bp_core_get_user_displayname( $activities_template->activity->secondary_item_id ) );
 				}
 
@@ -1222,7 +1222,7 @@ function bp_activity_secondary_avatar( $args = '' ) {
 				$link    = bp_core_get_userlink( $item_id, false, true );
 
 				if ( empty( $alt ) ) {
-					/* translators: %s: the activity user display name */
+					/* translators: %s: member name */
 					$alt = sprintf( __( 'Profile picture of %s', 'buddypress' ), $activities_template->activity->display_name );
 				}
 

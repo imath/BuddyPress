@@ -456,7 +456,11 @@ function bp_adminbar_authors_menu() {
 				'email'   => $author->user_email,
 				'width'   => 15,
 				'height'  => 15,
-				'alt'     => sprintf( __( 'Profile picture of %s', 'buddypress' ), $author->display_name )
+				'alt'     => sprintf(
+					/* translators: %s: member name */
+					__( 'Profile picture of %s', 'buddypress' ),
+					$author->display_name
+				),
 			) );
 			echo ' ' . $author->display_name . '</a>';
 			echo '<div class="admin-bar-clear"></div>';
