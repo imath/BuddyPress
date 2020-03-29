@@ -287,10 +287,6 @@ class BP_Tests_Blogs_Functions extends BP_UnitTestCase {
 			$this->markTestSkipped();
 		}
 
-		if ( function_exists( 'wp_initialize_site' ) ) {
-			$this->setExpectedDeprecated( 'wpmu_new_blog' );
-		}
-
 		// Create a regular member
 		$u = self::factory()->user->create();
 
@@ -890,10 +886,6 @@ class BP_Tests_Blogs_Functions extends BP_UnitTestCase {
 	 */
 	public function test_bp_blogs_comment_sync_activity_comment_for_custom_post_type() {
 		if ( is_multisite() ) {
-			if ( function_exists( 'wp_initialize_site' ) ) {
-				$this->setExpectedDeprecated( 'wpmu_new_blog' );
-			}
-
 			$b = self::factory()->blog->create();
 			switch_to_blog( $b );
 			add_filter( 'comment_flood_filter', '__return_false' );
@@ -1000,10 +992,6 @@ class BP_Tests_Blogs_Functions extends BP_UnitTestCase {
 			$this->markTestSkipped();
 		}
 
-		if ( function_exists( 'wp_initialize_site' ) ) {
-			$this->setExpectedDeprecated( 'wpmu_new_blog' );
-		}
-
 		$old_user = get_current_user_id();
 
 		$u = self::factory()->user->create();
@@ -1034,11 +1022,6 @@ class BP_Tests_Blogs_Functions extends BP_UnitTestCase {
 	public function test_bp_blogs_remove_blog() {
 		if ( ! is_multisite() ) {
 			$this->markTestSkipped();
-		}
-
-		if ( function_exists( 'wp_initialize_site' ) ) {
-			$this->setExpectedDeprecated( 'wpmu_new_blog' );
-			$this->setExpectedDeprecated( 'delete_blog' );
 		}
 
 		$reset_post = $_POST;
@@ -1086,10 +1069,6 @@ class BP_Tests_Blogs_Functions extends BP_UnitTestCase {
 	public function test_bp_blogs_remove_blog_for_user_is_contributor() {
 		if ( ! is_multisite() ) {
 			$this->markTestSkipped();
-		}
-
-		if ( function_exists( 'wp_initialize_site' ) ) {
-			$this->setExpectedDeprecated( 'wpmu_new_blog' );
 		}
 
 		$reset_post = $_POST;
