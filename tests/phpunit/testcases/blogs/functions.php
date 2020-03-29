@@ -1129,10 +1129,6 @@ class BP_Tests_Blogs_Functions extends BP_UnitTestCase {
 			$this->markTestSkipped( __METHOD__ . ' requires multisite.' );
 		}
 
-		if ( function_exists( 'wp_initialize_site' ) ) {
-			$this->setExpectedDeprecated( 'wpmu_new_blog' );
-		}
-
 		$u1 = self::factory()->user->create();
 		$b1 = get_current_blog_id();
 		$b2 = self::factory()->blog->create();
@@ -1157,10 +1153,6 @@ class BP_Tests_Blogs_Functions extends BP_UnitTestCase {
 	public function test_blogs_data_should_not_be_deleted_on_wp_delete_user_multisite() {
 		if ( ! is_multisite() ) {
 			$this->markTestSkipped( __METHOD__ . ' requires multisite.' );
-		}
-
-		if ( function_exists( 'wp_initialize_site' ) ) {
-			$this->setExpectedDeprecated( 'wpmu_new_blog' );
 		}
 
 		$u1 = self::factory()->user->create();
