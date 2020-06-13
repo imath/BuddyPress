@@ -1,0 +1,4 @@
+{
+    "core": null,
+    "plugins": [ ".", "buddypress/BP-REST#master", "buddypress/bp-blocks#master" ]
+}
