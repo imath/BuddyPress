@@ -1,5 +1,5 @@
 {
-    "core": null,
+	"core": null,
 	"plugins": [ ".", "buddypress/BP-REST#master" ],
 	"config": { "WP_DEBUG": true, "SCRIPT_DEBUG": true }
 }
