@@ -2758,6 +2758,8 @@ function bp_register_member_type( $member_type, $args = array() ) {
 	$r = bp_parse_args( $args, array(
 		'labels'        => array(),
 		'has_directory' => true,
+		'code'          => true,
+		'db_id'         => 0,
 	), 'register_member_type' );
 
 	$member_type = sanitize_key( $member_type );
@@ -2856,6 +2858,11 @@ function bp_get_member_type_object( $member_type ) {
  */
 function bp_get_member_types( $args = array(), $output = 'names', $operator = 'and' ) {
 	$types = buddypress()->members->types;
+
+	// Merge with types available into the database.
+	if ( ! isset( $args['code'] ) || true !== $args['code'] ) {
+		$types = bp_get_taxonomy_types( bp_get_member_type_tax_name(), $types );
+	}
 
 	$types = wp_filter_object_list( $types, $args, $operator );
 
