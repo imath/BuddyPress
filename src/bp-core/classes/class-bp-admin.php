@@ -117,12 +117,13 @@ class BP_Admin {
 	 * @since 1.6.0
 	 */
 	private function includes() {
-		require( $this->admin_dir . 'bp-core-admin-actions.php'    );
-		require( $this->admin_dir . 'bp-core-admin-settings.php'   );
-		require( $this->admin_dir . 'bp-core-admin-functions.php'  );
-		require( $this->admin_dir . 'bp-core-admin-components.php' );
-		require( $this->admin_dir . 'bp-core-admin-slugs.php'      );
-		require( $this->admin_dir . 'bp-core-admin-tools.php'      );
+		require $this->admin_dir . 'bp-core-admin-actions.php';
+		require $this->admin_dir . 'bp-core-admin-settings.php';
+		require $this->admin_dir . 'bp-core-admin-functions.php';
+		require $this->admin_dir . 'bp-core-admin-components.php';
+		require $this->admin_dir . 'bp-core-admin-slugs.php';
+		require $this->admin_dir . 'bp-core-admin-tools.php';
+		require $this->admin_dir . 'bp-core-admin-types.php';
 	}
 
 	/**
