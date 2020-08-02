@@ -2956,6 +2956,22 @@ function bp_get_taxonomy_common_args() {
 }
 
 /**
+ * Returns the BP Taxonomy common labels.
+ *
+ * @since 7.0.0
+ *
+ * @return array The BP Taxonomy common labels.
+ */
+function bp_get_taxonomy_common_labels() {
+	return array(
+		'bp_type_name'           => _x( 'Name', 'BP Type name label', 'buddypress' ),
+		'bp_type_singular_name'  => _x( 'Singular name', 'BP Type singular name label', 'buddypress' ),
+		'bp_type_has_directory'  => _x( 'Add Type-Filtered Directory View', 'BP Type has directory checkbox label', 'buddypress' ),
+		'bp_type_directory_slug' => _x( 'Custom type directory slug', 'BP Type slug label', 'buddypress' ),
+	);
+}
+
+/**
  * Output the name of the email type taxonomy.
  *
  * @since 2.5.0
@@ -3057,21 +3073,18 @@ function bp_get_email_tax_type_args() {
 function bp_get_type_metadata_schema( $suppress_filters = false ) {
 	$schema = array(
 		'bp_type_name' => array(
-			'label'             => __( 'Name', 'buddypress' ),
 			'description'       => __( 'The name of your type, at the plural form.', 'buddypress' ),
 			'type'              => 'string',
 			'single'            => true,
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'bp_type_singular_name' => array(
-			'label'             => __( 'Singular name', 'buddypress' ),
 			'description'       => __( 'The name of your type, at the singular form.', 'buddypress' ),
 			'type'              => 'string',
 			'single'            => true,
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'bp_type_has_directory' => array(
-			'label'             => __( 'Add Type-Filtered Directory View', 'buddypress' ),
 			'description'       => __( 'Add a list of members matching the member type available on the Members Directory page (e.g. site.url/members/type/teacher/).', 'buddypress' ),
 			'type'              => 'boolean',
 			'single'            => true,
@@ -3116,10 +3129,6 @@ function bp_register_type_meta( $type_tax, $meta_key, array $args ) {
 
 	if ( ! isset( $taxonomies[ $type_tax ] ) ) {
 		return false;
-	}
-
-	if ( isset( $args['label'] ) ) {
-		unset( $args['label'] );
 	}
 
 	// register_term_meta() was introduced in WP 4.9.8.

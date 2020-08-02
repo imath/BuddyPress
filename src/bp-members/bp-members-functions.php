@@ -2682,6 +2682,9 @@ function bp_get_member_type_tax_labels() {
 			'items_list_navigation'      => _x( 'Member types list navigation', 'Member type taxonomy items list navigation label', 'buddypress' ),
 			'items_list'                 => _x( 'Member types list', 'Member type taxonomy items list label', 'buddypress' ),
 			'back_to_items'              => _x( 'Back to all Member types', 'Member type taxonomy back to items label', 'buddypress' ),
+			// Specific to BuddyPress.
+			'bp_type_id_label'           => _x( 'Member Type ID', 'BP Member type ID label', 'buddypress' ),
+			'bp_type_id_description'     => _x( 'Enter a lower-case string without spaces or special characters (used internally to identify the member type).', 'BP Member type ID description', 'buddypress' ),
 		)
 	);
 }
@@ -2707,7 +2710,7 @@ function bp_get_member_type_tax_args() {
 		array_merge(
 			array(
 				'description' => _x( 'BuddyPress Member types', 'Member type taxonomy description', 'buddypress' ),
-				'labels'      => bp_get_member_type_tax_labels(),
+				'labels'      => array_merge( bp_get_member_type_tax_labels(), bp_get_taxonomy_common_labels() ),
 			),
 			bp_get_taxonomy_common_args()
 		)

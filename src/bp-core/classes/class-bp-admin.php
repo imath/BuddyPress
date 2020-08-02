@@ -117,13 +117,12 @@ class BP_Admin {
 	 * @since 1.6.0
 	 */
 	private function includes() {
-		require $this->admin_dir . 'bp-core-admin-actions.php';
-		require $this->admin_dir . 'bp-core-admin-settings.php';
-		require $this->admin_dir . 'bp-core-admin-functions.php';
-		require $this->admin_dir . 'bp-core-admin-components.php';
-		require $this->admin_dir . 'bp-core-admin-slugs.php';
-		require $this->admin_dir . 'bp-core-admin-tools.php';
-		require $this->admin_dir . 'bp-core-admin-types.php';
+		require( $this->admin_dir . 'bp-core-admin-actions.php'    );
+		require( $this->admin_dir . 'bp-core-admin-settings.php'   );
+		require( $this->admin_dir . 'bp-core-admin-functions.php'  );
+		require( $this->admin_dir . 'bp-core-admin-components.php' );
+		require( $this->admin_dir . 'bp-core-admin-slugs.php'      );
+		require( $this->admin_dir . 'bp-core-admin-tools.php'      );
 	}
 
 	/**
@@ -175,6 +174,9 @@ class BP_Admin {
 
 		// BuddyPress Hello.
 		add_action( 'admin_footer', array( $this, 'about_screen' ) );
+
+		// BuddyPress Types administration.
+		add_action( 'load-edit-tags.php', array( 'BP_Admin_Types', 'register_types_admin' ) );
 
 		/* Filters ***********************************************************/
 
