@@ -173,7 +173,7 @@ class BP_Admin_Types {
 	/**
 	 * Outputs the BP type add form.
 	 *
-	 * @since 1.1.0
+	 * @since 7.0.0
 	 *
 	 * @param string      $taxonomy The type taxonomy name.
 	 * @param null|object $type     The type object, `null` if not passed to the method.
