@@ -308,7 +308,7 @@ function bp_get_term_by( $field, $value, $taxonomy = '', $output = OBJECT, $filt
  *
  * @since 7.0.0
  *
- * @param string $term     The BP term name to add or update.
+ * @param string $term     The BP term name to add.
  * @param string $taxonomy The BP taxonomy to which to add the BP term.
  * @param array  $args {
  *     Optional. Array of arguments for inserting a BP term.
@@ -344,7 +344,7 @@ function bp_insert_term( $term, $taxonomy = '', $args = array() ) {
 	 *
 	 * @since 7.0.0
 	 *
-	 * @param string $term     The BP term name to add or update.
+	 * @param string $term     The BP term name to add.
 	 * @param string $taxonomy The BP taxonomy to which to add the term.
 	 * @param array  $args     Array of arguments for inserting a BP term.
 	 */
@@ -359,13 +359,7 @@ function bp_insert_term( $term, $taxonomy = '', $args = array() ) {
 	$term_id = reset( $tt_id );
 
 	if ( $term_metas ) {
-		foreach ( $term_metas as $meta_key => $meta_value ) {
-			if ( ! registered_meta_key_exists( 'term', $meta_key, $taxonomy ) ) {
-				continue;
-			}
-
-			update_term_meta( $term_id, $meta_key, $meta_value );
-		}
+		bp_update_type_metadata( $term_id, $taxonomy, $term_metas );
 	}
 
 	if ( $switched ) {

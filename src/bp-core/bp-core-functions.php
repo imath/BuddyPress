@@ -3142,6 +3142,32 @@ function bp_register_type_meta( $type_tax, $meta_key, array $args ) {
 }
 
 /**
+ * Update a list of metadata for a given type ID and a given taxonomy.
+ *
+ * @since 7.0.0
+ *
+ * @param  integer $type_id    The database ID of the BP Type.
+ * @param  string  $taxonomy   The BP Type taxonomy.
+ * @param  array   $type_metas An associative array (meta_key=>meta_value).
+ * @return boolean             False on failure. True otherwise.
+ */
+function bp_update_type_metadata( $type_id = 0, $taxonomy = '', $type_metas = array() ) {
+	if ( ! $type_id || ! $taxonomy || ! is_array( $type_metas ) ) {
+		return false;
+	}
+
+	foreach ( $type_metas as $meta_key => $meta_value ) {
+		if ( ! registered_meta_key_exists( 'term', $meta_key, $taxonomy ) ) {
+			continue;
+		}
+
+		update_term_meta( $type_id, $meta_key, $meta_value );
+	}
+
+	return true;
+}
+
+/**
  * Get types for a given BP Taxonomy.
  *
  * @since 7.0.0

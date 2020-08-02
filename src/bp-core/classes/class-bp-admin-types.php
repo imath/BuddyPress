@@ -111,6 +111,10 @@ class BP_Admin_Types {
 
 		// Filters
 		add_filter( 'bp_core_admin_register_scripts', array( $this, 'register_scripts' ) );
+		add_filter( "manage_{$this->screen_id}_columns", array( $this, 'column_headers' ), 10, 1 );
+		add_filter( "manage_{$this->taxonomy}_custom_column", array( $this, 'column_contents' ), 10, 3 );
+		add_filter( "{$this->taxonomy}_row_actions", array( $this, 'row_actions' ), 10, 2 );
+		add_filter( "bulk_actions-{$this->screen_id}", '__return_empty_array', 10, 1 );
 	}
 
 	/**
@@ -345,6 +349,135 @@ class BP_Admin_Types {
 		}
 
 		return $this->add_form_fields( $taxonomy, $type );
+	}
+
+	/**
+	 * Filters the terms list table column headers to customize them for BuddyPress Types.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param array  $column_headers The column header labels keyed by column ID.
+	 * @return array                 The column header labels keyed by column ID.
+	 */
+	public function column_headers( $column_headers = array() ) {
+		if ( isset( $column_headers['name'] ) ) {
+			$column_headers['name'] = __( 'Type ID', 'buddypress' );
+		}
+
+		unset( $column_headers['cb'], $column_headers['description'], $column_headers['posts'] );
+
+		$column_headers['plural_name'] = __( 'Name', 'buddypress' );
+		$column_headers['counts']      = _x( 'Count', 'Number/count of types', 'buddypress' );
+
+		return $column_headers;
+	}
+
+	/**
+	 * Sets the content for the Plural name & Counts columns.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param string  $string      Blank string.
+	 * @param string  $column_name Name of the column.
+	 * @param int     $type_id     The type's term ID.
+	 * @return string              The Type Plural name.
+	 */
+	public function column_contents( $column_content = '', $column_name = '', $type_id = 0 ) {
+		if ( 'plural_name' !== $column_name && 'counts' !== $column_name || ! $type_id ) {
+			return $column_content;
+		}
+
+		// Set the Plural name column.
+		if ( 'plural_name' === $column_name ) {
+			$type_plural_name = get_term_meta( $type_id, 'bp_type_name', true );
+
+			// Plural name meta is not set? Let's check register by code types!
+			if ( ! $type_plural_name ) {
+				$type_name = get_term_field( 'name', $type_id, $this->taxonomy );
+
+				/**
+				 * Filter here to set missing term meta for registered by code types.
+				 *
+				 * @see bp_set_registered_by_code_member_type_metadata() for an example of use.
+				 *
+				 * @since 7.0.0
+				 *
+				 * @param string $value Metadata for the BP Type.
+				 */
+				$metadata = apply_filters( "{$this->taxonomy}_set_registered_by_code_metada", array(), $type_name );
+
+				if ( isset( $metadata['bp_type_name'] ) ) {
+					$type_plural_name = $metadata['bp_type_name'];
+				}
+			}
+
+			echo esc_html( $type_plural_name );
+
+			// Set the Totals column.
+		} elseif ( 'counts' === $column_name ) {
+			global $parent_file;
+			$type  = bp_get_term_by( 'id', $type_id, $this->taxonomy );
+			if ( 0 === (int) $type->count ) {
+				return 0;
+			}
+
+			// Format the count.
+			$count = number_format_i18n( $type->count );
+
+			$args = array(
+				str_replace( '_', '-', $this->taxonomy ) => $type->slug,
+			);
+
+			$base_url = $parent_file;
+			if ( false === strpos( $parent_file, '.php' ) ) {
+				$base_url = add_query_arg( 'page', $parent_file, 'admin.php' );
+			}
+
+			printf(
+				'<a href="%1$s">%2$s</a>',
+				esc_url( add_query_arg( $args, bp_get_admin_url( $base_url ) ) ),
+				esc_html( $count )
+			);
+		}
+	}
+
+	/**
+	 * Customizes the Types Admin list table row actions.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param array   $actions The table row actions.
+	 * @param WP_Term $type    The current BP Type for the row.
+	 * @return array           The table row actions for the current BP type.
+	 */
+	public function row_actions( $actions = array(), $type = null ) {
+		if ( ! isset( $type->taxonomy ) || ! $type->taxonomy ) {
+			return $actions;
+		}
+
+		/**
+		 * Filter here to set the types "registered by code".
+		 *
+		 * @see bp_get_member_types_registered_by_code() for an example of use.
+		 *
+		 * @since 7.0.0
+		 */
+		$registered_by_code_types = apply_filters( "{$type->taxonomy}_registered_by_code", array() );
+
+		// Types registered by code cannot be deleted as long as the custom registration code exists.
+		if ( isset( $registered_by_code_types[ $type->name ] ) ) {
+			unset( $actions['delete'] );
+		}
+
+		// Inline edits are disabled for all types.
+		unset( $actions['inline hide-if-no-js'] );
+
+		// Removes the post type query argument for the edit action.
+		if ( isset( $actions['edit'] ) ) {
+			$actions['edit'] = str_replace( '&#038;post_type=post', '', $actions['edit'] );
+		}
+
+		return $actions;
 	}
 }
 

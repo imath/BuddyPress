@@ -2891,6 +2891,55 @@ function bp_get_member_types( $args = array(), $output = 'names', $operator = 'a
 }
 
 /**
+ * Only gets the member types registered by code.
+ *
+ * @since 7.0.0
+ *
+ * @return array The member types registered by code.
+ */
+function bp_get_member_types_registered_by_code() {
+	return bp_get_member_types(
+		array(
+			'code' => true,
+		),
+		'objects',
+	);
+}
+add_filter( bp_get_member_type_tax_name() . '_registered_by_code', 'bp_get_member_types_registered_by_code' );
+
+/**
+ * Generates missing metadata for a type registered by code.
+ *
+ * @since 7.0.0
+ *
+ * @return array The member type metadata.
+ */
+function bp_set_registered_by_code_member_type_metadata( $metadata = array(), $type = '' ) {
+	$member_type = bp_get_member_type_object( $type );
+
+	foreach ( get_object_vars( $member_type ) as $object_key => $object_value ) {
+		if ( 'labels' === $object_key ) {
+			foreach ( $object_value as $label_key => $label_value ) {
+				$metadata[ 'bp_type_' . $label_key ] = $label_value;
+			}
+		} elseif ( ! in_array( $object_key, array( 'name', 'code', 'db_id' ), true ) ) {
+			$metadata[ 'bp_type_' . $object_key ] = $object_value;
+		}
+	}
+
+	/**
+	 * Save metadata into database to avoid generating metadata
+	 * each time a type is listed into the Types Admin screen.
+	 */
+	if ( isset( $member_type->db_id ) && $member_type->db_id ) {
+		bp_update_type_metadata( $member_type->db_id, bp_get_member_type_tax_name(), $metadata );
+	}
+
+	return $metadata;
+}
+add_filter( bp_get_member_type_tax_name() . '_set_registered_by_code_metada', 'bp_set_registered_by_code_member_type_metadata', 10, 2 );
+
+/**
  * Set type for a member.
  *
  * @since 2.2.0
