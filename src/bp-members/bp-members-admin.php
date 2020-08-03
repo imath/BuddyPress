@@ -77,17 +77,18 @@ function bp_members_type_admin_updated_messages( $messages = array() ) {
 	$type_taxonomy = bp_get_member_type_tax_name();
 
 	$messages[ $type_taxonomy ] = array(
-		0 => '',
-		1 => __( 'Please define the Member Type ID field.', 'buddypress' ),
-		2 => __( 'Member type successfully added.', 'buddypress' ),
-		3 => __( 'Sorry, there was an error and the Member type wasn’t added.', 'buddypress' ),
+		0  => '',
+		1  => __( 'Please define the Member Type ID field.', 'buddypress' ),
+		2  => __( 'Member type successfully added.', 'buddypress' ),
+		3  => __( 'Sorry, there was an error and the Member type wasn’t added.', 'buddypress' ),
 		// The following one needs to be != 5.
-		4 => __( 'Member type successfully updated.', 'buddypress' ),
-		5 => __( 'Sorry, this Member type already exists.', 'buddypress' ),
-		6 => __( 'Sorry, the Member type was not deleted: it does not exist.', 'buddypress' ),
-		7 => __( 'Sorry, This Member type is registered using code, deactivate the plugin or remove the custom code before trying to delete it again.', 'buddypress' ),
-		8 => __( 'Sorry, there was an error while trying to delete this Member type.', 'buddypress' ),
-		9 => __( 'Member type successfully deleted.', 'buddypress' ),
+		4  => __( 'Member type successfully updated.', 'buddypress' ),
+		5  => __( 'Sorry, this Member type already exists.', 'buddypress' ),
+		6  => __( 'Sorry, the Member type was not deleted: it does not exist.', 'buddypress' ),
+		7  => __( 'Sorry, This Member type is registered using code, deactivate the plugin or remove the custom code before trying to delete it again.', 'buddypress' ),
+		8  => __( 'Sorry, there was an error while trying to delete this Member type.', 'buddypress' ),
+		9  => __( 'Member type successfully deleted.', 'buddypress' ),
+		10 => __( 'Member type could not be updated due to missing required information.', 'buddypress' ),
 	);
 
 	return $messages;

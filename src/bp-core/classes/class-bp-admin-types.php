@@ -170,6 +170,80 @@ class BP_Admin_Types {
 
 			wp_safe_redirect( add_query_arg( 'message', 2, $referer ) );
 			exit;
+
+			// Updating an existing type intot the Database.
+		} elseif ( 'editedtag' === $action ) {
+			$args                 = $_POST;
+			$args['type_term_id'] = 0;
+			unset( $args['tag_ID'] );
+
+			if ( isset( $_POST['tag_ID'] ) ) {
+				$args['type_term_id'] = $_POST['tag_ID'];
+			}
+
+			if ( isset( $_POST['taxonomy'] ) ) {
+				$args['taxonomy'] = $_POST['taxonomy'];
+			}
+
+			check_admin_referer( 'update-tag_' . $args['type_term_id'] );
+
+			$result = bp_core_admin_update_type( $args );
+
+			if ( is_wp_error( $result ) ) {
+				$referer = add_query_arg(
+					array_merge(
+						$result->get_error_data(),
+						array(
+							'error' => 1,
+						)
+					),
+					$referer
+				);
+
+				wp_safe_redirect( $referer );
+				exit;
+			}
+
+			wp_safe_redirect( add_query_arg( 'message', 4, $referer ) );
+			exit;
+
+			// Deletes a type.
+		} elseif ( 'delete' === $action ) {
+			$args                 = $_GET;
+			$args['type_term_id'] = 0;
+			unset( $args['tag_ID'] );
+
+			if ( isset( $_GET['tag_ID'] ) ) {
+				$args['type_term_id'] = $_GET['tag_ID'];
+			}
+
+			if ( isset( $_GET['taxonomy'] ) ) {
+				$args['taxonomy'] = $_GET['taxonomy'];
+			}
+
+			check_admin_referer( 'delete-tag_' . $args['type_term_id'] );
+			$referer = remove_query_arg( array( 'action', 'tag_ID', '_wpnonce' ), $referer );
+
+			// Delete the type.
+			$result = bp_core_admin_delete_type( $args );
+
+			if ( is_wp_error( $result ) ) {
+				$referer = add_query_arg(
+					array_merge(
+						$result->get_error_data(),
+						array(
+							'error' => 1,
+						)
+					),
+					$referer
+				);
+
+				wp_safe_redirect( $referer );
+				exit;
+			}
+
+			wp_safe_redirect( add_query_arg( 'message', 9, $referer ) );
+			exit;
 		}
 	}
 
