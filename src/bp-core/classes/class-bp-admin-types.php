@@ -53,7 +53,18 @@ class BP_Admin_Types {
 		$this->setup_globals();
 
 		if ( $this->taxonomy && $this->screen_id ) {
+			$this->includes();
 			$this->setup_hooks();
+
+			if ( isset( $_POST['action'] ) || isset( $_GET['action'] ) ) {
+				if ( isset( $_GET['action'] ) ) {
+					$action = wp_unslash( $_GET['action'] );
+				} else {
+					$action = wp_unslash( $_POST['action'] );
+				}
+
+				$this->handle_action( $action );
+			}
 		}
 	}
 
@@ -97,6 +108,15 @@ class BP_Admin_Types {
 	}
 
 	/**
+	 * Include Admin functions.
+	 *
+	 * @since 7.0.0
+	 */
+	private function includes() {
+		require plugin_dir_path( dirname( __FILE__ ) ) . 'admin/bp-core-admin-types.php';
+	}
+
+	/**
 	 * Set hooks.
 	 *
 	 * @since 7.0.0
@@ -115,6 +135,42 @@ class BP_Admin_Types {
 		add_filter( "manage_{$this->taxonomy}_custom_column", array( $this, 'column_contents' ), 10, 3 );
 		add_filter( "{$this->taxonomy}_row_actions", array( $this, 'row_actions' ), 10, 2 );
 		add_filter( "bulk_actions-{$this->screen_id}", '__return_empty_array', 10, 1 );
+	}
+
+	/**
+	 * Handle BP Type actions.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param string $action Required. The action to handle ('add-tag', 'editedtag' or 'delete' ).
+	 */
+	private function handle_action( $action ) {
+		$referer = wp_get_referer();
+
+		// Adding a new type into the database.
+		if ( 'add-tag' === $action ) {
+			check_admin_referer( 'add-tag', '_wpnonce_add-tag' );
+
+			$result = bp_core_admin_insert_type( $_POST );
+
+			if ( is_wp_error( $result ) ) {
+				$referer = add_query_arg(
+					array_merge(
+						$result->get_error_data(),
+						array(
+							'error' => 1,
+						)
+					),
+					$referer
+				);
+
+				wp_safe_redirect( $referer );
+				exit;
+			}
+
+			wp_safe_redirect( add_query_arg( 'message', 2, $referer ) );
+			exit;
+		}
 	}
 
 	/**

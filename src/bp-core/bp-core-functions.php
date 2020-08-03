@@ -3068,9 +3068,10 @@ function bp_get_email_tax_type_args() {
  * @since 7.0.0
  *
  * @param  boolean $suppress_filters Whether to suppress filters. Default `false`.
+ * @param  string  $type_taxonomy    Optional. the Type's taxonomy name.
  * @return array                     The default BuddyPress type metadata schema.
  */
-function bp_get_type_metadata_schema( $suppress_filters = false ) {
+function bp_get_type_metadata_schema( $suppress_filters = false, $type_taxonomy = '' ) {
 	$schema = array(
 		'bp_type_name' => array(
 			'description'       => __( 'The name of your type, at the plural form.', 'buddypress' ),
@@ -3108,9 +3109,10 @@ function bp_get_type_metadata_schema( $suppress_filters = false ) {
 	 *
 	 * @since 7.0.0
 	 *
-	 * @param array $schema Associative array (name => arguments).
+	 * @param array  $schema        Associative array (name => arguments).
+	 * @param string $type_taxonomy The Type's taxonomy name.
 	 */
-	return apply_filters( 'bp_get_type_metadata_schema', $schema );
+	return apply_filters( 'bp_get_type_metadata_schema', $schema, $type_taxonomy );
 }
 
 /**

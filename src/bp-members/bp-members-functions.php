@@ -2723,8 +2723,10 @@ function bp_get_member_type_tax_args() {
  * @since 7.0.0
  */
 function bp_register_member_type_metadata() {
-	foreach ( bp_get_type_metadata_schema() as $meta_key => $meta_args ) {
-		bp_register_type_meta( bp_get_member_type_tax_name(), $meta_key, $meta_args );
+	$type_taxonomy = bp_get_member_type_tax_name();
+
+	foreach ( bp_get_type_metadata_schema( false, $type_taxonomy ) as $meta_key => $meta_args ) {
+		bp_register_type_meta( $type_taxonomy, $meta_key, $meta_args );
 	}
 }
 add_action( 'bp_register_type_metadata', 'bp_register_member_type_metadata' );
@@ -2938,6 +2940,29 @@ function bp_set_registered_by_code_member_type_metadata( $metadata = array(), $t
 	return $metadata;
 }
 add_filter( bp_get_member_type_tax_name() . '_set_registered_by_code_metada', 'bp_set_registered_by_code_member_type_metadata', 10, 2 );
+
+/**
+ * Insert member types registered by code not yet saved into the database as WP Terms.
+ *
+ * @since 7.0.0
+ */
+function bp_insert_member_types_registered_by_code() {
+	$all_types     = bp_get_member_types( array(), 'objects' );
+	$unsaved_types = wp_filter_object_list( $all_types, array( 'db_id' => 0 ), 'and', 'name' );
+
+	if ( $unsaved_types ) {
+		foreach ( $unsaved_types as $type_name ) {
+			bp_insert_term(
+				$type_name,
+				bp_get_member_type_tax_name(),
+				array(
+					'slug' => $type_name,
+				)
+			);
+		}
+	}
+}
+add_action( bp_get_member_type_tax_name() . '_add_form', 'bp_insert_member_types_registered_by_code', 1 );
 
 /**
  * Set type for a member.
