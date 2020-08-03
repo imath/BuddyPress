@@ -2902,7 +2902,7 @@ function bp_get_member_types_registered_by_code() {
 		array(
 			'code' => true,
 		),
-		'objects',
+		'objects'
 	);
 }
 add_filter( bp_get_member_type_tax_name() . '_registered_by_code', 'bp_get_member_types_registered_by_code' );
