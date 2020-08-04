@@ -363,7 +363,7 @@ class BP_Admin_Types {
 					__( 'Type metadata labels need to be set into the labels argument when registering your taxonomy using the meta key as the label’s key.', 'buddypress' )
 					. ' ' .
 					sprintf(
-						/** Translators: %s is the name of the Type meta key */
+						/* translators: %s is the name of the Type meta key */
 						__( 'As a result, the form elements for the "%s" meta key cannot be displayed', 'buddypress' ), $meta_key ),
 					'7.0.0'
 				);
