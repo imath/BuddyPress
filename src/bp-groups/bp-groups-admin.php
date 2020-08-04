@@ -14,11 +14,14 @@
 defined( 'ABSPATH' ) || exit;
 
 // Include WP's list table class.
-if ( !class_exists( 'WP_List_Table' ) ) require( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+if ( ! class_exists( 'WP_List_Table' ) ) {
+	require ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+}
 
 // The per_page screen option. Has to be hooked in extremely early.
-if ( is_admin() && ! empty( $_REQUEST['page'] ) && 'bp-groups' == $_REQUEST['page'] )
+if ( is_admin() && ! empty( $_REQUEST['page'] ) && 'bp-groups' == $_REQUEST['page'] ) {
 	add_filter( 'set-screen-option', 'bp_groups_admin_screen_options', 10, 3 );
+}
 
 /**
  * Register the Groups component admin screen.
@@ -41,6 +44,58 @@ function bp_groups_add_admin_menu() {
 	add_action( "load-$hook", 'bp_groups_admin_load' );
 }
 add_action( bp_core_admin_hook(), 'bp_groups_add_admin_menu' );
+
+/**
+ * Redirects the user on the Goups network admin screen when BuddyPress is network activated.
+ *
+ * @since 1.1.0
+ */
+function bp_group_site_admin_network_admin_redirect() {
+	wp_safe_redirect( add_query_arg( 'page', 'bp-groups', network_admin_url( 'admin.php' ) ) );
+	exit();
+}
+
+function bp_groups_admin_types_menu() {
+	if ( ! bp_is_root_blog() ) {
+		return;
+	}
+
+	if ( bp_is_network_activated() && is_network_admin() ) {
+		// Adds a 'bp-groups' submenu to go to the root blog Group types screen.
+		$group_type_admin_url = add_query_arg( 'taxonomy', 'bp_group_type', get_admin_url( bp_get_root_blog_id(), 'edit-tags.php' ) );
+		add_submenu_page(
+			'bp-groups',
+			__( 'Group types', 'buddypress' ),
+			__( 'Group types', 'buddypress' ),
+			'bp_moderate',
+			esc_url( $group_type_admin_url )
+		);
+	} elseif ( ! is_network_admin() ) {
+		if ( is_multisite() ) {
+			// Adds a 'bp-groups' menu to the root blog menu.
+			$redirect_hook = add_menu_page(
+				_x( 'Groups', 'Admin Groups page title', 'buddypress' ),
+				_x( 'Groups', 'Admin Groups menu', 'buddypress' ),
+				'bp_moderate',
+				'bp-groups',
+				'__return_empty_string',
+				'div'
+			);
+
+			add_action( "load-{$redirect_hook}", 'bp_group_site_admin_network_admin_redirect' );
+		}
+
+		// Add the submenu to manage Group Types.
+		add_submenu_page(
+			'bp-groups',
+			__( 'Group types', 'bp-types-ui' ),
+			__( 'Group types', 'bp-types-ui' ),
+			'bp_moderate',
+			basename( add_query_arg( 'taxonomy', 'bp_group_type', bp_get_admin_url( 'edit-tags.php' ) ) )
+		);
+	}
+}
+add_action( 'bp_admin_menu', 'bp_groups_admin_types_menu' );
 
 /**
  * Add groups component to custom menus array.

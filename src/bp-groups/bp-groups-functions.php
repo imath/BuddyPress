@@ -2464,6 +2464,122 @@ add_action( 'bp_groups_delete_group', 'bp_groups_update_orphaned_groups_on_group
 /** Group Types ***************************************************************/
 
 /**
+ * Output the slug of the Group type taxonomy.
+ *
+ * @since 7.0.0
+ */
+function bp_group_type_tax_name() {
+	echo bp_get_group_type_tax_name();
+}
+
+	/**
+	 * Return the slug of the Group type taxonomy.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @return string The unique Group taxonomy slug.
+	 */
+	function bp_get_group_type_tax_name() {
+		/**
+		 * Filters the slug of the Group type taxonomy.
+		 *
+		 * @since 7.0.0
+		 *
+		 * @param string $value Group type taxonomy slug.
+		 */
+		return apply_filters( 'bp_get_group_type_tax_name', 'bp_group_type' );
+	}
+
+/**
+ * Returns labels used by the Group type taxonomy.
+ *
+ * @since 7.0.0
+ *
+ * @return array
+ */
+function bp_get_group_type_tax_labels() {
+
+	/**
+	 * Filters Group type taxonomy labels.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param array $value Associative array (name => label).
+	 */
+	return apply_filters(
+		'bp_get_group_type_tax_labels',
+		array(
+			'name'                          => _x( 'Group types', 'Group type taxonomy name', 'buddypress' ),
+			'singular_name'                 => _x( 'Group type', 'Group type taxonomy singular name', 'buddypress' ),
+			'search_items'                  => _x( 'Search Group types', 'Group type taxonomy search items label', 'buddypress' ),
+			'popular_items'                 => _x( 'Most used Group types', 'Group type taxonomy popular items label', 'buddypress' ),
+			'all_items'                     => _x( 'All Group types', 'Group type taxonomy all items label', 'buddypress' ),
+			'edit_item'                     => _x( 'Edit Group type', 'Group type taxonomy edit item label', 'buddypress' ),
+			'view_item'                     => _x( 'View Group type', 'Group type taxonomy view item label', 'buddypress' ),
+			'update_item'                   => _x( 'Update Group type', 'Group type taxonomy update item label', 'buddypress' ),
+			'add_new_item'                  => _x( 'Add new Group type', 'Group type taxonomy add new item label', 'buddypress' ),
+			'new_item_name'                 => _x( 'New Group type name', 'Group type taxonomy new item name label', 'buddypress' ),
+			'separate_items_with_commas'    => _x( 'Separate Group types with commas', 'Group type taxonomy separate items with commas label', 'buddypress' ),
+			'add_or_remove_items'           => _x( 'Add or remove Group types', 'Group type taxonomy add or remove items label', 'buddypress' ),
+			'choose_from_most_used'         => _x( 'Choose from the most used Group types', 'Group type taxonomy choose from most used label', 'buddypress' ),
+			'not_found'                     => _x( 'No Group types found', 'Group type taxonomy not found label', 'buddypress' ),
+			'no_terms'                      => _x( 'No Group types', 'Group type taxonomy no terms label', 'buddypress' ),
+			'items_list_navigation'         => _x( 'Group types list navigation', 'Group type taxonomy items list navigation label', 'buddypress' ),
+			'items_list'                    => _x( 'Group types list', 'Group type taxonomy items list label', 'buddypress' ),
+			'back_to_items'                 => _x( 'Back to all Group types', 'Group type taxonomy back to items label', 'buddypress' ),
+			// Specific to BuddyPress.
+			'bp_type_id_label'              => _x( 'Group Type ID', 'BP Member type ID label', 'buddypress' ),
+			'bp_type_id_description'        => _x( 'Enter a lower-case string without spaces or special characters (used internally to identify the group type).', 'BP Group type ID description', 'buddypress' ),
+			'bp_type_show_in_create_screen' => _x( 'Add to Available Types on Create Screen', 'BP Group type show in create screen', 'buddypress' ),
+			'bp_type_show_in_list'          => _x( 'Include when Group Types are Listed for a Group', 'BP Group type show in list', 'buddypress' ),
+		)
+	);
+}
+
+/**
+ * Returns arguments used by the Group type taxonomy.
+ *
+ * @since 7.0.0
+ *
+ * @return array
+ */
+function bp_get_group_type_tax_args() {
+
+	/**
+	 * Filters Group type taxonomy args.
+	 *
+	 * @since 7.0.0
+	 *
+	 * @param array $value Associative array (key => arg).
+	 */
+	return apply_filters(
+		'bp_get_group_type_tax_args',
+		array_merge(
+			array(
+				'description' => _x( 'BuddyPress Group types', 'Group type taxonomy description', 'buddypress' ),
+				'labels'      => array_merge( bp_get_group_type_tax_labels(), bp_get_taxonomy_common_labels() ),
+			),
+			bp_get_taxonomy_common_args()
+		)
+	);
+}
+
+function bp_groups_register_group_type_taxonomy( $taxonomies = array() ) {
+	return array_merge(
+		$taxonomies,
+		array(
+			// Group Type.
+			bp_get_group_type_tax_name() => array(
+				'object'    => 'bp_group',
+				'component' => 'groups',
+				'args'      => bp_get_group_type_tax_args(),
+			),
+		)
+	);
+}
+add_filter( 'bp_get_default_taxonomies', 'bp_groups_register_group_type_taxonomy', 1 );
+
+/**
  * Fire the 'bp_groups_register_group_types' action.
  *
  * @since 2.6.0
@@ -2477,6 +2593,53 @@ function bp_groups_register_group_types() {
 	do_action( 'bp_groups_register_group_types' );
 }
 add_action( 'bp_register_taxonomies', 'bp_groups_register_group_types' );
+
+function bp_get_group_type_metadata_schema( $schema = array(), $taxonomy = '' ) {
+	if ( bp_get_group_type_tax_name() === $taxonomy ) {
+		if ( isset( $schema['bp_type_has_directory']['description'] ) ) {
+			$schema['bp_type_has_directory']['description'] = __( 'Add a list of groups matching the member type available on the Groups Directory page (e.g. site.url/groups/type/ninja/).', 'buddypress' );
+		}
+
+		if ( isset( $schema['bp_type_directory_slug']['description'] ) ) {
+			$schema['bp_type_directory_slug']['description'] = __( 'If you want to use a slug that is different from the Group Type ID above, enter it here.', 'buddypress' );
+		}
+
+		$schema = array_merge(
+			$schema,
+			array(
+				'bp_type_show_in_create_screen' => array(
+					'description'       => __( 'Include this group type during group creation and when a group administrator is on the group&rsquo;s &ldquo;Manage > Settings&rdquo; page.', 'buddypress' ),
+					'type'              => 'boolean',
+					'single'            => true,
+					'sanitize_callback' => 'absint',
+				),
+				'bp_type_show_in_list'          => array(
+					'description'       => __( 'Include this group type when group types are listed, like in the group header.', 'buddypress' ),
+					'type'              => 'boolean',
+					'single'            => true,
+					'sanitize_callback' => 'absint',
+				),
+			)
+		);
+	}
+
+	return $schema;
+}
+add_filter( 'bp_get_type_metadata_schema', 'bp_get_group_type_metadata_schema', 1, 2 );
+
+/**
+ * Registers the Group type metadata.
+ *
+ * @since 7.0.0
+ */
+function bp_register_group_type_metadata() {
+	$type_taxonomy = bp_get_group_type_tax_name();
+
+	foreach ( bp_get_type_metadata_schema( false, $type_taxonomy ) as $meta_key => $meta_args ) {
+		bp_register_type_meta( $type_taxonomy, $meta_key, $meta_args );
+	}
+}
+add_action( 'bp_register_type_metadata', 'bp_register_group_type_metadata', 11 );
 
 /**
  * Register a group type.
@@ -2525,6 +2688,8 @@ function bp_groups_register_group_type( $group_type, $args = array() ) {
 		'description'           => '',
 		'create_screen_checked' => false,
 		'labels'                => array(),
+		'code'                  => true,
+		'db_id'                 => 0,
 	), 'register_group_type' );
 
 	$group_type = sanitize_key( $group_type );
@@ -2617,6 +2782,11 @@ function bp_groups_get_group_types( $args = array(), $output = 'names', $operato
 
 	$types = wp_filter_object_list( $types, $args, $operator );
 
+	// Merge with types available into the database.
+	if ( ! isset( $args['code'] ) || true !== $args['code'] ) {
+		$types = bp_get_taxonomy_types( bp_get_group_type_tax_name(), $types );
+	}
+
 	/**
 	 * Filters the array of group type objects.
 	 *
@@ -2685,7 +2855,7 @@ function bp_groups_set_group_type( $group_id, $group_type, $append = false ) {
 		}
 	}
 
-	$retval = bp_set_object_terms( $group_id, $group_type, 'bp_group_type', $append );
+	$retval = bp_set_object_terms( $group_id, $group_type, bp_get_group_type_tax_name(), $append );
 
 	// Bust the cache if the type has been updated.
 	if ( ! is_wp_error( $retval ) ) {
@@ -2721,7 +2891,7 @@ function bp_groups_get_group_type( $group_id, $single = true ) {
 	$types = wp_cache_get( $group_id, 'bp_groups_group_type' );
 
 	if ( false === $types ) {
-		$raw_types = bp_get_object_terms( $group_id, 'bp_group_type' );
+		$raw_types = bp_get_object_terms( $group_id, bp_get_group_type_tax_name() );
 
 		if ( ! is_wp_error( $raw_types ) ) {
 			$types = array();
@@ -2778,7 +2948,7 @@ function bp_groups_remove_group_type( $group_id, $group_type ) {
 		return false;
 	}
 
-	$deleted = bp_remove_object_terms( $group_id, $group_type, 'bp_group_type' );
+	$deleted = bp_remove_object_terms( $group_id, $group_type, bp_get_group_type_tax_name() );
 
 	// Bust the case, if the type has been removed.
 	if ( ! is_wp_error( $deleted ) ) {
