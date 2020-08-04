@@ -1,6 +1,6 @@
 <?php
 /**
- * BuddyPress Types Administration screen.
+ * BuddyPress Types Admin functions.
  *
  * @package BuddyPress
  * @subpackage Core

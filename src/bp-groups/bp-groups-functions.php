@@ -2564,6 +2564,14 @@ function bp_get_group_type_tax_args() {
 	);
 }
 
+/**
+ * Register the Group Types taxonomy.
+ *
+ * @since 7.0.0
+ *
+ * @param array $taxonomies BuddyPress default taxonomies.
+ * @return array            BuddyPress default taxonomies.
+ */
 function bp_groups_register_group_type_taxonomy( $taxonomies = array() ) {
 	return array_merge(
 		$taxonomies,
@@ -2594,6 +2602,15 @@ function bp_groups_register_group_types() {
 }
 add_action( 'bp_register_taxonomies', 'bp_groups_register_group_types' );
 
+/**
+ * Extend generic Type metadata schema to match Group Type needs.
+ *
+ * @since 7.0.0
+ *
+ * @param array  $schema   The generic Type metadata schema.
+ * @param string $taxonomy The taxonomy name the schema applies to.
+ * @return array           The Group Type metadata schema.
+ */
 function bp_get_group_type_metadata_schema( $schema = array(), $taxonomy = '' ) {
 	if ( bp_get_group_type_tax_name() === $taxonomy ) {
 		if ( isset( $schema['bp_type_has_directory']['description'] ) ) {
