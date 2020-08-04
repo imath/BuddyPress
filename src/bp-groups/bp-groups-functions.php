@@ -2827,6 +2827,78 @@ function bp_groups_get_group_type_object( $group_type ) {
 }
 
 /**
+ * Only gets the group types registered by code.
+ *
+ * @since 7.0.0
+ *
+ * @return array The group types registered by code.
+ */
+function bp_get_group_types_registered_by_code() {
+	return bp_groups_get_group_types(
+		array(
+			'code' => true,
+		),
+		'objects'
+	);
+}
+add_filter( bp_get_group_type_tax_name() . '_registered_by_code', 'bp_get_group_types_registered_by_code' );
+
+/**
+ * Generates missing metadata for a type registered by code.
+ *
+ * @since 7.0.0
+ *
+ * @return array The group type metadata.
+ */
+function bp_set_registered_by_code_group_type_metadata( $metadata = array(), $type = '' ) {
+	$group_type = bp_groups_get_group_type_object( $type );
+
+	foreach ( get_object_vars( $group_type ) as $object_key => $object_value ) {
+		if ( 'labels' === $object_key ) {
+			foreach ( $object_value as $label_key => $label_value ) {
+				$metadata[ 'bp_type_' . $label_key ] = $label_value;
+			}
+		} elseif ( ! in_array( $object_key, array( 'name', 'code', 'db_id' ), true ) ) {
+			$metadata[ 'bp_type_' . $object_key ] = $object_value;
+		}
+	}
+
+	/**
+	 * Save metadata into database to avoid generating metadata
+	 * each time a type is listed into the Types Admin screen.
+	 */
+	if ( isset( $group_type->db_id ) && $group_type->db_id ) {
+		bp_update_type_metadata( $group_type->db_id, bp_get_group_type_tax_name(), $metadata );
+	}
+
+	return $metadata;
+}
+add_filter( bp_get_group_type_tax_name() . '_set_registered_by_code_metada', 'bp_set_registered_by_code_group_type_metadata', 10, 2 );
+
+/**
+ * Insert group types registered by code not yet saved into the database as WP Terms.
+ *
+ * @since 7.0.0
+ */
+function bp_insert_group_types_registered_by_code() {
+	$all_types     = bp_groups_get_group_types( array(), 'objects' );
+	$unsaved_types = wp_filter_object_list( $all_types, array( 'db_id' => 0 ), 'and', 'name' );
+
+	if ( $unsaved_types ) {
+		foreach ( $unsaved_types as $type_name ) {
+			bp_insert_term(
+				$type_name,
+				bp_get_group_type_tax_name(),
+				array(
+					'slug' => $type_name,
+				)
+			);
+		}
+	}
+}
+add_action( bp_get_group_type_tax_name() . '_add_form', 'bp_insert_group_types_registered_by_code', 1 );
+
+/**
  * Set type for a group.
  *
  * @since 2.6.0
