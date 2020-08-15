@@ -1,5 +1,8 @@
 {
-	"core": null,
+	"core": "WordPress/WordPress#master",
 	"plugins": [ ".", "buddypress/BP-REST#master" ],
-	"config": { "WP_DEBUG": true, "SCRIPT_DEBUG": true }
+	"config": {
+		"WP_DEBUG": true,
+		"SCRIPT_DEBUG": true
+	}
 }
