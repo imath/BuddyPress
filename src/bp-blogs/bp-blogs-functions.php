@@ -1476,3 +1476,41 @@ function bp_blogs_restore_data( $user_id = 0 ) {
 	}
 }
 add_action( 'bp_make_ham_user', 'bp_blogs_restore_data', 10, 1 );
+
+/**
+ * Checks whether blog creation is enabled.
+ *
+ * Returns true when blog creation is enabled for logged-in users only, or
+ * when it's enabled for new registrations.
+ *
+ * @since 1.0.0
+ * @since 7.0.0 The function has been moved into `bp-blogs/bp-blogs-functions.php`.
+ *
+ * @return bool True if blog registration is enabled.
+ */
+function bp_blog_signup_enabled() {
+	$bp            = buddypress();
+	$retval        = true;
+	$active_signup = 'all';
+
+	if ( isset( $bp->site_options['registration'] ) ) {
+		$active_signup = $bp->site_options['registration'];
+	}
+
+	/**
+	 * Filters whether or not blog creation is enabled.
+	 *
+	 * Return "all", "none", "blog" or "user".
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $active_signup Value of the registration site option creation status.
+	 */
+	$active_signup = apply_filters( 'wpmu_active_signup', $active_signup );
+
+	if ( 'none' === $active_signup || 'user' === $active_signup ) {
+		$retval = false;
+	}
+
+	return $retval;
+}
