@@ -1118,12 +1118,13 @@ function bp_show_blog_signup_form( $blogname = '', $blog_title = '', $errors = '
 function bp_blogs_signup_blog( $blogname = '', $blog_title = '', $errors = '' ) {
 	$current_site = get_current_site();
 
-	if ( ! $blogname && isset( $_POST['blogname'] ) ) {
-		$blogname = wp_unslash( $_POST['blogname'] );
-	}
+	if ( ! $blogname && ! $blog_title ) {
+		$submitted_vars = bp_blogs_get_signup_form_submitted_vars();
 
-	if ( ! $blog_title && isset( $_POST['blog_title'] ) ) {
-		$blog_title = wp_unslash( $_POST['blog_title'] );
+		if ( array_filter( $submitted_vars ) ) {
+			$blogname   = $submitted_vars['blogname'];
+			$blog_title = $submitted_vars['blog_title'];
+		}
 	}
 	?>
 
@@ -1138,19 +1139,19 @@ function bp_blogs_signup_blog( $blogname = '', $blog_title = '', $errors = '' ) 
 
 		if ( ! is_subdomain_install() ) {
 			printf(
-				'<span class="prefix_address">%1$s</span> <input name="blogname" type="text" id="blogname" value="%2$s" maxlength="63" /><br />',
+				'<span class="prefix_address">%1$s</span> <input name="blogname" type="text" id="blogname" value="%2$s" maxlength="63" style="width: auto!important" /><br />',
 				esc_html( $current_site->domain . $current_site->path ),
 				esc_attr( $blogname )
 			);
 		} else {
 			printf(
-				'<input name="blogname" type="text" id="blogname" value="%1$s" maxlength="63" %2$s/> <span class="suffix_address">.%3$s</span><br />',
+				'<input name="blogname" type="text" id="blogname" value="%1$s" maxlength="63" style="width: auto!important" %2$s/> <span class="suffix_address">.%3$s</span><br />',
 				esc_attr( $blogname ),
 				bp_get_form_field_attributes( 'blogname' ),
 				bp_signup_get_subdomain_base()
 			);
 		}
-		if ( is_wp_error( $errors ) ) {
+		if ( is_wp_error( $errors ) && $errors->get_error_message( 'blogname' ) ) {
 			printf( '<div class="error">%s</div>', $errors->get_error_message( 'blogname' ) );
 		}
 		?>
@@ -1186,7 +1187,7 @@ function bp_blogs_signup_blog( $blogname = '', $blog_title = '', $errors = '' ) 
 		<input name="blog_title" type="text" id="blog_title" value="<?php echo esc_html( $blog_title ); ?>" />
 
 		<?php
-		if ( is_wp_error( $errors ) ) {
+		if ( is_wp_error( $errors ) && $errors->get_error_message( 'blog_title' ) ) {
 			printf( '<div class="error">%s</div>', $errors->get_error_message( 'blog_title' ) );
 		}
 		?>
@@ -1248,16 +1249,12 @@ function bp_blogs_validate_blog_signup() {
 		return new WP_Error( 'bp_blogs_doing_it_wrong', __( 'Sorry, we cannot create the site. Please try again later.', 'buddypress' ) );
 	}
 
-	if ( isset( $_POST['blogname'] ) ) {
-		$blog_name = wp_unslash( $_POST['blogname'] );
-	}
+	$submitted_vars = bp_blogs_get_signup_form_submitted_vars();
 
-	if ( isset( $_POST['blog_title'] ) ) {
-		$blog_title = wp_unslash( $_POST['blog_title'] );
-	}
-
-	if ( isset( $_POST['blog_public'] ) ) {
-		$public = (int) wp_unslash( $_POST['blog_public'] );
+	if ( array_filter( $submitted_vars ) ) {
+		$blog_name  = $submitted_vars['blogname'];
+		$blog_title = $submitted_vars['blog_title'];
+		$public     = (int) $submitted_vars['blog_public'];
 	}
 
 	$blog = bp_blogs_validate_blog_form( $blog_name, $blog_title );
@@ -1288,36 +1285,6 @@ function bp_blogs_validate_blog_signup() {
 }
 
 /**
- * Validate a blog creation submission.
- *
- * Essentially, a wrapper for {@link wpmu_validate_blog_signup()}.
- *
- * @since 1.0.0
- * @since 7.0.0 Add the blog_name and blog_title parameters.
- *
- * @return array Contains the new site data and error messages.
- */
-function bp_blogs_validate_blog_form( $blog_name = '', $blog_title = '' ) {
-	$user = '';
-
-	if ( is_user_logged_in() ) {
-		$user = wp_get_current_user();
-	}
-
-	if ( ! isset( $blog_name, $blog_title ) ) {
-		if ( isset( $_POST['blogname'] ) ) {
-			$blog_name = wp_unslash( $_POST['blogname'] );
-		}
-
-		if ( isset( $_POST['blog_title'] ) ) {
-			$blog_title = wp_unslash( $_POST['blog_title'] );
-		}
-	}
-
-	return wpmu_validate_blog_signup( $blog_name, $blog_title, $user );
-}
-
-/**
  * Display a message after successful blog registration.
  *
  * @since 1.0.0
@@ -1338,7 +1305,7 @@ function bp_blogs_confirm_blog_signup( $domain, $path, $blog_title, $user_name, 
 	restore_current_blog();
 
 	?>
-	<p><?php _e( 'Congratulations! You have successfully registered a new site.', 'buddypress' ) ?></p>
+	<p class="success"><?php esc_html_e( 'Congratulations! You have successfully registered a new site.', 'buddypress' ) ?></p>
 	<p>
 		<?php printf(
 			'%s %s',

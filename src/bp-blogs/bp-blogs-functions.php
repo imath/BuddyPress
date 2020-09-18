@@ -1514,3 +1514,52 @@ function bp_blog_signup_enabled() {
 
 	return $retval;
 }
+
+/**
+ * Returns the Blog signup's submitted vars.
+ *
+ * @since 7.0.0
+ *
+ * @return array An associative array containing the Blog signup's submitted vars.
+ */
+function bp_blogs_get_signup_form_submitted_vars() {
+	$exprected_vars = array(
+		'blogname'    => '',
+		'blog_title'  => '',
+		'blog_public' => 0,
+	);
+
+	$submitted_vars = wp_parse_args( $_POST, $exprected_vars );
+
+	return array_map( 'wp_unslash', array_intersect_key( $submitted_vars, $exprected_vars ) );
+}
+
+/**
+ * Validate a blog creation submission.
+ *
+ * Essentially, a wrapper for {@link wpmu_validate_blog_signup()}.
+ *
+ * @since 1.0.0
+ * @since 7.0.0 Add the blog_name and blog_title parameters.
+ *              The function has been moved into `bp-blogs/bp-blogs-functions.php`.
+ *
+ * @return array Contains the new site data and error messages.
+ */
+function bp_blogs_validate_blog_form( $blog_name = '', $blog_title = '' ) {
+	$user = '';
+
+	if ( is_user_logged_in() ) {
+		$user = wp_get_current_user();
+	}
+
+	if ( ! $blog_name && ! $blog_title ) {
+		$submitted_vars = bp_blogs_get_signup_form_submitted_vars();
+
+		if ( array_filter( $submitted_vars ) ) {
+			$blog_name  = $submitted_vars['blogname'];
+			$blog_title = $submitted_vars['blog_title'];
+		}
+	}
+
+	return wpmu_validate_blog_signup( $blog_name, $blog_title, $user );
+}
