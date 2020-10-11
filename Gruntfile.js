@@ -19,6 +19,7 @@ module.exports = function( grunt ) {
 
 		BP_EXCLUDED_JS = [
 			'!**/js/blocks/*.js',
+			'!**/js/blocks/**/*.js',
 			'!**/js/block-components/*.js',
 			'!**/js/block-components/**/*.js',
 			'!**/js/block-components.js'
@@ -31,7 +32,11 @@ module.exports = function( grunt ) {
 		BP_SCSS_CSS_FILES = [
 			'!bp-templates/bp-legacy/css/twenty*.css',
 			'!bp-templates/bp-nouveau/css/buddypress.css',
-			'!bp-core/admin/css/hello.css'
+			'!bp-core/admin/css/hello.css',
+			'!bp-members/css/blocks/member.css',
+			'!bp-groups/css/blocks/group.css',
+			'!bp-members/css/blocks/members.css',
+			'!bp-groups/css/blocks/groups.css'
 		],
 
 		autoprefixer = require('autoprefixer');
@@ -123,6 +128,24 @@ module.exports = function( grunt ) {
 				flatten: true,
 				src: ['bp-core/admin/sass/*.scss'],
 				dest: SOURCE_DIR + 'bp-core/admin/css/'
+			},
+			members_blocks: {
+				cwd: SOURCE_DIR,
+				extDot: 'last',
+				expand: true,
+				ext: '.css',
+				flatten: true,
+				src: ['bp-members/sass/blocks/*.scss'],
+				dest: SOURCE_DIR + 'bp-members/css/blocks/'
+			},
+			groups_blocks: {
+				cwd: SOURCE_DIR,
+				extDot: 'last',
+				expand: true,
+				ext: '.css',
+				flatten: true,
+				src: ['bp-groups/sass/blocks/*.scss'],
+				dest: SOURCE_DIR + 'bp-groups/css/blocks/'
 			}
 		},
 		rtlcss: {
@@ -378,7 +401,7 @@ module.exports = function( grunt ) {
 	/**
 	 * Register tasks.
 	 */
-	grunt.registerTask( 'src',     ['checkDependencies', 'jsvalidate:src', 'jshint', 'stylelint', 'sass', 'postcss', 'rtlcss'] );
+	grunt.registerTask( 'src',     ['checkDependencies', 'jsvalidate:src', 'jshint', 'stylelint', 'sass', 'postcss', 'rtlcss', 'exec:blocks_src'] );
 	grunt.registerTask( 'makepot', ['exec:makepot'] );
 	grunt.registerTask( 'commit',  ['src', 'checktextdomain', 'imagemin', 'phplint', 'exec:phpcompat'] );
 	grunt.registerTask( 'bp_rest', [ 'exec:rest_api', 'copy:bp_rest_components', 'copy:bp_rest_core', 'clean:bp_rest' ] );
