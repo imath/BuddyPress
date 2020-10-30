@@ -399,11 +399,11 @@ class BP_Tests_Blogs_Template extends BP_UnitTestCase {
 		$blogs_template = $reset_blogs_template;
 		$expected       = bp_core_fetch_avatar(
 			array(
-				'type'          => 'full',
-				'item_id'       => $u,
-				'alt'           => 'test',
-				'no_grav'       => true,
-				'class'         => 'avatar',
+				'type'    => 'full',
+				'item_id' => $u,
+				'alt'     => 'test',
+				'no_grav' => true,
+				'class'   => 'avatar',
 			)
 		);
 
@@ -467,11 +467,13 @@ class BP_Tests_Blogs_Template extends BP_UnitTestCase {
 			'user_id' => $u,
 		) );
 
-		$avatar = bp_get_blog_avatar( array(
-			'type'          => 'thumb',
-			'blog_id'       => $b,
-			'html'          => false,
-		) );
+		$avatar = bp_get_blog_avatar(
+			array(
+				'type'    => 'thumb',
+				'blog_id' => $b,
+				'html'    => false,
+			)
+		);
 
 		$blogs_template = $reset_blogs_template;
 		$expected       = buddypress()->plugin_url . "bp-core/images/mystery-blog-50.png";
