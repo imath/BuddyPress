@@ -1,6 +1,6 @@
 // BP Directory Search elements
 // @since 3.0.0
-// @version 5.0.0
+// @version 6.4.0
 
 .buddypress-wrap { // the ID is required to add weight to rules
 
@@ -30,9 +30,9 @@
 		input[type="search"],
 		input[type="text"] {
 			float: left;
-			line-height: 1.5;
+			line-height: 2;
 			padding: 3px 10px;
-			width: 80%;
+			width: auto;
 		}
 
 		button[type="submit"] {
@@ -104,6 +104,19 @@
 	}
 
 } // close .buddypress-wrap
+
+body.is-light-theme {
+
+	.buddypress-wrap {
+
+		form.bp-dir-search-form,
+		form.bp-messages-search-form,
+		form[data-bp-search].bp-invites-search-form,
+		form#group-members-search {
+			border: 1px solid currentColor;
+		}
+	}
+}
 
 // If js disabled ensure we show the submit overriding earlier rule
 // @todo the whole show/hide could be wrapped in a :not(.no-js)

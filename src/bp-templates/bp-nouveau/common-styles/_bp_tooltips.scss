@@ -1,5 +1,6 @@
 // BuddyPress Tooltips
-// @version 4.0.0
+// @since 4.0.0
+// @version 6.4.0
 
 [data-bp-tooltip] {
 	position: relative;
@@ -109,5 +110,27 @@
 	&:after {
 		left: 0;
 		right: auto;
+	}
+}
+
+body.is-light-theme {
+
+	&.buddypress {
+
+		.site {
+
+			.button {
+
+				&.bp-tooltip {
+
+					&:after {
+						content: attr(data-bp-tooltip);
+						word-wrap: break-word;
+						height: auto;
+						width: auto;
+					}
+				}
+			}
+		}
 	}
 }

@@ -1,6 +1,6 @@
 // BP Forms Elements Global Styles
 // @since 3.0.0
-// @version 5.0.0
+// @version 6.4.0
 
 // Some essential classes used for forms elements:
 // labels - sizing especially for standalone controls
@@ -403,6 +403,28 @@ body.no-js {
 
 			.select-wrap {
 				float: left;
+			}
+		}
+	}
+}
+
+body.is-light-theme .buddypress-wrap {
+
+	.select-wrap {
+		border: 1px solid currentColor;
+
+		span.select-arrow {
+
+			&:before {
+				color: currentColor;
+			}
+		}
+
+		&:focus,
+		&:hover {
+
+			.select-arrow:before {
+				color: currentColor;
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 // BP Members loop.
 // @since 3.0.0
-// @version 6.0.0
+// @version 6.4.0
 
 .buddypress-wrap {
 
@@ -68,6 +68,22 @@
 		}
 	}
 } // close .buddypress-wrap
+
+body.is-light-theme {
+
+	.buddypress-wrap {
+
+		.members-list { // ul
+
+			li {
+
+				.user-update {
+					border: 1px dotted currentColor;
+				}
+			}
+		}
+	}
+}
 
 // If logged out or if the loop item is
 // current user we don't display action buttons
