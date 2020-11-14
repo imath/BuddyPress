@@ -157,3 +157,11 @@
 		}
 	} // close @media
 }
+
+body.is-light-theme {
+
+	.activity-update-form {
+		border: 1px solid currentColor;
+		box-shadow: 0 0 6px currentColor;
+	}
+}

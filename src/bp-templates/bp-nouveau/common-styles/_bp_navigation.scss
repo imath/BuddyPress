@@ -1,5 +1,6 @@
 // BP primary & secondary navigation - directory and single screens
-// @version 3.0.0
+// @since 3.0.0
+// @version 6.4.0
 
 // all devices & generic styles sitewide
 .bp-navs {
@@ -173,6 +174,21 @@
 		}
 	}
 } // close .buddypress-wrap - current & selected states.
+
+body.is-light-theme {
+
+	.buddypress-wrap {
+
+		&.bp-dir-hori-nav:not(.bp-vertical-navs) {
+
+			nav:not(.tabbed-links) {
+				border-bottom: 1px solid currentColor;
+				border-top: 1px solid currentColor;
+				box-shadow: 0 2px 12px 0 currentColor;
+			}
+		}
+	}
+}
 
 // visual styling of default single navs - adds background/padding to
 // the parent elements if vertical nav not selected
