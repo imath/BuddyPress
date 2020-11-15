@@ -69,17 +69,14 @@
 	}
 } // close .buddypress-wrap
 
-body.is-light-theme {
+#buddypress.twentytwentyone {
 
-	.buddypress-wrap {
+	.members-list { // ul
 
-		.members-list { // ul
+		li {
 
-			li {
-
-				.user-update {
-					border: 1px dotted currentColor;
-				}
+			.user-update {
+				border: 1px dotted var(--global--color-primary);
 			}
 		}
 	}

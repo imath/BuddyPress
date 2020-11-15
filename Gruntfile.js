@@ -401,7 +401,8 @@ module.exports = function( grunt ) {
 	/**
 	 * Register tasks.
 	 */
-	grunt.registerTask( 'src', ['checkDependencies', 'jsvalidate:src', 'jshint', 'stylelint', 'sass', 'postcss', 'rtlcss'] );
+	grunt.registerTask( 'style', ['stylelint', 'sass', 'postcss', 'rtlcss'] );
+	grunt.registerTask( 'src', ['checkDependencies', 'jsvalidate:src', 'jshint', 'style'] );
 	grunt.registerTask( 'makepot', ['exec:makepot'] );
 	grunt.registerTask( 'commit', ['src', 'checktextdomain', 'imagemin', 'phplint', 'exec:phpcompat'] );
 	grunt.registerTask( 'commit:blocks', ['commit', 'exec:blocks_src'] );

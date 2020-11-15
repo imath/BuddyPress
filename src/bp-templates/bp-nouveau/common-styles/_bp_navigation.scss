@@ -101,7 +101,7 @@
 		}
 
 		li:not(.current),
-		li:not(.selected), {
+		li:not(.selected) {
 
 			a:focus,
 			a:hover {
@@ -174,21 +174,6 @@
 		}
 	}
 } // close .buddypress-wrap - current & selected states.
-
-body.is-light-theme {
-
-	.buddypress-wrap {
-
-		&.bp-dir-hori-nav:not(.bp-vertical-navs) {
-
-			nav:not(.tabbed-links) {
-				border-bottom: 1px solid currentColor;
-				border-top: 1px solid currentColor;
-				box-shadow: 0 2px 12px 0 currentColor;
-			}
-		}
-	}
-}
 
 // visual styling of default single navs - adds background/padding to
 // the parent elements if vertical nav not selected
@@ -456,7 +441,6 @@ body.is-light-theme {
 				}
 			}
 		}
-
 	}
 }
 
@@ -537,4 +521,66 @@ body.is-light-theme {
 			}
 		} // close .bp-navs.tabbed-links
 	} // @media
+}
+
+// Twenty Twenty One adaptations.
+#buddypress.twentytwentyone {
+
+	.bp-navs {
+
+		li {
+
+			.count {
+				background-color: var(--button--color-background);
+				border: 1px solid var(--button--color-background);
+				border-radius: 50%;
+				color: var(--button--color-text);
+			}
+		}
+
+		li.selected,
+		li.current,
+		li a:hover {
+
+			a {
+
+				.count {
+					background-color: var(--global--color-background);
+					border: 1px solid var(--global--color-background);
+					color: var(--button--color-text-hover);
+				}
+			}
+		}
+
+		li:not(.current):not(.selected) {
+
+			a:focus,
+			a:hover {
+				background: var(--global--color-background);
+				color: var(--global--color-primary);
+				outline-offset: -6px;
+				outline: 2px dotted currentColor;
+			}
+		}
+
+		li.selected,
+		li.current {
+
+			a,
+			a:focus,
+			a:hover {
+				color: var(--button--color-text);
+				background-color: var(--button--color-background);
+			}
+		}
+	}
+
+	&.bp-dir-hori-nav:not(.bp-vertical-navs) {
+
+		nav:not(.tabbed-links) {
+			border-bottom: 1px solid var(--global--color-primary);
+			border-top: 1px solid var(--global--color-primary);
+			box-shadow: 0 2px 12px 0 var(--global--color-primary);
+		}
+	}
 }

@@ -408,15 +408,15 @@ body.no-js {
 	}
 }
 
-body.is-light-theme .buddypress-wrap {
+#buddypress.twentytwentyone {
 
 	.select-wrap {
-		border: 1px solid currentColor;
+		border: 1px solid var(--global--color-primary);
 
 		span.select-arrow {
 
 			&:before {
-				color: currentColor;
+				color: var(--global--color-primary);
 			}
 		}
 
@@ -424,7 +424,7 @@ body.is-light-theme .buddypress-wrap {
 		&:hover {
 
 			.select-arrow:before {
-				color: currentColor;
+				color: var(--global--color-primary);
 			}
 		}
 	}
