@@ -1,6 +1,6 @@
 // BP Buttons, Submits, Icons and general clicky things styling.
 // @since 3.0.0
-// @version 5.0.0
+// @version 6.4.0
 
 // Buttons by default are styled as simple boxes but we may
 // change that by adding a parent class ( on any close parent to
@@ -412,3 +412,61 @@
 		content: "\f341";
 	}
 } // close .buddypress-wrap
+
+// Twenty Twenty One adaptations.
+#buddypress.twentytwentyone {
+
+	button,
+	a.button,
+	input[type="submit"],
+	input[type="button"],
+	ul.button-nav:not(.button-tabs) li a,
+	.generic-button a,
+	.comment-reply-link,
+	a.bp-title-button,
+	.activity-read-more a {
+		background: var(--button--color-background);
+		border: 1px solid var(--button--color-background);
+		border-radius: 0;
+		color: var(--button--color-text);
+	}
+
+	button:hover,
+	button:focus,
+	a.button:focus,
+	a.button:hover,
+	input[type="submit"]:focus,
+	input[type="submit"]:hover,
+	input[type="button"]:focus,
+	input[type="button"]:hover,
+	input[type="reset"],
+	.button-nav li a:focus,
+	.button-nav li a:hover,
+	.button-nav li.current a,
+	.generic-button a:focus,
+	.generic-button a:hover,
+	.comment-reply-link:focus,
+	.comment-reply-link:hover,
+	.activity-read-more a:focus,
+	.activity-read-more a:hover {
+		background: transparent;
+		border-color: var(--button--color-background);
+		color: var(--button--color-text-hover);
+		outline: none;
+		text-decoration: none;
+	}
+
+	input[type="reset"]:focus,
+	input[type="reset"]:hover {
+		outline-offset: -1px;
+		outline: 2px dotted currentColor;
+	}
+
+	.blog-button {
+
+		&:after,
+		&:before {
+			display: none;
+		}
+	}
+}

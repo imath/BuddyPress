@@ -384,12 +384,6 @@ body.buddypress article.page > .entry-header:not(.alignwide):not(.alignfull) .en
 	font-weight: 600;
 }
 
-body.is-light-theme .buddypress-wrap.bp-dir-hori-nav:not(.bp-vertical-navs) nav:not(.tabbed-links) {
-	border-bottom: 1px solid currentColor;
-	border-top: 1px solid currentColor;
-	box-shadow: 0 2px 12px 0 currentColor;
-}
-
 @media screen and (max-width: 46.8em) {
 	.buddypress-wrap:not(.bp-single-vert-nav) .bp-navs li {
 		background: #eaeaea;
@@ -637,6 +631,45 @@ body.is-light-theme .buddypress-wrap.bp-dir-hori-nav:not(.bp-vertical-navs) nav:
 	.buddypress-wrap .bp-navs.tabbed-links ul li.current a:active {
 		outline: none;
 	}
+}
+
+#buddypress.twentytwentyone .bp-navs li .count {
+	background-color: var(--button--color-background);
+	border: 1px solid var(--button--color-background);
+	border-radius: 50%;
+	color: var(--button--color-text);
+}
+
+#buddypress.twentytwentyone .bp-navs li.selected a .count,
+#buddypress.twentytwentyone .bp-navs li.current a .count,
+#buddypress.twentytwentyone .bp-navs li a:hover a .count {
+	background-color: var(--global--color-background);
+	border: 1px solid var(--global--color-background);
+	color: var(--button--color-text-hover);
+}
+
+#buddypress.twentytwentyone .bp-navs li:not(.current):not(.selected) a:focus,
+#buddypress.twentytwentyone .bp-navs li:not(.current):not(.selected) a:hover {
+	background: var(--global--color-background);
+	color: var(--global--color-primary);
+	outline-offset: -6px;
+	outline: 2px dotted currentColor;
+}
+
+#buddypress.twentytwentyone .bp-navs li.selected a,
+#buddypress.twentytwentyone .bp-navs li.selected a:focus,
+#buddypress.twentytwentyone .bp-navs li.selected a:hover,
+#buddypress.twentytwentyone .bp-navs li.current a,
+#buddypress.twentytwentyone .bp-navs li.current a:focus,
+#buddypress.twentytwentyone .bp-navs li.current a:hover {
+	color: var(--button--color-text);
+	background-color: var(--button--color-background);
+}
+
+#buddypress.twentytwentyone.bp-dir-hori-nav:not(.bp-vertical-navs) nav:not(.tabbed-links) {
+	border-bottom: 1px solid var(--global--color-primary);
+	border-top: 1px solid var(--global--color-primary);
+	box-shadow: 0 2px 12px 0 var(--global--color-primary);
 }
 
 .buddypress-wrap .dir-component-filters .filter label {
@@ -1006,12 +1039,12 @@ body.is-light-theme .buddypress-wrap.bp-dir-hori-nav:not(.bp-vertical-navs) nav:
 	}
 }
 
-body.is-light-theme .bp-list {
-	border-top: 1px dotted currentColor;
+#buddypress.twentytwentyone .bp-list {
+	border-top: 1px dotted var(--global--color-primary);
 }
 
-body.is-light-theme .bp-list > li {
-	border-bottom: 1px dotted currentColor;
+#buddypress.twentytwentyone .bp-list > li {
+	border-bottom: 1px dotted var(--global--color-primary);
 }
 
 @media screen and (min-width: 32em) {
@@ -1037,17 +1070,16 @@ body.is-light-theme .bp-list > li {
 	margin-top: 0;
 }
 
-body.is-light-theme .activity-list.bp-list {
+#buddypress.twentytwentyone .activity-list.bp-list {
 	background: inherit;
 	border-left: none;
 	border-right: none;
-	border-bottom: 1px dotted currentColor;
+	border-bottom: 1px dotted var(--global--color-primary);
 }
 
-body.is-light-theme .activity-list.bp-list .activity-item {
+#buddypress.twentytwentyone .activity-list.bp-list .activity-item {
 	background: inherit;
-	border: 1px solid currentColor;
-	box-shadow: 0 0 6px currentColor;
+	border: 1px solid var(--global--color-primary);
 }
 
 .friends-list {
@@ -1244,9 +1276,9 @@ body.is-light-theme .activity-list.bp-list .activity-item {
 	}
 }
 
-body.is-light-theme .activity-update-form {
-	border: 1px solid currentColor;
-	box-shadow: 0 0 6px currentColor;
+#buddypress.twentytwentyone .activity-update-form {
+	border: 1px solid var(--global--color-primary);
+	box-shadow: none;
 }
 
 /**
@@ -1494,27 +1526,33 @@ body.is-light-theme .activity-update-form {
 	font-weight: 700;
 }
 
-body.is-light-theme .site .activity-list .activity-content .activity-header,
-body.is-light-theme .site .activity-list .activity-content .comment-header {
-	color: currentColor;
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-header,
+body .site #buddypress.twentytwentyone .activity-list .activity-content .comment-header {
+	color: var(--global--color-primary);
 	filter: brightness(85%);
 }
 
-body.is-light-theme .site .activity-list .activity-content .activity-inner,
-body.is-light-theme .site .activity-list .activity-content blockquote {
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-inner,
+body .site #buddypress.twentytwentyone .activity-list .activity-content blockquote {
 	background: inherit;
-	border: 1px dotted currentColor;
+	border: 1px dotted var(--global--color-primary);
 }
 
-body.is-light-theme .site .activity-list .activity-content .activity-meta.action {
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-meta.action {
 	background: inherit;
 }
 
-body.is-light-theme .site .activity-list .activity-content .activity-meta.action .button:before,
-body.is-light-theme .site .activity-list .activity-content .activity-meta.action .icons:before {
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-meta.action .button:before,
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-meta.action .icons:before {
 	height: auto;
 	width: auto;
 	display: inline;
+}
+
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-meta.action .button {
+	background: var(--global--color-background);
+	color: var(--global--color-primary);
+	border: none;
 }
 
 @media screen and (min-width: 46.8em) {
@@ -1984,8 +2022,8 @@ form.ac-form .ac-reply-content input {
 	}
 }
 
-body.is-light-theme .buddypress-wrap .members-list li .user-update {
-	border: 1px dotted currentColor;
+#buddypress.twentytwentyone .members-list li .user-update {
+	border: 1px dotted var(--global--color-primary);
 }
 
 @media screen and (min-width: 32em) {
@@ -3791,16 +3829,16 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 	}
 }
 
-body.is-light-theme .buddypress-wrap .select-wrap {
-	border: 1px solid currentColor;
+#buddypress.twentytwentyone .select-wrap {
+	border: 1px solid var(--global--color-primary);
 }
 
-body.is-light-theme .buddypress-wrap .select-wrap span.select-arrow:before {
-	color: currentColor;
+#buddypress.twentytwentyone .select-wrap span.select-arrow:before {
+	color: var(--global--color-primary);
 }
 
-body.is-light-theme .buddypress-wrap .select-wrap:focus .select-arrow:before, body.is-light-theme .buddypress-wrap .select-wrap:hover .select-arrow:before {
-	color: currentColor;
+#buddypress.twentytwentyone .select-wrap:focus .select-arrow:before, #buddypress.twentytwentyone .select-wrap:hover .select-arrow:before {
+	color: var(--global--color-primary);
 }
 
 /**
@@ -3937,11 +3975,11 @@ body.is-light-theme .buddypress-wrap .select-wrap:focus .select-arrow:before, bo
 	clear: both;
 }
 
-body.is-light-theme .buddypress-wrap form.bp-dir-search-form,
-body.is-light-theme .buddypress-wrap form.bp-messages-search-form,
-body.is-light-theme .buddypress-wrap form[data-bp-search].bp-invites-search-form,
-body.is-light-theme .buddypress-wrap form#group-members-search {
-	border: 1px solid currentColor;
+#buddypress.twentytwentyone form.bp-dir-search-form,
+#buddypress.twentytwentyone form.bp-messages-search-form,
+#buddypress.twentytwentyone form[data-bp-search].bp-invites-search-form,
+#buddypress.twentytwentyone form#group-members-search {
+	border: 1px solid var(--global--color-primary);
 }
 
 .budypress.no-js form.bp-dir-search-form button[type="submit"] {
@@ -4438,6 +4476,56 @@ body.is-light-theme .buddypress-wrap form#group-members-search {
 .buddypress-wrap .bp-invites-filters ul li #bp-invites-prev-page:before,
 .buddypress-wrap .bp-messages-filters ul li #bp-messages-prev-page:before {
 	content: "\f341";
+}
+
+#buddypress.twentytwentyone button,
+#buddypress.twentytwentyone a.button,
+#buddypress.twentytwentyone input[type="submit"],
+#buddypress.twentytwentyone input[type="button"],
+#buddypress.twentytwentyone ul.button-nav:not(.button-tabs) li a,
+#buddypress.twentytwentyone .generic-button a,
+#buddypress.twentytwentyone .comment-reply-link,
+#buddypress.twentytwentyone a.bp-title-button,
+#buddypress.twentytwentyone .activity-read-more a {
+	background: var(--button--color-background);
+	border: 1px solid var(--button--color-background);
+	border-radius: 0;
+	color: var(--button--color-text);
+}
+
+#buddypress.twentytwentyone button:hover,
+#buddypress.twentytwentyone button:focus,
+#buddypress.twentytwentyone a.button:focus,
+#buddypress.twentytwentyone a.button:hover,
+#buddypress.twentytwentyone input[type="submit"]:focus,
+#buddypress.twentytwentyone input[type="submit"]:hover,
+#buddypress.twentytwentyone input[type="button"]:focus,
+#buddypress.twentytwentyone input[type="button"]:hover,
+#buddypress.twentytwentyone input[type="reset"],
+#buddypress.twentytwentyone .button-nav li a:focus,
+#buddypress.twentytwentyone .button-nav li a:hover,
+#buddypress.twentytwentyone .button-nav li.current a,
+#buddypress.twentytwentyone .generic-button a:focus,
+#buddypress.twentytwentyone .generic-button a:hover,
+#buddypress.twentytwentyone .comment-reply-link:focus,
+#buddypress.twentytwentyone .comment-reply-link:hover,
+#buddypress.twentytwentyone .activity-read-more a:focus,
+#buddypress.twentytwentyone .activity-read-more a:hover {
+	background: transparent;
+	border-color: var(--button--color-background);
+	color: var(--button--color-text-hover);
+	outline: none;
+	text-decoration: none;
+}
+
+#buddypress.twentytwentyone input[type="reset"]:focus,
+#buddypress.twentytwentyone input[type="reset"]:hover {
+	outline-offset: -1px;
+	outline: 2px dotted currentColor;
+}
+
+#buddypress.twentytwentyone .blog-button:after, #buddypress.twentytwentyone .blog-button:before {
+	display: none;
 }
 
 .buddypress-wrap .warn {
@@ -5009,7 +5097,7 @@ body.create-blog #buddypress .success {
 	right: auto;
 }
 
-body.is-light-theme.buddypress .site .button.bp-tooltip:after {
+body.buddypress .site #buddypress.twentytwentyone .button.bp-tooltip:after {
 	content: attr(data-bp-tooltip);
 	word-wrap: break-word;
 	height: auto;

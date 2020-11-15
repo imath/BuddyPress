@@ -105,16 +105,13 @@
 
 } // close .buddypress-wrap
 
-body.is-light-theme {
+#buddypress.twentytwentyone {
 
-	.buddypress-wrap {
-
-		form.bp-dir-search-form,
-		form.bp-messages-search-form,
-		form[data-bp-search].bp-invites-search-form,
-		form#group-members-search {
-			border: 1px solid currentColor;
-		}
+	form.bp-dir-search-form,
+	form.bp-messages-search-form,
+	form[data-bp-search].bp-invites-search-form,
+	form#group-members-search {
+		border: 1px solid var(--global--color-primary);
 	}
 }
 

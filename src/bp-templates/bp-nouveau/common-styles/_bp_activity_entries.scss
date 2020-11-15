@@ -280,34 +280,43 @@
 
 } // close .activity-list
 
-body.is-light-theme {
+body {
 
 	.site {
 
-		.activity-list {
+		#buddypress.twentytwentyone {
 
-			.activity-content {
+			.activity-list {
 
-				.activity-header,
-				.comment-header {
-					color: currentColor;
-					filter: brightness(85%);
-				}
+				.activity-content {
 
-				.activity-inner,
-				blockquote {
-					background: inherit;
-					border: 1px dotted currentColor;
-				}
+					.activity-header,
+					.comment-header {
+						color: var(--global--color-primary);
+						filter: brightness(85%);
+					}
 
-				.activity-meta.action {
-					background: inherit;
+					.activity-inner,
+					blockquote {
+						background: inherit;
+						border: 1px dotted var(--global--color-primary);
+					}
 
-					.button:before,
-					.icons:before {
-						height: auto;
-						width: auto;
-						display: inline;
+					.activity-meta.action {
+						background: inherit;
+
+						.button:before,
+						.icons:before {
+							height: auto;
+							width: auto;
+							display: inline;
+						}
+
+						.button {
+							background: var(--global--color-background);
+							color: var(--global--color-primary);
+							border: none;
+						}
 					}
 				}
 			}
