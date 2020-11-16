@@ -1,6 +1,7 @@
 /*
  * bp-nouveau styling: invite members, sent invites
- * @version 3.0.0
+ * @since 3.0.0
+ * @version 7.0.0
  */
 .buddypress {
 
@@ -177,3 +178,23 @@
 	}
 }
 
+#buddypress.twentytwentyone {
+
+	.bp-invites-content {
+
+		ul {
+			border-top: none;
+
+			li {
+				border: 1px dotted var(--global--color-primary);
+
+				ul.group-inviters {
+
+					li {
+						border: none;
+					}
+				}
+			}
+		}
+	}
+}
