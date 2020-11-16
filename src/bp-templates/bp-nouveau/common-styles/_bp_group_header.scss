@@ -113,3 +113,19 @@
 	}
 } // close groups-header
 
+#buddypress.twentytwentyone {
+
+	.groups-header {
+
+		.desc-wrap {
+			background: var(--global--color-background);
+			border: none;
+			border-left: 4px solid var(--global--color-primary);
+
+			.group-description {
+				background: none;
+				box-shadow: none;
+			}
+		}
+	}
+}

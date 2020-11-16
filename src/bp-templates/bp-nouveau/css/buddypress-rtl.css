@@ -1993,6 +1993,10 @@ form.ac-form .ac-reply-content input {
 	}
 }
 
+#buddypress.twentytwentyone .groups-list li .group-desc {
+	border: 1px dotted var(--global--color-primary);
+}
+
 /**
 *----------------------------------------------------------
 * @section 3.2 - Members Loop
@@ -2516,6 +2520,17 @@ body.no-js .single-item-header .js-self-profile-button {
 .groups-header .desc-wrap .group-description p {
 	margin: 0;
 	padding: 0;
+}
+
+#buddypress.twentytwentyone .groups-header .desc-wrap {
+	background: var(--global--color-background);
+	border: none;
+	border-right: 4px solid var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .groups-header .desc-wrap .group-description {
+	background: none;
+	box-shadow: none;
 }
 
 /**
@@ -3867,6 +3882,12 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 
 #buddypress.twentytwentyone .wp-pwd:not(.is-open) {
 	display: none;
+}
+
+#buddypress.twentytwentyone input[type="checkbox"],
+#buddypress.twentytwentyone input[type="radio"] {
+	width: 25px;
+	height: 25px;
 }
 
 /**

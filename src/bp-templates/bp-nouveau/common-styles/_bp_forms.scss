@@ -435,4 +435,10 @@ body.no-js {
 			display: none;
 		}
 	}
+
+	input[type="checkbox"],
+	input[type="radio"] {
+		width: 25px;
+		height: 25px;
+	}
 }
