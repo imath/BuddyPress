@@ -1,5 +1,6 @@
 // BP Groups loop.
-// @version 3.0.0
+// @since 3.0.0
+// @version 7.0.0
 
 .buddypress-wrap {
 
@@ -112,6 +113,19 @@
 					margin-right: 3%;
 					width: 15%;
 				}
+			}
+		}
+	}
+}
+
+#buddypress.twentytwentyone {
+
+	.groups-list { // ul
+
+		li {
+
+			.group-desc {
+				border: 1px dotted var(--global--color-primary);
 			}
 		}
 	}
