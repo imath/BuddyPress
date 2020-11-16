@@ -1,6 +1,6 @@
 // BP primary & secondary navigation - directory and single screens
 // @since 3.0.0
-// @version 6.4.0
+// @version 7.0.0
 
 // all devices & generic styles sitewide
 .bp-navs {
@@ -573,14 +573,31 @@
 				background-color: var(--button--color-background);
 			}
 		}
+
+		&.tabbed-links ul,
+		&.tabbed-links ol {
+			border-bottom: 1px solid var(--global--color-primary);
+
+			li.current {
+				border-color: var(--global--color-primary) var(--global--color-primary) var(--global--color-background);
+				border-style: solid;
+				border-top-left-radius: 4px;
+				border-top-right-radius: 4px;
+
+				a {
+					color: var(--global--color-primary);
+					background-color: var(--global--color-background);
+				}
+			}
+		}
 	}
 
 	&.bp-dir-hori-nav:not(.bp-vertical-navs) {
 
 		nav:not(.tabbed-links) {
+			border: none;
 			border-bottom: 1px solid var(--global--color-primary);
-			border-top: 1px solid var(--global--color-primary);
-			box-shadow: 0 2px 12px 0 var(--global--color-primary);
+			box-shadow: none;
 		}
 	}
 }

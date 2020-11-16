@@ -343,3 +343,50 @@ body.create-blog {
 		}
 	}
 }
+
+// Twenty Twenty One adaptations.
+#buddypress.twentytwentyone {
+
+	.bp-feedback {
+		color: var(--global--color-primary);
+		background: var(--global--color-background);
+		box-shadow: none;
+
+		&:not(.custom-homepage-info) {
+			margin-top: 1.5em;
+			margin-bottom: 1.5em;
+			border: solid 1px var(--global--color-primary);
+		}
+
+		.bp-icon {
+			background-color: var(--global--color-primary);
+		}
+
+		a {
+			border-bottom: solid 1px var(--global--color-primary);
+		}
+
+		button.bp-tooltip {
+			border: none;
+			background: none;
+			top: -5px;
+			right: 0;
+
+			.dashicons-dismiss {
+				border-radius: 50%;
+				width: 32px;
+				height: 32px;
+				color: var(--global--color-primary);
+				background: var(--global--color-background);
+			}
+
+			&:hover {
+
+				.dashicons-dismiss {
+					color: var(--global--color-background);
+					background: var(--global--color-primary);
+				}
+			}
+		}
+	}
+}

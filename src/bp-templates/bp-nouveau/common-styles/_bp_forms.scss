@@ -1,6 +1,6 @@
 // BP Forms Elements Global Styles
 // @since 3.0.0
-// @version 6.4.0
+// @version 7.0.0
 
 // Some essential classes used for forms elements:
 // labels - sizing especially for standalone controls
@@ -426,6 +426,13 @@ body.no-js {
 			.select-arrow:before {
 				color: var(--global--color-primary);
 			}
+		}
+	}
+
+	.wp-pwd {
+
+		&:not(.is-open) {
+			display: none;
 		}
 	}
 }
