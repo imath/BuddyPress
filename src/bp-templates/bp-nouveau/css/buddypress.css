@@ -685,6 +685,20 @@ body.buddypress article.page > .entry-header:not(.alignwide):not(.alignfull) .en
 	background-color: var(--global--color-background);
 }
 
+#buddypress.twentytwentyone #group-invites-container .bp-invites-nav {
+	border-bottom: none;
+}
+
+#buddypress.twentytwentyone #group-invites-container .bp-invites-nav li .count {
+	margin-left: 10px;
+	border-radius: 10%;
+	vertical-align: 10%;
+}
+
+#buddypress.twentytwentyone #group-invites-container #send-invites-editor ul {
+	padding-left: 0;
+}
+
 #buddypress.twentytwentyone.bp-dir-hori-nav:not(.bp-vertical-navs) nav:not(.tabbed-links) {
 	border: none;
 	border-bottom: 1px solid var(--global--color-primary);
@@ -1089,18 +1103,6 @@ body.buddypress article.page > .entry-header:not(.alignwide):not(.alignfull) .en
 	margin-top: 0;
 }
 
-#buddypress.twentytwentyone .activity-list.bp-list {
-	background: inherit;
-	border-left: none;
-	border-right: none;
-	border-bottom: 1px dotted var(--global--color-primary);
-}
-
-#buddypress.twentytwentyone .activity-list.bp-list .activity-item {
-	background: inherit;
-	border: 1px solid var(--global--color-primary);
-}
-
 .friends-list {
 	list-style-type: none;
 }
@@ -1155,6 +1157,18 @@ body.buddypress article.page > .entry-header:not(.alignwide):not(.alignfull) .en
 .activity-permalink .item-list,
 .activity-permalink .item-list li.activity-item {
 	border: 0;
+}
+
+#buddypress.twentytwentyone .activity-list.bp-list {
+	background: inherit;
+	border-left: none;
+	border-right: none;
+	border-bottom: 1px dotted var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .activity-list.bp-list .activity-item {
+	background: inherit;
+	border: 1px solid var(--global--color-primary);
 }
 
 /**
@@ -2766,7 +2780,8 @@ body.buddypress.bp-user .buddypress-wrap .member-header-actions * > * {
 */
 /*
  * bp-nouveau styling: invite members, sent invites
- * @version 3.0.0
+ * @since 3.0.0
+ * @version 7.0.0
  */
 .buddypress .bp-invites-content ul.item-list {
 	border-top: 0;
@@ -2913,6 +2928,18 @@ body.buddypress.bp-user .buddypress-wrap .member-header-actions * > * {
 		-ms-grid-column: 2;
 		grid-area: group-invites-column;
 	}
+}
+
+#buddypress.twentytwentyone .bp-invites-content ul {
+	border-top: none;
+}
+
+#buddypress.twentytwentyone .bp-invites-content ul li {
+	border: 1px dotted var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .bp-invites-content ul li ul.group-inviters li {
+	border: none;
 }
 
 /*
@@ -3103,6 +3130,45 @@ body.register .buddypress-wrap .page ul {
 
 .buddypress-wrap .profile .bp-avatar-nav {
 	margin-top: 20px;
+}
+
+#buddypress.twentytwentyone .bp-avatar-nav ul.avatar-nav-items {
+	border-bottom: 1px solid var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .bp-avatar-nav ul.avatar-nav-items li.current {
+	border: 1px solid var(--global--color-primary);
+	border-bottom: 1px solid var(--global--color-background);
+}
+
+#buddypress.twentytwentyone #drag-drop-area {
+	border: 4px dashed var(--global--color-dark-gray);
+}
+
+#buddypress.twentytwentyone .bp-avatar-status .warning,
+#buddypress.twentytwentyone .bp-avatar-status .success,
+#buddypress.twentytwentyone .bp-cover-image-status .warning,
+#buddypress.twentytwentyone .bp-cover-image-status .success {
+	background-color: var(--global--color-light-gray);
+	border: none;
+	border-left-width: 4px;
+	border-left-style: solid;
+	color: var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .bp-avatar-status .warning,
+#buddypress.twentytwentyone .bp-cover-image-status .warning {
+	border-left-color: var(--global--color-orange);
+}
+
+#buddypress.twentytwentyone .bp-avatar-status .success,
+#buddypress.twentytwentyone .bp-cover-image-status .success {
+	border-left-color: var(--global--color-green);
+}
+
+#buddypress.twentytwentyone .bp-avatar-status .error,
+#buddypress.twentytwentyone .bp-cover-image-status .error {
+	border-left-color: var(--global--color-red);
 }
 
 /**
@@ -3870,10 +3936,22 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 
 #buddypress.twentytwentyone .select-wrap {
 	border: 1px solid var(--global--color-primary);
+	background: var(--global--color-white);
+}
+
+#buddypress.twentytwentyone .select-wrap select {
+	background: transparent;
+}
+
+#buddypress.twentytwentyone .select-wrap span.select-arrow {
+	background: transparent;
 }
 
 #buddypress.twentytwentyone .select-wrap span.select-arrow:before {
+	font-family: dashicons;
+	content: "\f140";
 	color: var(--global--color-primary);
+	vertical-align: -10%;
 }
 
 #buddypress.twentytwentyone .select-wrap:focus .select-arrow:before, #buddypress.twentytwentyone .select-wrap:hover .select-arrow:before {
@@ -3888,6 +3966,25 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 #buddypress.twentytwentyone input[type="radio"] {
 	width: 25px;
 	height: 25px;
+}
+
+#buddypress.twentytwentyone input[type="search"],
+#buddypress.twentytwentyone .groups-members-search input[type="text"] {
+	color: var(--form--color-text);
+	background: var(--global--color-white-90);
+}
+
+#buddypress.twentytwentyone .bp-dir-search-form button {
+	background-color: transparent;
+	color: var(--button--color-text-hover);
+	border-color: var(--global--color-background);
+	border-left-color: var(--button--color-background);
+}
+
+#buddypress.twentytwentyone .bp-dir-search-form button:hover {
+	background-color: var(--button--color-background);
+	color: var(--button--color-text);
+	border-color: var(--button--color-background);
 }
 
 /**

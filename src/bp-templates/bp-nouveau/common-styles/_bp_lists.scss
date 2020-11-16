@@ -201,21 +201,6 @@
 	}
 }
 
-#buddypress.twentytwentyone {
-
-	.activity-list.bp-list {
-		background: inherit;
-		border-left: none;
-		border-right: none;
-		border-bottom: 1px dotted var(--global--color-primary);
-
-		.activity-item {
-			background: inherit;
-			border: 1px solid var(--global--color-primary);
-		}
-	}
-}
-
 .friends-list {
 	list-style-type: none;
 }
@@ -283,5 +268,20 @@ body:not(.logged-in) {
 	.item-list,
 	.item-list li.activity-item {
 		border: 0;
+	}
+}
+
+#buddypress.twentytwentyone {
+
+	.activity-list.bp-list {
+		background: inherit;
+		border-left: none;
+		border-right: none;
+		border-bottom: 1px dotted var(--global--color-primary);
+
+		.activity-item {
+			background: inherit;
+			border: 1px solid var(--global--color-primary);
+		}
 	}
 }

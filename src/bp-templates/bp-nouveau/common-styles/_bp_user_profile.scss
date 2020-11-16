@@ -1,5 +1,6 @@
 // BP User Profiles screen
-// @version 3.0.0
+// @since 3.0.0
+// @version 7.0.0
 //
 // 0/ General :)
 // 1/ Profile Edit
@@ -233,6 +234,53 @@ body.register .buddypress-wrap .page ul {
 
 		.bp-avatar-nav {
 			margin-top: $marg-lrg;
+		}
+	}
+}
+
+#buddypress.twentytwentyone {
+
+	.bp-avatar-nav {
+
+		ul.avatar-nav-items {
+			border-bottom: 1px solid var(--global--color-primary);
+
+			li {
+
+				&.current {
+					border: 1px solid var(--global--color-primary);
+					border-bottom: 1px solid var(--global--color-background);
+				}
+			}
+		}
+	}
+
+	#drag-drop-area {
+		border: 4px dashed var(--global--color-dark-gray);
+	}
+
+	.bp-avatar-status,
+	.bp-cover-image-status {
+
+		.warning,
+		.success {
+			background-color: var(--global--color-light-gray);
+			border: none;
+			border-left-width: 4px;
+			border-left-style: solid;
+			color: var(--global--color-primary);
+		}
+
+		.warning {
+			border-left-color: var(--global--color-orange);
+		}
+
+		.success {
+			border-left-color: var(--global--color-green);
+		}
+
+		.error {
+			border-left-color: var(--global--color-red);
 		}
 	}
 }

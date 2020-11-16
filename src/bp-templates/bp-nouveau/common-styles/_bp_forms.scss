@@ -412,11 +412,20 @@ body.no-js {
 
 	.select-wrap {
 		border: 1px solid var(--global--color-primary);
+		background: var(--global--color-white);
+
+		select {
+			background: transparent;
+		}
 
 		span.select-arrow {
+			background: transparent;
 
 			&:before {
+				font-family: dashicons;
+				content: "\f140";
 				color: var(--global--color-primary);
+				vertical-align: -10%;
 			}
 		}
 
@@ -440,5 +449,27 @@ body.no-js {
 	input[type="radio"] {
 		width: 25px;
 		height: 25px;
+	}
+
+	input[type="search"],
+	.groups-members-search input[type="text"] {
+		color: var(--form--color-text);
+		background: var(--global--color-white-90);
+	}
+
+	.bp-dir-search-form {
+
+		button {
+			background-color: transparent;
+			color: var(--button--color-text-hover);
+			border-color: var(--global--color-background);
+			border-left-color: var(--button--color-background);
+
+			&:hover {
+				background-color: var(--button--color-background);
+				color: var(--button--color-text);
+				border-color: var(--button--color-background);
+			}
+		}
 	}
 }

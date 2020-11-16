@@ -592,6 +592,29 @@
 		}
 	}
 
+	#group-invites-container {
+
+		.bp-invites-nav {
+			border-bottom: none;
+
+			li {
+
+				.count {
+					margin-left: 10px;
+					border-radius: 10%;
+					vertical-align: 10%;
+				}
+			}
+		}
+
+		#send-invites-editor {
+
+			ul {
+				padding-left: 0;
+			}
+		}
+	}
+
 	&.bp-dir-hori-nav:not(.bp-vertical-navs) {
 
 		nav:not(.tabbed-links) {
