@@ -1,6 +1,6 @@
 // BP Activity Entries - activity loop
 // @since 3.0.0
-// @version 6.4.0
+// @version 7.0.0
 
 .activity-list {
 
@@ -280,50 +280,6 @@
 
 } // close .activity-list
 
-body {
-
-	.site {
-
-		#buddypress.twentytwentyone {
-
-			.activity-list {
-
-				.activity-content {
-
-					.activity-header,
-					.comment-header {
-						color: var(--global--color-primary);
-						filter: brightness(85%);
-					}
-
-					.activity-inner,
-					blockquote {
-						background: inherit;
-						border: 1px dotted var(--global--color-primary);
-					}
-
-					.activity-meta.action {
-						background: inherit;
-
-						.button:before,
-						.icons:before {
-							height: auto;
-							width: auto;
-							display: inline;
-						}
-
-						.button {
-							background: var(--global--color-background);
-							color: var(--global--color-primary);
-							border: none;
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
 @include medium-up() {
 
 	.activity-list.bp-list {
@@ -478,5 +434,53 @@ body.activity-permalink {
 
 		} // close @media
 
+	}
+}
+
+body {
+
+	.site {
+
+		#buddypress.twentytwentyone {
+
+			.activity-list {
+
+				.activity-content {
+
+					.activity-header,
+					.comment-header {
+						color: var(--global--color-primary);
+						filter: brightness(85%);
+
+						a {
+							font-weight: 600;
+						}
+					}
+
+					.activity-inner,
+					blockquote {
+						background: inherit;
+						border: 1px dotted var(--global--color-primary);
+					}
+
+					.activity-meta.action {
+						background: inherit;
+
+						.button:before,
+						.icons:before {
+							height: auto;
+							width: auto;
+							display: inline;
+						}
+
+						.button {
+							background: var(--global--color-background);
+							color: var(--global--color-primary);
+							border: none;
+						}
+					}
+				}
+			}
+		}
 	}
 }

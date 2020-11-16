@@ -666,10 +666,29 @@ body.buddypress article.page > .entry-header:not(.alignwide):not(.alignfull) .en
 	background-color: var(--button--color-background);
 }
 
-#buddypress.twentytwentyone.bp-dir-hori-nav:not(.bp-vertical-navs) nav:not(.tabbed-links) {
+#buddypress.twentytwentyone .bp-navs.tabbed-links ul,
+#buddypress.twentytwentyone .bp-navs.tabbed-links ol {
 	border-bottom: 1px solid var(--global--color-primary);
-	border-top: 1px solid var(--global--color-primary);
-	box-shadow: 0 2px 12px 0 var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .bp-navs.tabbed-links ul li.current,
+#buddypress.twentytwentyone .bp-navs.tabbed-links ol li.current {
+	border-color: var(--global--color-primary) var(--global--color-primary) var(--global--color-background);
+	border-style: solid;
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+}
+
+#buddypress.twentytwentyone .bp-navs.tabbed-links ul li.current a,
+#buddypress.twentytwentyone .bp-navs.tabbed-links ol li.current a {
+	color: var(--global--color-primary);
+	background-color: var(--global--color-background);
+}
+
+#buddypress.twentytwentyone.bp-dir-hori-nav:not(.bp-vertical-navs) nav:not(.tabbed-links) {
+	border: none;
+	border-bottom: 1px solid var(--global--color-primary);
+	box-shadow: none;
 }
 
 .buddypress-wrap .dir-component-filters .filter label {
@@ -1526,35 +1545,6 @@ body.buddypress article.page > .entry-header:not(.alignwide):not(.alignfull) .en
 	font-weight: 700;
 }
 
-body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-header,
-body .site #buddypress.twentytwentyone .activity-list .activity-content .comment-header {
-	color: var(--global--color-primary);
-	filter: brightness(85%);
-}
-
-body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-inner,
-body .site #buddypress.twentytwentyone .activity-list .activity-content blockquote {
-	background: inherit;
-	border: 1px dotted var(--global--color-primary);
-}
-
-body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-meta.action {
-	background: inherit;
-}
-
-body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-meta.action .button:before,
-body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-meta.action .icons:before {
-	height: auto;
-	width: auto;
-	display: inline;
-}
-
-body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-meta.action .button {
-	background: var(--global--color-background);
-	color: var(--global--color-primary);
-	border: none;
-}
-
 @media screen and (min-width: 46.8em) {
 	.activity-list.bp-list {
 		padding: 30px;
@@ -1675,6 +1665,40 @@ body.activity-permalink .activity-list .activity-comments {
 	body.activity-permalink .activity-list .activity-content .activity-header p {
 		text-align: right;
 	}
+}
+
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-header,
+body .site #buddypress.twentytwentyone .activity-list .activity-content .comment-header {
+	color: var(--global--color-primary);
+	filter: brightness(85%);
+}
+
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-header a,
+body .site #buddypress.twentytwentyone .activity-list .activity-content .comment-header a {
+	font-weight: 600;
+}
+
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-inner,
+body .site #buddypress.twentytwentyone .activity-list .activity-content blockquote {
+	background: inherit;
+	border: 1px dotted var(--global--color-primary);
+}
+
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-meta.action {
+	background: inherit;
+}
+
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-meta.action .button:before,
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-meta.action .icons:before {
+	height: auto;
+	width: auto;
+	display: inline;
+}
+
+body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-meta.action .button {
+	background: var(--global--color-background);
+	color: var(--global--color-primary);
+	border: none;
 }
 
 /**
@@ -3841,6 +3865,10 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 	color: var(--global--color-primary);
 }
 
+#buddypress.twentytwentyone .wp-pwd:not(.is-open) {
+	display: none;
+}
+
 /**
 *----------------------------------------------------------
 * @section 6.1 - Directory Search
@@ -4790,6 +4818,46 @@ body.create-blog #buddypress .success {
 	border-right: 4px solid #8a2;
 }
 
+#buddypress.twentytwentyone .bp-feedback {
+	color: var(--global--color-primary);
+	background: var(--global--color-background);
+	box-shadow: none;
+}
+
+#buddypress.twentytwentyone .bp-feedback:not(.custom-homepage-info) {
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+	border: solid 1px var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .bp-feedback .bp-icon {
+	background-color: var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .bp-feedback a {
+	border-bottom: solid 1px var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .bp-feedback button.bp-tooltip {
+	border: none;
+	background: none;
+	top: -5px;
+	left: 0;
+}
+
+#buddypress.twentytwentyone .bp-feedback button.bp-tooltip .dashicons-dismiss {
+	border-radius: 50%;
+	width: 32px;
+	height: 32px;
+	color: var(--global--color-primary);
+	background: var(--global--color-background);
+}
+
+#buddypress.twentytwentyone .bp-feedback button.bp-tooltip:hover .dashicons-dismiss {
+	color: var(--global--color-background);
+	background: var(--global--color-primary);
+}
+
 .buddypress.widget .item-options {
 	font-size: 12px;
 	margin: 0 0 1em;
@@ -5580,4 +5648,16 @@ body.buddypress .site #buddypress.twentytwentyone .button.bp-tooltip:after {
 		border: 1px solid #d6d6d6;
 		color: #fff;
 	}
+}
+
+#buddypress.twentytwentyone.bp-single-vert-nav .bp-navs.vertical li span {
+	background-color: var(--button--color-background);
+	border-radius: 10%;
+	display: inline-block;
+	margin: 3px 0;
+}
+
+#buddypress.twentytwentyone.bp-single-vert-nav .item-body:not(#group-create-body) {
+	background: var(--global--color-background);
+	border-right: 1px solid var(--global--color-primary);
 }

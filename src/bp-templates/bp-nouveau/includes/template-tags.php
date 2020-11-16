@@ -1448,7 +1448,7 @@ function bp_nouveau_container_classes() {
 	 * Returns the main BuddyPress container classes.
 	 *
 	 * @since 3.0.0
-	 * @since 6.4.0 Add a class to inform about the active Theme.
+	 * @since 7.0.0 Add a class to inform about the active Theme.
 	 *
 	 * @return string CSS classes
 	 */
