@@ -188,6 +188,36 @@
 			li {
 				border: 1px dotted var(--global--color-primary);
 
+				&.selected {
+					box-shadow: none;
+					border-style: solid;
+				}
+
+				button.invite-button {
+					border: none;
+					background: none;
+					top: -5px;
+					right: 0;
+
+					.icons:before {
+						border-radius: 50%;
+						width: 32px;
+						height: 32px;
+						color: var(--global--color-primary);
+						background: var(--global--color-background);
+					}
+
+					&:hover {
+
+						.icons:before {
+							color: var(--global--color-background);
+							background: var(--global--color-primary);
+							width: 32px;
+							height: 32px;
+						}
+					}
+				}
+
 				ul.group-inviters {
 
 					li {

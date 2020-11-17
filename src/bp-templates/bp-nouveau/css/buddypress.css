@@ -2938,6 +2938,33 @@ body.buddypress.bp-user .buddypress-wrap .member-header-actions * > * {
 	border: 1px dotted var(--global--color-primary);
 }
 
+#buddypress.twentytwentyone .bp-invites-content ul li.selected {
+	box-shadow: none;
+	border-style: solid;
+}
+
+#buddypress.twentytwentyone .bp-invites-content ul li button.invite-button {
+	border: none;
+	background: none;
+	top: -5px;
+	right: 0;
+}
+
+#buddypress.twentytwentyone .bp-invites-content ul li button.invite-button .icons:before {
+	border-radius: 50%;
+	width: 32px;
+	height: 32px;
+	color: var(--global--color-primary);
+	background: var(--global--color-background);
+}
+
+#buddypress.twentytwentyone .bp-invites-content ul li button.invite-button:hover .icons:before {
+	color: var(--global--color-background);
+	background: var(--global--color-primary);
+	width: 32px;
+	height: 32px;
+}
+
 #buddypress.twentytwentyone .bp-invites-content ul li ul.group-inviters li {
 	border: none;
 }
@@ -3968,20 +3995,39 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 	height: 25px;
 }
 
+#buddypress.twentytwentyone textarea,
+#buddypress.twentytwentyone input[type="text"],
+#buddypress.twentytwentyone input[type="color"],
+#buddypress.twentytwentyone input[type="date"],
+#buddypress.twentytwentyone input[type="datetime"],
+#buddypress.twentytwentyone input[type="datetime-local"],
+#buddypress.twentytwentyone input[type="email"],
+#buddypress.twentytwentyone input[type="month"],
+#buddypress.twentytwentyone input[type="number"],
+#buddypress.twentytwentyone input[type="range"],
+#buddypress.twentytwentyone input[type="tel"],
+#buddypress.twentytwentyone input[type="time"],
+#buddypress.twentytwentyone input[type="url"],
+#buddypress.twentytwentyone input[type="week"],
+#buddypress.twentytwentyone input[type="password"],
 #buddypress.twentytwentyone input[type="search"],
 #buddypress.twentytwentyone .groups-members-search input[type="text"] {
 	color: var(--form--color-text);
 	background: var(--global--color-white-90);
 }
 
-#buddypress.twentytwentyone .bp-dir-search-form button {
-	background-color: transparent;
+#buddypress.twentytwentyone .bp-dir-search-form button,
+#buddypress.twentytwentyone form#group-members-search button,
+#buddypress.twentytwentyone form#group_invites_search_form button {
+	background-color: var(--global--color-background);
 	color: var(--button--color-text-hover);
 	border-color: var(--global--color-background);
 	border-left-color: var(--button--color-background);
 }
 
-#buddypress.twentytwentyone .bp-dir-search-form button:hover {
+#buddypress.twentytwentyone .bp-dir-search-form button:hover,
+#buddypress.twentytwentyone form#group-members-search button:hover,
+#buddypress.twentytwentyone form#group_invites_search_form button:hover {
 	background-color: var(--button--color-background);
 	color: var(--button--color-text);
 	border-color: var(--button--color-background);
@@ -4048,7 +4094,7 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 	float: left;
 	line-height: 2;
 	padding: 3px 10px;
-	width: auto;
+	width: 78%;
 }
 
 .buddypress-wrap form.bp-dir-search-form button[type="submit"],
@@ -4126,6 +4172,7 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 #buddypress.twentytwentyone form[data-bp-search].bp-invites-search-form,
 #buddypress.twentytwentyone form#group-members-search {
 	border: 1px solid var(--global--color-primary);
+	background-color: var(--global--color-white-90);
 }
 
 .budypress.no-js form.bp-dir-search-form button[type="submit"] {
