@@ -451,16 +451,33 @@ body.no-js {
 		height: 25px;
 	}
 
+	textarea,
+	input[type="text"],
+	input[type="color"],
+	input[type="date"],
+	input[type="datetime"],
+	input[type="datetime-local"],
+	input[type="email"],
+	input[type="month"],
+	input[type="number"],
+	input[type="range"],
+	input[type="tel"],
+	input[type="time"],
+	input[type="url"],
+	input[type="week"],
+	input[type="password"],
 	input[type="search"],
 	.groups-members-search input[type="text"] {
 		color: var(--form--color-text);
 		background: var(--global--color-white-90);
 	}
 
-	.bp-dir-search-form {
+	.bp-dir-search-form,
+	form#group-members-search,
+	form#group_invites_search_form {
 
 		button {
-			background-color: transparent;
+			background-color: var(--global--color-background);
 			color: var(--button--color-text-hover);
 			border-color: var(--global--color-background);
 			border-left-color: var(--button--color-background);

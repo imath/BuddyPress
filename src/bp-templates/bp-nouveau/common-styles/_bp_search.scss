@@ -32,7 +32,7 @@
 			float: left;
 			line-height: 2;
 			padding: 3px 10px;
-			width: auto;
+			width: 78%;
 		}
 
 		button[type="submit"] {
@@ -112,6 +112,7 @@
 	form[data-bp-search].bp-invites-search-form,
 	form#group-members-search {
 		border: 1px solid var(--global--color-primary);
+		background-color: var(--global--color-white-90);
 	}
 }
 
