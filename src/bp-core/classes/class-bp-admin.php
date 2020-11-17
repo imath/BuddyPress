@@ -656,9 +656,9 @@ class BP_Admin {
 				<div class="bp-hello-content">
 					<div id="dynamic-content"></div>
 					<div id="top-features">
-						<h2><?php esc_html_e( 'Say hello to the first two BuddyPress blocks!', 'buddypress' ); ?></h2>
+						<h2><?php esc_html_e( 'Manage Member types and Group types right form your WordPress Dashboard!', 'buddypress' ); ?></h2>
 						<figure class="bp-hello-aligncenter">
-							<img src="<?php echo esc_url( buddypress()->plugin_url . 'bp-core/images/bp-blocks.gif' ); ?>" alt="<?php esc_attr_e( 'Gif Animation showing how to insert the BuddyPress Group Block.', 'buddypress' ); ?>" />
+							<img src="<?php echo esc_url( 'https://cldup.com/eEE8Kjxh1I.png' ); ?>" alt="<?php esc_attr_e( 'Illustration showing how to access to the BP Types Admin areas.', 'buddypress' ); ?>" />
 						</figure>
 						<p>
 							<?php esc_html_e( 'BuddyPress 6.0.0 comes with two awesome blocks for your WordPress Editor: the BP Member and BP Group Blocks.', 'buddypress' ); ?>
