@@ -738,14 +738,14 @@ class BP_Admin {
 
 						<hr class="bp-hello-divider"/>
 
-						<h2><?php esc_html_e( 'BP Nouveau is ready for TwentyTwenty One', 'buddypress' ); ?></h2>
+						<h2><?php esc_html_e( 'BP Nouveau is ready for Twenty Twenty-One', 'buddypress' ); ?></h2>
 						<p>
 							<?php esc_html_e( 'You love the latest default WordPress Theme, so do we!', 'buddypress' ); ?>
 							<?php esc_html_e( 'It’s important for us to make sure the BP Nouveau template pack looks great in the default themes included in the WordPress package.', 'buddypress' ); ?>
 							<?php esc_html_e( 'This is the first of the many improvements we are bringing to our default Template Pack.', 'buddypress' ); ?>
 						</p>
 						<figure class="bp-hello-aligncenter">
-							<img src="<?php echo esc_url( buddypress()->plugin_url . 'bp-core/images/bp-nouveau-wide-aligns.png' ); ?>" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress Members directory', 'buddypress' ); ?>" />
+							<img src="<?php echo esc_url( 'https://cldup.com/OlK8GVdW52.png' ); ?>" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress Members directory', 'buddypress' ); ?>" />
 						</figure>
 
 						<hr class="bp-hello-divider"/>
