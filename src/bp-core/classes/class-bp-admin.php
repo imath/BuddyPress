@@ -658,7 +658,7 @@ class BP_Admin {
 					<div id="top-features">
 						<h2><?php esc_html_e( 'Manage Member Types and Group Types right from your WordPress Dashboard.', 'buddypress' ); ?></h2>
 						<figure class="bp-hello-aligncenter">
-							<img src="<?php echo esc_url( 'https://cldup.com/JeHe2Hanpv.png' ); ?>" alt="<?php esc_attr_e( 'Illustration showing how to access to the BP Types Admin areas.', 'buddypress' ); ?>" />
+							<img src="<?php echo esc_url( buddypress()->plugin_url . 'bp-core/images/bp-types-illustration.png' ); ?>" alt="<?php esc_attr_e( 'Illustration showing how to access to the BP Types Admin areas.', 'buddypress' ); ?>" />
 						</figure>
 						<p>
 							<?php esc_html_e( 'Playing with BP Types just became much easier! The Member Types and Group Types were primarily introduced in BuddyPress as features for advanced users, just like the WordPress Custom Post Type feature.', 'buddypress' ); ?>
@@ -690,11 +690,11 @@ class BP_Admin {
 
 						<h2><?php esc_html_e( 'The BP Blocks category now includes 5 blocks!', 'buddypress' ); ?></h2>
 						<figure class="bp-hello-aligncenter">
-							<img src="<?php echo esc_url( 'https://cldup.com/9KW1bz97uc.png' ); ?>" alt="<?php esc_attr_e( 'Illustration showing the BuddyPress Blocks category inside the Block Editor Inserter.', 'buddypress' ); ?>" />
+							<img src="<?php echo esc_url( buddypress()->plugin_url . 'bp-core/images/bp-new-blocks.png' ); ?>" alt="<?php esc_attr_e( 'Illustration showing the BuddyPress Blocks category inside the Block Editor Inserter.', 'buddypress' ); ?>" />
 						</figure>
 						<p>
 							<?php esc_html_e( '3 new BP Blocks are now available via your WordPress Editor.', 'buddypress' ); ?>
-							<?php esc_html_e( 'Available from the BuddyPress blocks category of the WordPress Block Inserter, you can now feature a list of members, a list of groups or embed a public BuddyPress Activity into your post or page.', 'buddypress' ); ?>
+							<?php esc_html_e( 'From the BuddyPress blocks category of the WordPress Block Inserter, you can pick a BP Block to feature a list of members, a list of groups or embed a public BuddyPress Activity into your post or page.', 'buddypress' ); ?>
 							<?php printf(
 								/* translators: %s is the placeholder for the link to the BP Blocks developer note. */
 								esc_html__( 'Read more about it in this %s.', 'buddypress' ),
@@ -745,7 +745,7 @@ class BP_Admin {
 							<?php esc_html_e( 'This is the first of the many improvements we are bringing to our default Template Pack.', 'buddypress' ); ?>
 						</p>
 						<figure class="bp-hello-aligncenter">
-							<img src="<?php echo esc_url( 'https://cldup.com/OlK8GVdW52.png' ); ?>" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress Members directory', 'buddypress' ); ?>" />
+							<img src="<?php echo esc_url( buddypress()->plugin_url . 'bp-core/images/bp-nouveau-2021.png' ); ?>" alt="<?php esc_attr_e( 'Screenshot of the BuddyPress Members directory', 'buddypress' ); ?>" />
 						</figure>
 
 						<hr class="bp-hello-divider"/>
