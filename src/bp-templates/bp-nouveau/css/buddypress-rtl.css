@@ -1314,6 +1314,39 @@ body.buddypress article.page > .entry-header:not(.alignwide):not(.alignfull) .en
 	box-shadow: none;
 }
 
+#buddypress.twentytwentyone .activity-update-form #whats-new-post-in-box #whats-new-post-in-box-items li {
+	margin-bottom: 0;
+}
+
+#buddypress.twentytwentyone .activity-update-form #whats-new-post-in-box #whats-new-post-in-box-items li.bp-activity-object {
+	padding: 5px;
+	margin-right: 3px;
+	border-radius: 0;
+	border-style: dotted;
+	border-width: 0;
+	border-right-width: 1px;
+	border-left-width: 1px;
+}
+
+#buddypress.twentytwentyone .activity-update-form #whats-new-post-in-box #whats-new-post-in-box-items li.bp-activity-object:not(.selected) {
+	background: var(--global--color-white);
+	color: var(--form--color-text);
+	border-color: var(--button--color-background);
+}
+
+#buddypress.twentytwentyone .activity-update-form #whats-new-post-in-box #whats-new-post-in-box-items li.bp-activity-object:not(.selected):last-child {
+	border-bottom: dotted 1px;
+}
+
+#buddypress.twentytwentyone .activity-update-form #whats-new-post-in-box #whats-new-post-in-box-items li.bp-activity-object:not(.selected):hover {
+	background: var(--button--color-background);
+	color: var(--global--color-white);
+}
+
+#buddypress.twentytwentyone .activity-update-form #whats-new-post-in-box #whats-new-post-in-box-items li.bp-activity-object.selected {
+	background-color: transparent;
+}
+
 /**
 *-----------------------------------------------------
 * @section 3.1.2 - Activity Entries

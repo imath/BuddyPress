@@ -163,5 +163,44 @@
 	.activity-update-form {
 		border: 1px solid var(--global--color-primary);
 		box-shadow: none;
+
+		#whats-new-post-in-box {
+
+			#whats-new-post-in-box-items {
+
+				li {
+					margin-bottom: 0;
+
+					&.bp-activity-object {
+						padding: 5px;
+						margin-left: 3px;
+						border-radius: 0;
+						border-style: dotted;
+						border-width: 0;
+						border-left-width: 1px;
+						border-right-width: 1px;
+
+						&:not(.selected) {
+							background: var(--global--color-white);
+							color: var(--form--color-text);
+							border-color: var(--button--color-background);
+
+							&:last-child {
+								border-bottom: dotted 1px;
+							}
+
+							&:hover {
+								background: var(--button--color-background);
+								color: var(--global--color-white);
+							}
+						}
+
+						&.selected {
+							background-color: transparent;
+						}
+					}
+				}
+			}
+		}
 	}
 }
