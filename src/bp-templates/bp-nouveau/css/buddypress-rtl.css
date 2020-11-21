@@ -1681,6 +1681,40 @@ body.activity-permalink .activity-list .activity-comments {
 	}
 }
 
+body .site #buddypress.twentytwentyone .activity-list .load-more,
+body .site #buddypress.twentytwentyone .activity-list .load-newest {
+	background-color: var(--button--color-background);
+	color: var(--button--color-text);
+	border: 1px solid var(--button--color-background);
+}
+
+body .site #buddypress.twentytwentyone .activity-list .load-more a,
+body .site #buddypress.twentytwentyone .activity-list .load-newest a {
+	color: var(--button--color-text);
+}
+
+body .site #buddypress.twentytwentyone .activity-list .load-more a:focus,
+body .site #buddypress.twentytwentyone .activity-list .load-newest a:focus {
+	color: var(--button--color-text-hover);
+	background: transparent;
+	outline-offset: -6px;
+	outline: 2px dotted currentColor;
+}
+
+body .site #buddypress.twentytwentyone .activity-list .load-more:hover, body .site #buddypress.twentytwentyone .activity-list .load-more:focus,
+body .site #buddypress.twentytwentyone .activity-list .load-newest:hover,
+body .site #buddypress.twentytwentyone .activity-list .load-newest:focus {
+	color: var(--button--color-text-hover);
+	background: transparent;
+}
+
+body .site #buddypress.twentytwentyone .activity-list .load-more:hover a, body .site #buddypress.twentytwentyone .activity-list .load-more:focus a,
+body .site #buddypress.twentytwentyone .activity-list .load-newest:hover a,
+body .site #buddypress.twentytwentyone .activity-list .load-newest:focus a {
+	color: var(--button--color-text-hover);
+	background: transparent;
+}
+
 body .site #buddypress.twentytwentyone .activity-list .activity-content .activity-header,
 body .site #buddypress.twentytwentyone .activity-list .activity-content .comment-header {
 	color: var(--global--color-primary);

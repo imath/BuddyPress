@@ -445,6 +445,35 @@ body {
 
 			.activity-list {
 
+				.load-more,
+				.load-newest {
+					background-color: var(--button--color-background);
+					color: var(--button--color-text);
+					border: 1px solid var(--button--color-background);
+
+					a {
+						color: var(--button--color-text);
+
+						&:focus {
+							color: var(--button--color-text-hover);
+							background: transparent;
+							outline-offset: -6px;
+							outline: 2px dotted currentColor;
+						}
+					}
+
+					&:hover,
+					&:focus {
+						color: var(--button--color-text-hover);
+						background: transparent;
+
+						a {
+							color: var(--button--color-text-hover);
+							background: transparent;
+						}
+					}
+				}
+
 				.activity-content {
 
 					.activity-header,
