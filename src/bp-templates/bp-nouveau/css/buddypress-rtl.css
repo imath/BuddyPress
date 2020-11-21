@@ -2768,6 +2768,50 @@ body.buddypress.bp-user .buddypress-wrap .member-header-actions * > * {
 	border: none;
 }
 
+#buddypress.twentytwentyone #group-manage-members-ui #group-members-search-form input[type="search"] {
+	font-size: 16px;
+}
+
+#buddypress.twentytwentyone #group-manage-members-ui #group-members-search-form input[type="search"]:focus {
+	outline-offset: -7px;
+	outline: 2px dotted var(--form--border-color);
+}
+
+#buddypress.twentytwentyone #group-manage-members-ui #group-members-search-form button[type="submit"] {
+	border-width: 1px;
+	border-style: solid;
+	background-clip: border-box;
+}
+
+#buddypress.twentytwentyone #group-manage-members-ui #group-members-search-form button[type="submit"]:hover {
+	border-color: var(--button--color-background);
+}
+
+#buddypress.twentytwentyone #group-manage-members-ui #group-roles-filter label,
+#buddypress.twentytwentyone #group-manage-members-ui #group-members-list-table .group-member-edit label {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal !important;
+}
+
+#buddypress.twentytwentyone #group-manage-members-ui #group-members-role-filter,
+#buddypress.twentytwentyone #group-manage-members-ui #group-members-list-table .group-member-edit select {
+	font-size: 16px;
+	padding: 6px 10px 6px 25px;
+}
+
+#buddypress.twentytwentyone #group-manage-members-ui #group-members-role-filter:focus,
+#buddypress.twentytwentyone #group-manage-members-ui #group-members-list-table .group-member-edit select:focus {
+	outline-offset: 2px;
+	outline: 2px dotted var(--form--border-color);
+}
+
 /**
 *-----------------------------------------
 * @subsection 5.2.1.2 - Group Members List
@@ -3710,7 +3754,7 @@ body.buddypress.settings.data #buddypress.buddypress-wrap .item-body p a {
 .buddypress-wrap .standard-form [data-bp-search] input[type="text"],
 .buddypress-wrap .standard-form .groups-members-search input[type="search"],
 .buddypress-wrap .standard-form .groups-members-search input[type="text"] {
-	background: #fafafa;
+	background-color: #fafafa;
 	border: 1px solid #d6d6d6;
 	border-radius: 0;
 	font: inherit;
@@ -3781,7 +3825,7 @@ body.buddypress.settings.data #buddypress.buddypress-wrap .item-body p a {
 .buddypress-wrap .standard-form input:focus,
 .buddypress-wrap .standard-form textarea:focus,
 .buddypress-wrap .standard-form select:focus {
-	background: #fafafa;
+	background-color: #fafafa;
 	color: #555;
 	outline: 0;
 }

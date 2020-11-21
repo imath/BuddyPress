@@ -172,3 +172,58 @@
 		border: none;
 	}
 }
+
+#buddypress.twentytwentyone {
+
+	#group-manage-members-ui {
+
+		#group-members-search-form {
+
+			input[type="search"] {
+				font-size: 16px;
+
+				&:focus {
+					outline-offset: -7px;
+					outline: 2px dotted var(--form--border-color);
+				}
+			}
+
+			button[type="submit"] {
+				border-width: 1px;
+				border-style: solid;
+				background-clip: border-box;
+
+				&:hover {
+					border-color: var(--button--color-background);
+				}
+			}
+		}
+
+		#group-roles-filter,
+		#group-members-list-table .group-member-edit {
+
+			label {
+				border: 0;
+				clip: rect(0 0 0 0);
+				height: 1px;
+				margin: -1px;
+				overflow: hidden;
+				padding: 0;
+				position: absolute;
+				width: 1px;
+				word-wrap: normal !important;
+			}
+		}
+
+		#group-members-role-filter,
+		#group-members-list-table .group-member-edit select {
+			font-size: 16px;
+			padding: 6px 25px 6px 10px;
+
+			&:focus {
+				outline-offset: 2px;
+				outline: 2px dotted var(--form--border-color);
+			}
+		}
+	}
+}
