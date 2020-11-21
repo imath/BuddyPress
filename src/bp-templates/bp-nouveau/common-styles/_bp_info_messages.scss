@@ -29,21 +29,6 @@
 			display: block;
 		}
 
-		// Error message boxes
-		&.error {
-
-			p {
-				// oh linter you're too boringly pedantic, there will be properties!
-			}
-		}
-
-		// Warning boxes
-		//		&.warning {
-
-		//			p {
-		//			}
-		//		}
-
 	} // close .bp-messages
 
 	// user message screens handled separately due to backbone templates
@@ -386,6 +371,22 @@ body.create-blog {
 					color: var(--global--color-background);
 					background: var(--global--color-primary);
 				}
+			}
+		}
+	}
+
+	#group-create-body {
+
+		.bp-cover-image-status {
+
+			p.warning {
+				background-color: var(--global--color-light-gray);
+				border: none;
+				border-left-width: 4px;
+				border-left-style: solid;
+				border-left-color: var(--global--color-orange);
+				color: var(--global--color-primary);
+				box-shadow: none;
 			}
 		}
 	}

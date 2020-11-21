@@ -1,5 +1,6 @@
 // Group Creation Steps - Screens
-// @version 3.0.0
+// @since 3.0.0
+// @version 7.0.0
 
 #group-create-body {
 	padding: $pad-sml;
@@ -15,5 +16,15 @@
 
 	.avatar-nav-items {
 		margin-top: $marg-med;
+	}
+}
+
+#buddypress.twentytwentyone {
+
+	#group-create-body {
+
+		#avatar-crop-pane {
+			margin-bottom: 1em;
+		}
 	}
 }

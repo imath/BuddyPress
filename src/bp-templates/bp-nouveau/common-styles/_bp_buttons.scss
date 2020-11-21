@@ -469,4 +469,12 @@
 			display: none;
 		}
 	}
+
+	.create-button {
+
+		a:focus,
+		a:hover {
+			text-decoration: none;
+		}
+	}
 }

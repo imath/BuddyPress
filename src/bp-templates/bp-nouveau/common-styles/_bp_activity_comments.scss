@@ -1,5 +1,6 @@
 // BP activity comment entries in response to activity loop entries
-// @version 3.0.0
+// @since 3.0.0
+// @version 7.0.0
 .buddypress-wrap {
 
 	.activity-comments {
@@ -154,3 +155,21 @@ body.activity-permalink {
 	}
 
 } //close .activity-permalink
+
+#buddypress.twentytwentyone {
+
+	.activity-comments {
+
+		.acomment-meta {
+			color: var(--global--color-secondary);
+
+			a {
+				font-weight: 600;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+}

@@ -1,5 +1,6 @@
 // BP pagination  - generic styling for all screens
-// @version 3.0.0
+// @since 3.0.0
+// @version 7.0.0
 .buddypress-wrap {
 
 	.bp-pagination {
@@ -43,5 +44,11 @@
 		}
 
 	} // close .bp-pagination
+}
 
+#buddypress.twentytwentyone {
+
+	.bp-pagination {
+		color: var(--global--color-secondary);
+	}
 }

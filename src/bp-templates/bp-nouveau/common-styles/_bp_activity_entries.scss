@@ -445,15 +445,47 @@ body {
 
 			.activity-list {
 
+				.load-more,
+				.load-newest {
+					background-color: var(--button--color-background);
+					color: var(--button--color-text);
+					border: 1px solid var(--button--color-background);
+
+					a {
+						color: var(--button--color-text);
+
+						&:focus {
+							color: var(--button--color-text-hover);
+							background: transparent;
+							outline-offset: -6px;
+							outline: 2px dotted currentColor;
+						}
+					}
+
+					&:hover,
+					&:focus {
+						color: var(--button--color-text-hover);
+						background: transparent;
+
+						a {
+							color: var(--button--color-text-hover);
+							background: transparent;
+						}
+					}
+				}
+
 				.activity-content {
 
 					.activity-header,
 					.comment-header {
-						color: var(--global--color-primary);
-						filter: brightness(85%);
+						color: var(--global--color-secondary);
 
 						a {
 							font-weight: 600;
+
+							&:hover {
+								text-decoration: underline;
+							}
 						}
 					}
 
@@ -477,6 +509,10 @@ body {
 							background: var(--global--color-background);
 							color: var(--global--color-primary);
 							border: none;
+
+							span {
+								color: var(--global--color-secondary);
+							}
 						}
 					}
 				}
