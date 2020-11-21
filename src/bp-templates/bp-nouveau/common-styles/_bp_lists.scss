@@ -282,6 +282,25 @@ body:not(.logged-in) {
 		.activity-item {
 			background: inherit;
 			border: 1px solid var(--global--color-primary);
+
+			.activity-header {
+
+				.time-since,
+				.time-since:hover {
+					color: var(--global--color-secondary);
+				}
+			}
+		}
+	}
+
+	.bp-list {
+
+		li {
+
+			.meta,
+			.item-meta {
+				color: var(--global--color-secondary);
+			}
 		}
 	}
 }

@@ -1,5 +1,6 @@
 // Single Groups Management screens
-// @version 3.0.0
+// @since 3.0.0
+// @version 7.0.0
 
 // Groups settings screen
 .buddypress-wrap {
@@ -174,6 +175,13 @@
 }
 
 #buddypress.twentytwentyone {
+
+	.group-settings & {
+
+		.group-settings-selections {
+			margin-bottom: 1em;
+		}
+	}
 
 	#group-manage-members-ui {
 

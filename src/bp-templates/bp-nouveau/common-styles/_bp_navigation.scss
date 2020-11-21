@@ -526,6 +526,19 @@
 // Twenty Twenty One adaptations.
 #buddypress.twentytwentyone {
 
+	&:not(.bp-single-vert-nav) {
+
+		@include medium-max {
+
+			.bp-navs {
+
+				li {
+					background: transparent;
+				}
+			}
+		}
+	}
+
 	.bp-navs {
 
 		li {

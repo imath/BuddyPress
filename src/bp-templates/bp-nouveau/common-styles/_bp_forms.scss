@@ -410,12 +410,24 @@ body.no-js {
 
 #buddypress.twentytwentyone {
 
+	fieldset {
+		padding-top: 0;
+		margin-top: 1em;
+
+		legend {
+			padding: 0 1em;
+			display: inline-block;
+		}
+	}
+
 	.select-wrap {
 		border: 1px solid var(--global--color-primary);
 		background: var(--global--color-white);
 
 		select {
 			background: transparent;
+			width: 100%;
+			text-indent: 0;
 		}
 
 		span.select-arrow {
@@ -449,6 +461,7 @@ body.no-js {
 	input[type="radio"] {
 		width: 25px;
 		height: 25px;
+		vertical-align: top;
 	}
 
 	textarea,
@@ -470,6 +483,13 @@ body.no-js {
 	.groups-members-search input[type="text"] {
 		color: var(--form--color-text);
 		background: var(--global--color-white-90);
+	}
+
+	.subnav-filters {
+
+		input[type="search"] {
+			font-size: 16px;
+		}
 	}
 
 	.bp-dir-search-form,
