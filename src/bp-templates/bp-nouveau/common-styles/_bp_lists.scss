@@ -162,18 +162,6 @@
 
 } // close .bp-list
 
-#buddypress.twentytwentyone {
-
-	.bp-list {
-
-		border-top: 1px dotted var(--global--color-primary);
-
-		> li {
-			border-bottom: 1px dotted var(--global--color-primary);
-		}
-	}
-}
-
 // Ensure there's space between parent act list wrapper and filters bar
 @include medium-small-up() {
 
@@ -271,7 +259,17 @@ body:not(.logged-in) {
 	}
 }
 
+// Twenty Twenty-One adaptations.
 #buddypress.twentytwentyone {
+
+	.bp-list {
+
+		border-top: 1px dotted var(--global--color-primary);
+
+		> li {
+			border-bottom: 1px dotted var(--global--color-primary);
+		}
+	}
 
 	.activity-list.bp-list {
 		background: inherit;
@@ -282,6 +280,7 @@ body:not(.logged-in) {
 		.activity-item {
 			background: inherit;
 			border: 1px solid var(--global--color-primary);
+			box-shadow: none;
 
 			.activity-header {
 
@@ -296,6 +295,52 @@ body:not(.logged-in) {
 	.bp-list {
 
 		li {
+
+			&:not(.mini) {
+
+				.item-avatar {
+
+					img.avatar {
+						display: block;
+						margin: 0 auto;
+						margin-bottom: 1em;
+					}
+
+					@include medium-up() {
+						max-width: 128px;
+						max-height: 128px;
+						margin: auto;
+						margin-right: 5%;
+					}
+				}
+			}
+
+			&.mini {
+
+				.item-avatar {
+
+					img.avatar {
+						display: block;
+						margin: 0 auto;
+						max-width: 50px;
+						max-height: 50px;
+						margin-bottom: 1em;
+					}
+
+					@include medium-up() {
+						width: 5%;
+						margin: auto;
+						margin-right: 2%;
+					}
+				}
+
+				.activity-meta {
+
+					&.action {
+						clear: none;
+					}
+				}
+			}
 
 			.meta,
 			.item-meta {

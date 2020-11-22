@@ -1,5 +1,6 @@
 // BP default/generic Table styles.
-// @version 3.0.0
+// @since 3.0.0
+// @version 7.0.0
 .buddypress-wrap {
 
 	.bp-tables-user,
@@ -197,3 +198,19 @@
 
 } // close .buddypress-wrap
 
+// Twenty Twenty-One adaptations.
+#buddypress.twentytwentyone {
+
+	.bp-tables-user,
+	table.wp-profile-fields,
+	table.forum {
+
+		tbody {
+
+			tr,
+			tr.alt {
+				background: transparent;
+			}
+		}
+	}
+}

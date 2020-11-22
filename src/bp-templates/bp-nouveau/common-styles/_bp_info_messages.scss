@@ -329,8 +329,13 @@ body.create-blog {
 	}
 }
 
-// Twenty Twenty One adaptations.
+// Twenty Twenty-One adaptations.
 #buddypress.twentytwentyone {
+
+	.warn {
+		color: var(--global--color-primary);
+		font-weight: 600;
+	}
 
 	.bp-feedback {
 		color: var(--global--color-primary);
@@ -345,6 +350,7 @@ body.create-blog {
 
 		.bp-icon {
 			background-color: var(--global--color-primary);
+			color: var(--button--color-text);
 		}
 
 		a {

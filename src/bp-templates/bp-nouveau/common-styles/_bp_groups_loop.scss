@@ -118,6 +118,7 @@
 	}
 }
 
+// Twenty Twenty-One adaptations.
 #buddypress.twentytwentyone {
 
 	.groups-list { // ul
@@ -125,6 +126,7 @@
 		li {
 
 			.group-desc {
+				color: var(--global--color-secondary);
 				border: 1px dotted var(--global--color-primary);
 			}
 		}

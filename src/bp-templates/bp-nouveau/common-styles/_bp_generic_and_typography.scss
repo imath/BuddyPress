@@ -260,3 +260,11 @@ body.buddypress {
 		@include responsive-font(14);
 	}
 }
+
+// Twenty Twenty-One adaptations.
+#buddypress.twentytwentyone {
+
+	.avatar {
+		background: rgba(255, 255, 255, 0.8);
+	}
+}

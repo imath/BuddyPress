@@ -238,7 +238,21 @@ body.register .buddypress-wrap .page ul {
 	}
 }
 
+// Twenty Twenty-One adaptations.
 #buddypress.twentytwentyone {
+
+	.profile.edit {
+
+		.editfield {
+			background: var(--global--color-background);
+			border: 1px solid var(--global--color-primary);
+		}
+	}
+
+	.field-visibility-settings,
+	.field-visibility-settings-header {
+		color: var(--global--color-secondary);
+	}
 
 	.bp-avatar-nav {
 

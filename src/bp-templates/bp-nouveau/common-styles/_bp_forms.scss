@@ -408,6 +408,7 @@ body.no-js {
 	}
 }
 
+// Twenty Twenty-One adaptations.
 #buddypress.twentytwentyone {
 
 	fieldset {
@@ -436,7 +437,7 @@ body.no-js {
 			&:before {
 				font-family: dashicons;
 				content: "\f140";
-				color: var(--global--color-primary);
+				color: var(--button--color-text);
 				vertical-align: -10%;
 			}
 		}
@@ -445,7 +446,7 @@ body.no-js {
 		&:hover {
 
 			.select-arrow:before {
-				color: var(--global--color-primary);
+				color: var(--button--color-text);
 			}
 		}
 	}

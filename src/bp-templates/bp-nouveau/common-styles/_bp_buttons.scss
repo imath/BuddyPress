@@ -413,7 +413,7 @@
 	}
 } // close .buddypress-wrap
 
-// Twenty Twenty One adaptations.
+// Twenty Twenty-One adaptations.
 #buddypress.twentytwentyone {
 
 	button,
@@ -460,6 +460,31 @@
 	input[type="reset"]:hover {
 		outline-offset: -1px;
 		outline: 2px dotted currentColor;
+	}
+
+	input[type="submit"].pending,
+	input[type="button"].pending,
+	input[type="reset"].pending,
+	input[type="button"].disabled,
+	input[type="reset"].disabled,
+	input[type="submit"][disabled="disabled"],
+	input[type="submit"]:disabled,
+	input[type="submit"]:hover.pending,
+	input[type="button"]:hover.pending,
+	input[type="reset"]:hover.pending,
+	input[type="submit"]:hover.disabled,
+	input[type="button"]:hover.disabled,
+	input[type="reset"]:hover.disabled,
+	button.pending:hover,
+	button.disabled:hover,
+	div.pending a:hover,
+	a.disabled:hover
+	button.pending,
+	button.disabled,
+	div.pending a,
+	a.disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
 	}
 
 	.blog-button {

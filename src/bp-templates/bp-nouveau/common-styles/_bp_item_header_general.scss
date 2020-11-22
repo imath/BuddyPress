@@ -1,6 +1,6 @@
 // BP Single Screens Item Header General Styles.
 // @since 3.0.0
-// @version 5.0.0
+// @version 7.0.0
 
 @include clearfix-element(".single-headers");
 
@@ -179,3 +179,20 @@ body.no-js  .single-item-header .js-self-profile-button {
 	display: none;
 }
 
+// Twenty Twenty-One adaptations.
+#buddypress.twentytwentyone {
+
+	.single-headers {
+
+		.group-status,
+		.item-meta,
+		.bp-group-type-list,
+		.bp-member-type-list {
+			color: var(--global--color-secondary);
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+	}
+}
