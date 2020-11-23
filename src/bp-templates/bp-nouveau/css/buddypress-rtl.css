@@ -3817,6 +3817,127 @@ div.bp-navs#subsubnav.bp-messages-filters .user-messages-bulk-actions {
 	max-width: 42.5%;
 }
 
+#buddypress.twentytwentyone #user_messages_select_all {
+	vertical-align: -5px;
+}
+
+#buddypress.twentytwentyone #user_messages_select_all:checked {
+	vertical-align: -3px;
+}
+
+#buddypress.twentytwentyone #message-threads {
+	border-top: 1px dotted var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone #message-threads > li {
+	border-bottom: 1px dotted var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone #message-threads li .thread-from .num-recipients,
+#buddypress.twentytwentyone #message-threads li .thread-to .num-recipients {
+	color: var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone #message-threads li .thread-content .excerpt {
+	color: var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone #message-threads li .thread-date time {
+	color: var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone #message-threads li.selected {
+	background: transparent;
+	font-weight: bolder;
+	color: var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone #message-threads li.selected .thread-subject .subject {
+	color: var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone #message-threads li:not(.selected) {
+	color: var(--global--color-secondary);
+}
+
+#buddypress.twentytwentyone .bp-messages-content #thread-preview h2:first-child,
+#buddypress.twentytwentyone .bp-messages-content #bp-message-thread-header h2:first-child {
+	background-color: var(--button--color-background);
+	color: var(--button--color-text);
+}
+
+#buddypress.twentytwentyone .bp-messages-content #thread-preview {
+	border-color: var(--button--color-background);
+}
+
+#buddypress.twentytwentyone .bp-messages-content #thread-preview dd,
+#buddypress.twentytwentyone .bp-messages-content #thread-preview .participants-list {
+	padding-right: 0;
+}
+
+#buddypress.twentytwentyone .bp-messages-content #thread-preview .preview-pane-header {
+	border-bottom-style: dotted;
+	border-bottom-color: var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .bp-messages-content #thread-preview .preview-content .preview-message {
+	background: transparent;
+}
+
+#buddypress.twentytwentyone .bp-messages-content .actions button.bp-tooltip {
+	border: none;
+	background: none;
+}
+
+#buddypress.twentytwentyone .bp-messages-content .actions button.bp-tooltip.message-action-delete:before {
+	width: 32px;
+	height: 32px;
+	color: var(--global--color-primary);
+	background: var(--global--color-background);
+}
+
+#buddypress.twentytwentyone .bp-messages-content .actions button.bp-tooltip.message-action-delete:hover:before {
+	border-radius: 50%;
+	color: var(--global--color-background);
+	background: var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .bp-messages-content .actions .message-action-unstar:before,
+#buddypress.twentytwentyone .bp-messages-content .actions .message-action-star:before {
+	color: var(--global--color-secondary);
+}
+
+#buddypress.twentytwentyone .subnav-filters button#user_messages_search_submit {
+	padding: 3px 0.7em;
+	background-color: var(--global--color-background);
+	color: var(--button--color-text-hover);
+	border-color: var(--global--color-background);
+	border-right-color: var(--button--color-background);
+}
+
+#buddypress.twentytwentyone .subnav-filters button#user_messages_search_submit:hover {
+	background-color: var(--button--color-background);
+	color: var(--button--color-text);
+	border-color: var(--button--color-background);
+}
+
+#buddypress.twentytwentyone .subnav-filters .user-messages-bulk-actions .bulk-apply {
+	line-height: 1.5;
+	margin: 0 10px 0 0;
+	padding: 3px 5px;
+	background-color: var(--global--color-background);
+	color: var(--button--color-text-hover);
+}
+
+#buddypress.twentytwentyone .subnav-filters .user-messages-bulk-actions .bulk-apply:hover {
+	background-color: var(--button--color-background);
+	color: var(--button--color-text);
+}
+
+#buddypress.twentytwentyone .subnav-filters .user-messages-bulk-actions .bulk-apply span {
+	vertical-align: middle;
+}
+
 /**
 *------------------------------------------
 * @subsection 5.2.2.6 - Settings
@@ -4227,12 +4348,12 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 #buddypress.twentytwentyone .select-wrap span.select-arrow:before {
 	font-family: dashicons;
 	content: "\f140";
-	color: var(--button--color-text);
+	color: var(--global--color-black);
 	vertical-align: -10%;
 }
 
 #buddypress.twentytwentyone .select-wrap:focus .select-arrow:before, #buddypress.twentytwentyone .select-wrap:hover .select-arrow:before {
-	color: var(--button--color-text);
+	color: var(--global--color-black);
 }
 
 #buddypress.twentytwentyone .wp-pwd:not(.is-open) {
@@ -4422,14 +4543,6 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 	clear: both;
 }
 
-#buddypress.twentytwentyone form.bp-dir-search-form,
-#buddypress.twentytwentyone form.bp-messages-search-form,
-#buddypress.twentytwentyone form[data-bp-search].bp-invites-search-form,
-#buddypress.twentytwentyone form#group-members-search {
-	border: 1px solid var(--global--color-primary);
-	background-color: var(--global--color-white-90);
-}
-
 .budypress.no-js form.bp-dir-search-form button[type="submit"] {
 	height: auto;
 	right: 0;
@@ -4441,6 +4554,18 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 .bp-user [data-bp-search] form input[type="search"],
 .bp-user [data-bp-search] form input[type="text"] {
 	padding: 6px 10px 7px;
+}
+
+.bp-user #buddypress.twentytwentyone [data-bp-search] form #user_messages_search {
+	padding: 3px 10px;
+}
+
+#buddypress.twentytwentyone form.bp-dir-search-form,
+#buddypress.twentytwentyone form.bp-messages-search-form,
+#buddypress.twentytwentyone form[data-bp-search].bp-invites-search-form,
+#buddypress.twentytwentyone form#group-members-search {
+	border: 1px solid var(--global--color-primary);
+	background-color: var(--global--color-white-90);
 }
 
 /**

@@ -105,18 +105,6 @@
 
 } // close .buddypress-wrap
 
-// Twenty Twenty-One adaptations.
-#buddypress.twentytwentyone {
-
-	form.bp-dir-search-form,
-	form.bp-messages-search-form,
-	form[data-bp-search].bp-invites-search-form,
-	form#group-members-search {
-		border: 1px solid var(--global--color-primary);
-		background-color: var(--global--color-white-90);
-	}
-}
-
 // If js disabled ensure we show the submit overriding earlier rule
 // @todo the whole show/hide could be wrapped in a :not(.no-js)
 .budypress.no-js {
@@ -147,3 +135,27 @@
 	}
 }
 
+// Twenty Twenty-One adaptations.
+#buddypress.twentytwentyone {
+
+	.bp-user & {
+
+		[data-bp-search] {
+
+			form {
+
+				#user_messages_search {
+					padding: 3px 10px;
+				}
+			}
+		}
+	}
+
+	form.bp-dir-search-form,
+	form.bp-messages-search-form,
+	form[data-bp-search].bp-invites-search-form,
+	form#group-members-search {
+		border: 1px solid var(--global--color-primary);
+		background-color: var(--global--color-white-90);
+	}
+}

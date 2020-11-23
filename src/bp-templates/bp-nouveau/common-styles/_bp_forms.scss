@@ -437,7 +437,7 @@ body.no-js {
 			&:before {
 				font-family: dashicons;
 				content: "\f140";
-				color: var(--button--color-text);
+				color: var(--global--color-black);
 				vertical-align: -10%;
 			}
 		}
@@ -446,7 +446,7 @@ body.no-js {
 		&:hover {
 
 			.select-arrow:before {
-				color: var(--button--color-text);
+				color: var(--global--color-black);
 			}
 		}
 	}

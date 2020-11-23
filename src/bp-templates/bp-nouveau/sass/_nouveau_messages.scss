@@ -1,6 +1,6 @@
 // Nouveau Messages styles.
 // @since 3.0.0
-// @version 5.0.0
+// @version 7.0.0
 // Icon additions to default action star
 
 
@@ -408,5 +408,167 @@ div.bp-navs#subsubnav.bp-messages-filters {
 	.user-messages-bulk-actions {
 		margin-right: 15px;
 		max-width: 42.5%;
+	}
+}
+
+// Twenty Twenty-One adaptations.
+#buddypress.twentytwentyone {
+
+	#user_messages_select_all {
+		vertical-align: -5px;
+	}
+
+	#user_messages_select_all:checked {
+		vertical-align: -3px;
+	}
+
+	#message-threads {
+		border-top: 1px dotted var(--global--color-primary);
+
+		> li {
+			border-bottom: 1px dotted var(--global--color-primary);
+		}
+
+		li {
+
+			.thread-from,
+			.thread-to {
+
+				.num-recipients {
+					color: var(--global--color-primary);
+				}
+			}
+
+			.thread-content {
+
+				.excerpt {
+					color: var(--global--color-primary);
+				}
+			}
+
+			.thread-date {
+
+				time {
+					color: var(--global--color-primary);
+				}
+			}
+		}
+
+		li.selected {
+			background: transparent;
+			font-weight: bolder;
+			color: var(--global--color-primary);
+
+			.thread-subject {
+
+				.subject {
+					color: var(--global--color-primary);
+				}
+			}
+		}
+
+		li:not(.selected) {
+			color: var(--global--color-secondary);
+		}
+	}
+
+	.bp-messages-content {
+
+		#thread-preview h2:first-child,
+		#bp-message-thread-header h2:first-child {
+			background-color: var(--button--color-background);
+			color: var(--button--color-text);
+		}
+
+		#thread-preview {
+			border-color: var(--button--color-background);
+
+			dd,
+			.participants-list {
+				padding-left: 0;
+			}
+
+			.preview-pane-header {
+				border-bottom-style: dotted;
+				border-bottom-color: var(--global--color-primary);
+			}
+
+			.preview-content {
+
+				.preview-message {
+					background: transparent;
+				}
+			}
+		}
+
+		.actions {
+
+			button.bp-tooltip {
+				border: none;
+				background: none;
+
+				&.message-action-delete {
+
+					&:before {
+						width: 32px;
+						height: 32px;
+						color: var(--global--color-primary);
+						background: var(--global--color-background);
+					}
+
+					&:hover {
+
+						&:before {
+							border-radius: 50%;
+							color: var(--global--color-background);
+							background: var(--global--color-primary);
+						}
+					}
+				}
+			}
+
+			.message-action-unstar:before,
+			.message-action-star:before {
+				color: var(--global--color-secondary);
+			}
+		}
+	}
+
+	.subnav-filters {
+
+		button#user_messages_search_submit {
+			padding: 3px 0.7em;
+
+			background-color: var(--global--color-background);
+			color: var(--button--color-text-hover);
+			border-color: var(--global--color-background);
+			border-left-color: var(--button--color-background);
+
+			&:hover {
+				background-color: var(--button--color-background);
+				color: var(--button--color-text);
+				border-color: var(--button--color-background);
+			}
+		}
+
+		.user-messages-bulk-actions {
+
+			.bulk-apply {
+				line-height: 1.5;
+				margin: 0 0 0 10px;
+				padding: 3px 5px;
+				background-color: var(--global--color-background);
+				color: var(--button--color-text-hover);
+
+				&:hover {
+					background-color: var(--button--color-background);
+					color: var(--button--color-text);
+				}
+
+				span {
+					vertical-align: middle;
+				}
+			}
+		}
 	}
 }
