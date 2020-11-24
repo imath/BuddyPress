@@ -440,6 +440,7 @@
 	input[type="button"]:focus,
 	input[type="button"]:hover,
 	input[type="reset"],
+	#bp-messages-reset,
 	.button-nav li a:focus,
 	.button-nav li a:hover,
 	.button-nav li.current a,
@@ -457,7 +458,9 @@
 	}
 
 	input[type="reset"]:focus,
-	input[type="reset"]:hover {
+	input[type="reset"]:hover,
+	#bp-messages-reset:focus,
+	#bp-messages-reset:hover {
 		outline-offset: -1px;
 		outline: 2px dotted currentColor;
 	}

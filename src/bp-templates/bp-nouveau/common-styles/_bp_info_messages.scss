@@ -379,6 +379,18 @@ body.create-blog {
 				}
 			}
 		}
+
+		&.bp-sitewide-notice {
+
+			button.bp-tooltip {
+				top: 0;
+				right: 15px;
+			}
+
+			.bp-icon:before {
+				content: "\f16d";
+			}
+		}
 	}
 
 	#group-create-body {

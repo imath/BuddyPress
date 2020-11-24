@@ -427,12 +427,36 @@ div.bp-navs#subsubnav.bp-messages-filters {
 
 		> li {
 			border-bottom: 1px dotted var(--global--color-primary);
+
+			&.selected {
+				border: 1px solid var(--global--color-primary);
+			}
+
+			&.unread {
+				border-left: 8px solid var(--global--color-yellow);
+			}
 		}
 
 		li {
 
+			.thread-cb {
+				padding-left: 15px;
+			}
+
+			&.unread {
+
+				.thread-cb {
+					padding-left: 7px;
+				}
+			}
+
 			.thread-from,
 			.thread-to {
+
+				img.avatar {
+					width: 32px;
+					height: 32px;
+				}
 
 				.num-recipients {
 					color: var(--global--color-primary);
@@ -501,6 +525,14 @@ div.bp-navs#subsubnav.bp-messages-filters {
 			}
 		}
 
+		.single-message-thread-header {
+
+			dd,
+			.participants-list {
+				padding-left: 0;
+			}
+		}
+
 		.actions {
 
 			button.bp-tooltip {
@@ -531,6 +563,91 @@ div.bp-navs#subsubnav.bp-messages-filters {
 			.message-action-star:before {
 				color: var(--global--color-secondary);
 			}
+		}
+
+		#bp-message-thread-list {
+
+			li {
+
+				.message-metadata {
+					background: transparent;
+					border: 1px solid var(--global--color-primary);
+					box-shadow: none;
+
+					* {
+						line-height: 1.6;
+						vertical-align: middle;
+					}
+
+					.user-link {
+						margin-top: 3px;
+						margin-bottom: 3px;
+
+						strong {
+							display: inline-block;
+							margin-top: 2px;
+						}
+
+						&:hover {
+
+							strong {
+								text-decoration: underline;
+							}
+						}
+					}
+
+					time {
+						color: var(--global--color-secondary);
+					}
+				}
+
+				.message-content {
+					background: transparent;
+					margin: 0;
+					width: 100%;
+					padding: 1em;
+				}
+
+				&:first-child {
+
+					.message-content {
+						border: 1px dotted var(--global--color-primary);
+						border-top: none;
+					}
+				}
+			}
+		}
+
+		#send-reply {
+
+			.avatar-box {
+
+				img.avatar {
+					display: inline-block;
+					vertical-align: -7px;
+				}
+			}
+		}
+
+		.wp-editor-container {
+
+			.mce-toolbar {
+
+				button {
+					color: var(--global--color-dark-gray);
+					background: var(--global--color-white-90);
+					border-color: var(--global--color-dark-gray);
+				}
+			}
+		}
+
+		#bp-messages-reset {
+			border-width: 0;
+			font-size: inherit;
+		}
+
+		#send-to-input {
+			width: 100% !important;
 		}
 	}
 
