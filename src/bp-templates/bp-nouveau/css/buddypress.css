@@ -3413,9 +3413,60 @@ body.register .buddypress-wrap .page ul {
 	margin-top: 20px;
 }
 
+#buddypress.twentytwentyone .profile table.profile-fields tr.alt td,
+#buddypress.twentytwentyone .profile table.profile-fields tr td,
+#buddypress.twentytwentyone .profile table.bp-tables-user tr.alt td,
+#buddypress.twentytwentyone .profile table.bp-tables-user tr td {
+	background: transparent;
+}
+
+#buddypress.twentytwentyone .profile table.profile-fields tr.alt td.label,
+#buddypress.twentytwentyone .profile table.profile-fields tr td.label,
+#buddypress.twentytwentyone .profile table.bp-tables-user tr.alt td.label,
+#buddypress.twentytwentyone .profile table.bp-tables-user tr td.label {
+	border-right-color: var(--global--color-primary);
+}
+
 #buddypress.twentytwentyone .profile.edit .editfield {
 	background: var(--global--color-background);
 	border: 1px solid var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .profile.edit .wp-editor-container .mce-toolbar button {
+	color: var(--global--color-dark-gray);
+	background: var(--global--color-white-90);
+	border-color: var(--global--color-dark-gray);
+}
+
+#buddypress.twentytwentyone .profile.edit .button-tabs li {
+	border: solid 2px var(--global--color-primary);
+	overflow: hidden;
+}
+
+#buddypress.twentytwentyone .profile.edit .button-tabs li a {
+	text-decoration: none;
+}
+
+#buddypress.twentytwentyone .profile.edit .button-tabs li.current {
+	background-color: var(--global--color-primary);
+	color: var(--button--color-text);
+}
+
+#buddypress.twentytwentyone .profile.edit .button-tabs li.current a {
+	color: var(--button--color-text);
+}
+
+#buddypress.twentytwentyone .profile.edit .button-tabs li:hover {
+	outline-offset: 10px;
+	border-style: dotted;
+}
+
+#buddypress.twentytwentyone .profile.edit .clear-value {
+	text-decoration: underline;
+}
+
+#buddypress.twentytwentyone .profile.edit legend {
+	padding: 0;
 }
 
 #buddypress.twentytwentyone .field-visibility-settings,
@@ -4525,6 +4576,11 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 	background-color: var(--button--color-background);
 	color: var(--button--color-text);
 	border-color: var(--button--color-background);
+}
+
+#buddypress.twentytwentyone .standard-form p.description {
+	color: var(--global--primary-color);
+	background-color: var(--global--color-background);
 }
 
 /**

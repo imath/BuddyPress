@@ -241,11 +241,76 @@ body.register .buddypress-wrap .page ul {
 // Twenty Twenty-One adaptations.
 #buddypress.twentytwentyone {
 
-	.profile.edit {
+	.profile {
 
-		.editfield {
-			background: var(--global--color-background);
-			border: 1px solid var(--global--color-primary);
+		table.profile-fields,
+		table.bp-tables-user {
+
+			tr.alt,
+			tr {
+
+				td {
+					background: transparent;
+
+					&.label {
+						border-right-color: var(--global--color-primary);
+					}
+				}
+			}
+		}
+
+		&.edit {
+
+			.editfield {
+				background: var(--global--color-background);
+				border: 1px solid var(--global--color-primary);
+			}
+
+			.wp-editor-container {
+
+				.mce-toolbar {
+
+					button {
+						color: var(--global--color-dark-gray);
+						background: var(--global--color-white-90);
+						border-color: var(--global--color-dark-gray);
+					}
+				}
+			}
+
+			.button-tabs {
+
+				li {
+					border: solid 2px var(--global--color-primary);
+					overflow: hidden;
+
+					a {
+						text-decoration: none;
+					}
+
+					&.current {
+						background-color: var(--global--color-primary);
+						color: var(--button--color-text);
+
+						a {
+							color: var(--button--color-text);
+						}
+					}
+
+					&:hover {
+						outline-offset: 10px;
+						border-style: dotted;
+					}
+				}
+			}
+
+			.clear-value {
+				text-decoration: underline;
+			}
+
+			legend {
+				padding: 0;
+			}
 		}
 	}
 

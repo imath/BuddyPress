@@ -510,4 +510,12 @@ body.no-js {
 			}
 		}
 	}
+
+	.standard-form {
+
+		p.description {
+			color: var(--global--primary-color);
+			background-color: var(--global--color-background);
+		}
+	}
 }
