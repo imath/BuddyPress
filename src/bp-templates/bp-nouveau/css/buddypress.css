@@ -265,8 +265,8 @@ body.buddypress article.page > .entry-header:not(.alignwide):not(.alignfull) .en
 	}
 }
 
-#buddypress.twentytwentyone .avatar {
-	background: rgba(255, 255, 255, 0.8);
+.is-dark-theme #buddypress.twentytwentyone .avatar {
+	background: var(--global--color-white-90);
 }
 
 /**
@@ -2788,6 +2788,24 @@ body.buddypress.bp-user .buddypress-wrap .member-header-actions * > * {
 	padding-left: 0.5em;
 }
 
+#buddypress.twentytwentyone .item-body h2.screen-heading,
+#buddypress.twentytwentyone .item-body h2.creation-step-name {
+	font-size: var(--heading--font-size-h2);
+	letter-spacing: var(--heading--letter-spacing-h2);
+}
+
+#buddypress.twentytwentyone .item-body h3.screen-heading,
+#buddypress.twentytwentyone .item-body h3.creation-step-name {
+	font-size: var(--heading--font-size-h3);
+	letter-spacing: var(--heading--letter-spacing-h3);
+}
+
+#buddypress.twentytwentyone .item-body h4.screen-heading,
+#buddypress.twentytwentyone .item-body h4.creation-step-name {
+	font-size: var(--heading--font-size-h4);
+	letter-spacing: var(--heading--letter-spacing-h4);
+}
+
 /**
 *----------------------------------------------------
 * @subsection 5.2.1 - Item Body Groups
@@ -3415,7 +3433,11 @@ body.register .buddypress-wrap .page ul {
 }
 
 #buddypress.twentytwentyone #drag-drop-area {
-	border: 4px dashed var(--global--color-dark-gray);
+	border: 4px dashed var(--global--color-secondary);
+}
+
+#buddypress.twentytwentyone #drag-drop-area .drag-drop-info {
+	color: var(--global--color-secondary);
 }
 
 #buddypress.twentytwentyone .bp-avatar-status .warning,
@@ -3426,7 +3448,7 @@ body.register .buddypress-wrap .page ul {
 	border: none;
 	border-left-width: 4px;
 	border-left-style: solid;
-	color: var(--global--color-primary);
+	color: var(--global--color-dark-gray);
 }
 
 #buddypress.twentytwentyone .bp-avatar-status .warning,
@@ -5562,7 +5584,7 @@ body.create-blog #buddypress .success {
 	border-left-width: 4px;
 	border-left-style: solid;
 	border-left-color: var(--global--color-orange);
-	color: var(--global--color-primary);
+	color: var(--global--color-dark-gray);
 	box-shadow: none;
 }
 

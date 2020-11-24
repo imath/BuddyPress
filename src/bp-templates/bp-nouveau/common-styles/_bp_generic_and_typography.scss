@@ -264,7 +264,10 @@ body.buddypress {
 // Twenty Twenty-One adaptations.
 #buddypress.twentytwentyone {
 
-	.avatar {
-		background: rgba(255, 255, 255, 0.8);
+	.is-dark-theme & {
+
+		.avatar {
+			background: var(--global--color-white-90);
+		}
 	}
 }

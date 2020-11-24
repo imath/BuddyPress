@@ -270,7 +270,11 @@ body.register .buddypress-wrap .page ul {
 	}
 
 	#drag-drop-area {
-		border: 4px dashed var(--global--color-dark-gray);
+		border: 4px dashed var(--global--color-secondary);
+
+		.drag-drop-info {
+			color: var(--global--color-secondary);
+		}
 	}
 
 	.bp-avatar-status,
@@ -282,7 +286,7 @@ body.register .buddypress-wrap .page ul {
 			border: none;
 			border-left-width: 4px;
 			border-left-style: solid;
-			color: var(--global--color-primary);
+			color: var(--global--color-dark-gray);
 		}
 
 		.warning {

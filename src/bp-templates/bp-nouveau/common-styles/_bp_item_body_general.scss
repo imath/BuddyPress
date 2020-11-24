@@ -1,6 +1,6 @@
 // BP Single Screens Item Body General Styles.
 // @since 3.0.0
-// @version 5.0.0
+// @version 7.0.0
 
 .buddypress-wrap {
 
@@ -31,6 +31,31 @@
 
 		.item-entry {
 			padding-left: $pad-sml;
+		}
+	}
+}
+
+// Twenty Twenty-One adaptations.
+#buddypress.twentytwentyone {
+
+	.item-body {
+
+		h2.screen-heading,
+		h2.creation-step-name {
+			font-size: var(--heading--font-size-h2);
+			letter-spacing: var(--heading--letter-spacing-h2);
+		}
+
+		h3.screen-heading,
+		h3.creation-step-name {
+			font-size: var(--heading--font-size-h3);
+			letter-spacing: var(--heading--letter-spacing-h3);
+		}
+
+		h4.screen-heading,
+		h4.creation-step-name {
+			font-size: var(--heading--font-size-h4);
+			letter-spacing: var(--heading--letter-spacing-h4);
 		}
 	}
 }
