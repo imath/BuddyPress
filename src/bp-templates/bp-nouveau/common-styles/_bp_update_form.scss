@@ -183,7 +183,7 @@
 
 						&:not(.selected) {
 							background: var(--global--color-white);
-							color: var(--form--color-text);
+							color: var(--button--color-text);
 							border-color: var(--button--color-background);
 
 							&:last-child {
@@ -191,8 +191,8 @@
 							}
 
 							&:hover {
-								background: var(--button--color-background);
-								color: var(--global--color-white);
+								background: var(--global--color-background);
+								color: var(--button--color-text-hover);
 							}
 						}
 
