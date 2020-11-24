@@ -1862,6 +1862,14 @@ body .site #buddypress.twentytwentyone .activity-list .activity-content .activit
 	color: var(--global--color-secondary);
 }
 
+body.activity-permalink #buddypress.twentytwentyone .activity-list {
+	border: none;
+}
+
+body.activity-permalink #buddypress.twentytwentyone .activity-list .activity-avatar img.avatar {
+	background: var(--global--color-white);
+}
+
 /**
 *-----------------------------------------------------
 * @section 3.1.3 - Activity Comments

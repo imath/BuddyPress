@@ -520,4 +520,21 @@ body {
 			}
 		}
 	}
+
+	&.activity-permalink {
+
+		#buddypress.twentytwentyone {
+
+			.activity-list {
+				border: none;
+
+				.activity-avatar {
+
+					img.avatar {
+						background: var(--global--color-white);
+					}
+				}
+			}
+		}
+	}
 }
