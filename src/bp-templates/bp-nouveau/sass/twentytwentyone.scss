@@ -385,6 +385,7 @@ Hello, this is the BP Nouveau's Twenty Twenty-One companion stylesheet.
 						}
 
 						&.selected {
+							border: none;
 							background-color: transparent;
 						}
 					}
@@ -509,17 +510,30 @@ body {
 
 #buddypress.twentytwentyone {
 
-	.activity-comments {
+	li:not(.mini),
+	li {
 
-		.acomment-meta {
-			color: var(--global--color-secondary);
+		.activity-comments {
 
-			a {
-				font-weight: 600;
+			.acomment-avatar {
+				margin-right: 0;
+			}
 
-				&:hover {
-					text-decoration: underline;
+			.acomment-meta {
+				color: var(--global--color-secondary);
+
+				a {
+					font-weight: 600;
+
+					&:hover {
+						text-decoration: underline;
+					}
 				}
+			}
+
+			.acomment-content {
+				border-left: 1px solid var(--global--color-secondary);
+				margin: 15px 0 0 5%;
 			}
 		}
 	}
