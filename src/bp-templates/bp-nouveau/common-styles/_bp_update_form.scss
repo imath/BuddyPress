@@ -182,17 +182,16 @@
 						border-right-width: 1px;
 
 						&:not(.selected) {
-							background: var(--global--color-white);
-							color: var(--button--color-text);
-							border-color: var(--button--color-background);
+							background: var(--global--color-white-90);
+							color: var(--form--color-text);
+							border-color: var(--form--border-color);
 
 							&:last-child {
 								border-bottom: dotted 1px;
 							}
 
 							&:hover {
-								background: var(--global--color-background);
-								color: var(--button--color-text-hover);
+								background: var(--global--color-blue);
 							}
 						}
 

@@ -1401,9 +1401,9 @@ body.buddypress article.page > .entry-header:not(.alignwide):not(.alignfull) .en
 }
 
 #buddypress.twentytwentyone .activity-update-form #whats-new-post-in-box #whats-new-post-in-box-items li.bp-activity-object:not(.selected) {
-	background: var(--global--color-white);
-	color: var(--button--color-text);
-	border-color: var(--button--color-background);
+	background: var(--global--color-white-90);
+	color: var(--form--color-text);
+	border-color: var(--form--border-color);
 }
 
 #buddypress.twentytwentyone .activity-update-form #whats-new-post-in-box #whats-new-post-in-box-items li.bp-activity-object:not(.selected):last-child {
@@ -1411,8 +1411,7 @@ body.buddypress article.page > .entry-header:not(.alignwide):not(.alignfull) .en
 }
 
 #buddypress.twentytwentyone .activity-update-form #whats-new-post-in-box #whats-new-post-in-box-items li.bp-activity-object:not(.selected):hover {
-	background: var(--global--color-background);
-	color: var(--button--color-text-hover);
+	background: var(--global--color-blue);
 }
 
 #buddypress.twentytwentyone .activity-update-form #whats-new-post-in-box #whats-new-post-in-box-items li.bp-activity-object.selected {
@@ -4506,7 +4505,7 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 
 #buddypress.twentytwentyone .select-wrap select {
 	background: transparent;
-	width: 100%;
+	width: 98%;
 	text-indent: 0;
 }
 
