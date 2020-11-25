@@ -286,6 +286,7 @@ Hello, this is the BP Nouveau's Twenty Twenty-One companion stylesheet.
 }
 
 #buddypress.twentytwentyone .activity-update-form #whats-new-post-in-box #whats-new-post-in-box-items li.bp-activity-object.selected {
+	border: none;
 	background-color: transparent;
 }
 
@@ -383,16 +384,30 @@ body.activity-permalink #buddypress.twentytwentyone .activity-list .activity-ava
 * @section 3.1.3 - Activity Comments
 *-----------------------------------------------------
 */
-#buddypress.twentytwentyone .activity-comments .acomment-meta {
+#buddypress.twentytwentyone li:not(.mini) .activity-comments .acomment-avatar,
+#buddypress.twentytwentyone li .activity-comments .acomment-avatar {
+	margin-left: 0;
+}
+
+#buddypress.twentytwentyone li:not(.mini) .activity-comments .acomment-meta,
+#buddypress.twentytwentyone li .activity-comments .acomment-meta {
 	color: var(--global--color-secondary);
 }
 
-#buddypress.twentytwentyone .activity-comments .acomment-meta a {
+#buddypress.twentytwentyone li:not(.mini) .activity-comments .acomment-meta a,
+#buddypress.twentytwentyone li .activity-comments .acomment-meta a {
 	font-weight: 600;
 }
 
-#buddypress.twentytwentyone .activity-comments .acomment-meta a:hover {
+#buddypress.twentytwentyone li:not(.mini) .activity-comments .acomment-meta a:hover,
+#buddypress.twentytwentyone li .activity-comments .acomment-meta a:hover {
 	text-decoration: underline;
+}
+
+#buddypress.twentytwentyone li:not(.mini) .activity-comments .acomment-content,
+#buddypress.twentytwentyone li .activity-comments .acomment-content {
+	border-right: 1px solid var(--global--color-secondary);
+	margin: 15px 5% 0 0;
 }
 
 /**
