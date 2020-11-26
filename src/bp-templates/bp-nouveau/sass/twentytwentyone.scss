@@ -510,30 +510,33 @@ body {
 
 #buddypress.twentytwentyone {
 
-	li:not(.mini),
-	li {
+	.bp-list {
 
-		.activity-comments {
+		li {
 
-			.acomment-avatar {
-				margin-right: 0;
-			}
+			.activity-comments {
 
-			.acomment-meta {
-				color: var(--global--color-secondary);
+				.acomment-avatar {
+					width: auto;
+					margin-right: 0;
+				}
 
-				a {
-					font-weight: 600;
+				.acomment-meta {
+					color: var(--global--color-secondary);
 
-					&:hover {
-						text-decoration: underline;
+					a {
+						font-weight: 600;
+
+						&:hover {
+							text-decoration: underline;
+						}
 					}
 				}
-			}
 
-			.acomment-content {
-				border-left: 1px solid var(--global--color-secondary);
-				margin: 15px 0 0 5%;
+				.acomment-content {
+					border-left: 1px solid var(--global--color-secondary);
+					margin: 15px 0 0 5%;
+				}
 			}
 		}
 	}
