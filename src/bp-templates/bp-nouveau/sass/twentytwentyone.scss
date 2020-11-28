@@ -1713,5 +1713,26 @@ body.buddypress {
 			border-left: 1px solid var(--global--color-primary);
 		}
 	}
+
+	.grid {
+
+		&.bp-list {
+			border-top: none;
+		}
+
+		> li {
+			border: none;
+
+			.list-wrap {
+				border: 1px dotted var(--global--color-primary);
+				background: transparent;
+			}
+
+			&:not(.mini) .item-avatar,
+			.item-avatar {
+				margin-right: auto;
+			}
+		}
+	}
 }
 

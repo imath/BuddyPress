@@ -1285,3 +1285,21 @@ body.buddypress .site #buddypress.twentytwentyone .button.bp-tooltip:after {
 	background: var(--global--color-background);
 	border-left: 1px solid var(--global--color-primary);
 }
+
+#buddypress.twentytwentyone .grid.bp-list {
+	border-top: none;
+}
+
+#buddypress.twentytwentyone .grid > li {
+	border: none;
+}
+
+#buddypress.twentytwentyone .grid > li .list-wrap {
+	border: 1px dotted var(--global--color-primary);
+	background: transparent;
+}
+
+#buddypress.twentytwentyone .grid > li:not(.mini) .item-avatar,
+#buddypress.twentytwentyone .grid > li .item-avatar {
+	margin-right: auto;
+}
