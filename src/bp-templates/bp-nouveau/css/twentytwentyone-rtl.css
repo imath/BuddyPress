@@ -85,9 +85,9 @@ Hello, this is the BP Nouveau's Twenty Twenty-One companion stylesheet.
 	color: var(--button--color-text);
 }
 
-#buddypress.twentytwentyone .bp-navs li.selected a .count,
-#buddypress.twentytwentyone .bp-navs li.current a .count,
-#buddypress.twentytwentyone .bp-navs li a:hover a .count {
+#buddypress.twentytwentyone .bp-navs:not(.tabbed-links) li.selected a .count,
+#buddypress.twentytwentyone .bp-navs:not(.tabbed-links) li.current a .count,
+#buddypress.twentytwentyone .bp-navs:not(.tabbed-links) li a:hover a .count {
 	background-color: var(--global--color-background);
 	border: 1px solid var(--global--color-background);
 	color: var(--button--color-text-hover);
@@ -445,6 +445,21 @@ body.activity-permalink #buddypress.twentytwentyone .activity-list .activity-ava
 	margin-bottom: 1em;
 }
 
+#buddypress.twentytwentyone #group-create-body nav.group-create-links:not(.tabbed-links) {
+	background: transparent;
+	clear: both;
+	overflow: hidden;
+	border: none;
+	border-bottom: 1px solid var(--global--color-primary);
+	box-shadow: none;
+}
+
+#buddypress.twentytwentyone #group-create-body nav.group-create-links:not(.tabbed-links) li a,
+#buddypress.twentytwentyone #group-create-body nav.group-create-links:not(.tabbed-links) li span {
+	padding: 0.5em calc(0.5em + 2px);
+	display: block;
+}
+
 /**
 *-------------------------------------------------------------------------------
 * @section 5.0 - Single Item screens: Groups, Users
@@ -758,6 +773,14 @@ body.activity-permalink #buddypress.twentytwentyone .activity-list .activity-ava
 * @subsection 5.2.2.3 - Groups
 *-------------------------------------------
 */
+#buddypress.twentytwentyone #group-list.invites h2.list-title {
+	float: none;
+}
+
+#buddypress.twentytwentyone #group-list.invites .accept {
+	margin-right: 0;
+}
+
 /**
 *-------------------------------------------
 * @subsection 5.2.2.5 - Private Messaging
@@ -1197,6 +1220,14 @@ button.pending,
 	text-decoration: none;
 }
 
+#buddypress.twentytwentyone.bp-dir-vert-nav .create-button a {
+	box-shadow: none;
+	color: var(--button--color-text);
+	background-color: var(--button--color-background);
+	border-radius: var(--button--border-radius);
+	border: var(--button--border-width) solid var(--button--color-background);
+}
+
 #buddypress.twentytwentyone .warn {
 	color: var(--global--color-primary);
 	font-weight: 600;
@@ -1281,9 +1312,30 @@ body.buddypress .site #buddypress.twentytwentyone .button.bp-tooltip:after {
 	margin: 3px 0;
 }
 
+#buddypress.twentytwentyone.bp-single-vert-nav .bp-navs.vertical li.selected span, #buddypress.twentytwentyone.bp-single-vert-nav .bp-navs.vertical li.current span {
+	background-color: var(--global--color-background);
+}
+
 #buddypress.twentytwentyone.bp-single-vert-nav .item-body:not(#group-create-body) {
 	background: var(--global--color-background);
 	border-right: 1px solid var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone.bp-single-vert-nav .item-body:not(#group-create-body) #subnav:not(.tabbed-links) {
+	background: transparent;
+	border-bottom: 1px solid var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone.bp-single-vert-nav .item-body:not(#group-create-body) #subnav:not(.tabbed-links) li a {
+	border: none;
+	text-decoration: none;
+}
+
+#buddypress.twentytwentyone.bp-single-vert-nav .item-body:not(#group-create-body) #subnav:not(.tabbed-links) li.current, #buddypress.twentytwentyone.bp-single-vert-nav .item-body:not(#group-create-body) #subnav:not(.tabbed-links) li.selected {
+	background-color: var(--global--color-primary);
+	margin: 0;
+	padding: 10px 0;
+	border-radius: 0;
 }
 
 #buddypress.twentytwentyone .grid.bp-list {

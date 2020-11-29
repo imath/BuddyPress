@@ -122,16 +122,19 @@ Hello, this is the BP Nouveau's Twenty Twenty-One companion stylesheet.
 			}
 		}
 
-		li.selected,
-		li.current,
-		li a:hover {
+		&:not(.tabbed-links) {
 
-			a {
+			li.selected,
+			li.current,
+			li a:hover {
 
-				.count {
-					background-color: var(--global--color-background);
-					border: 1px solid var(--global--color-background);
-					color: var(--button--color-text-hover);
+				a {
+
+					.count {
+						background-color: var(--global--color-background);
+						border: 1px solid var(--global--color-background);
+						color: var(--button--color-text-hover);
+					}
 				}
 			}
 		}
@@ -612,6 +615,27 @@ body {
 		#avatar-crop-pane {
 			margin-bottom: 1em;
 		}
+
+		nav.group-create-links {
+
+			&:not(.tabbed-links) {
+				background: transparent;
+				clear: both;
+				overflow: hidden;
+				border: none;
+				border-bottom: 1px solid var(--global--color-primary);
+				box-shadow: none;
+
+				li {
+
+					a,
+					span {
+						padding: 0.5em calc(0.5em + 2px);
+						display: block;
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -1016,6 +1040,23 @@ body {
 * @subsection 5.2.2.3 - Groups
 *-------------------------------------------
 */
+
+#buddypress.twentytwentyone {
+
+	#group-list {
+
+		&.invites {
+
+			h2.list-title {
+				float: none;
+			}
+
+			.accept {
+				margin-left: 0;
+			}
+		}
+	}
+}
 
 /**
 *-------------------------------------------
@@ -1578,6 +1619,20 @@ body {
 			text-decoration: none;
 		}
 	}
+
+	&.bp-dir-vert-nav {
+
+		.create-button {
+
+			a {
+				box-shadow: none;
+				color: var(--button--color-text);
+				background-color: var(--button--color-background);
+				border-radius: var(--button--border-radius);
+				border: var(--button--border-width) solid var(--button--color-background);
+			}
+		}
+	}
 }
 
 #buddypress.twentytwentyone {
@@ -1704,6 +1759,14 @@ body.buddypress {
 						display: inline-block;
 						margin: 3px 0;
 					}
+
+					&.selected,
+					&.current {
+
+						span {
+							background-color: var(--global--color-background);
+						}
+					}
 				}
 			}
 		}
@@ -1711,6 +1774,27 @@ body.buddypress {
 		.item-body:not(#group-create-body) {
 			background: var(--global--color-background);
 			border-left: 1px solid var(--global--color-primary);
+
+			#subnav:not(.tabbed-links) {
+				background: transparent;
+				border-bottom: 1px solid var(--global--color-primary);
+
+				li {
+
+					a {
+						border: none;
+						text-decoration: none;
+					}
+
+					&.current,
+					&.selected {
+						background-color: var(--global--color-primary);
+						margin: 0;
+						padding: 10px 0;
+						border-radius: 0;
+					}
+				}
+			}
 		}
 	}
 
