@@ -555,7 +555,7 @@ body {
 
 /**
 *----------------------------------------------------------
-* @section 3.2 - Groups Loop
+* @section 3.3 - Groups Loop
 *----------------------------------------------------------
 */
 
@@ -576,7 +576,7 @@ body {
 
 /**
 *----------------------------------------------------------
-* @section 3.2 - Members Loop
+* @section 3.4 - Members Loop
 *----------------------------------------------------------
 */
 
@@ -590,6 +590,13 @@ body {
 				border: 1px dotted var(--global--color-primary);
 				color: var(--global--color-secondary);
 			}
+		}
+	}
+
+	#members-dir-list {
+
+		.current-member-type {
+			text-align: center;
 		}
 	}
 }
@@ -1630,6 +1637,7 @@ body {
 				background-color: var(--button--color-background);
 				border-radius: var(--button--border-radius);
 				border: var(--button--border-width) solid var(--button--color-background);
+				background-clip: border-box;
 			}
 		}
 	}
