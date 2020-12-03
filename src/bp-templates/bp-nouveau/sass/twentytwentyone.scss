@@ -689,8 +689,7 @@ body {
 
 		.desc-wrap {
 			background: var(--global--color-background);
-			border: none;
-			border-left: 4px solid var(--global--color-primary);
+			border: 1px solid var(--global--color-primary);
 
 			.group-description {
 				background: none;
@@ -938,6 +937,20 @@ body {
 			.editfield {
 				background: var(--global--color-background);
 				border: 1px solid var(--global--color-primary);
+
+				p.field-visibility-settings-toggle {
+					margin-top: 1em;
+				}
+
+				.field-visibility-settings {
+
+					.radio {
+
+						label {
+							margin-bottom: 0.5em;
+						}
+					}
+				}
 			}
 
 			.wp-editor-container {
@@ -1355,7 +1368,13 @@ body {
 *------------------------------------------
 */
 
-// Nothing particular for the settings screens so far.
+#buddypress.twentytwentyone {
+
+	&.buddypress-wrap .bp-tables-user tr.alt td,
+	&.buddypress-wrap table.wp-profile-fields tr.alt td {
+		background: transparent;
+	}
+}
 
 /**
 *-------------------------------------------------------------------------------
@@ -1377,7 +1396,7 @@ body {
 
 	.select-wrap {
 		border: 1px solid var(--global--color-primary);
-		background: var(--global--color-white);
+		background: var(--global--color-white-90);
 
 		select {
 			background: transparent;
@@ -1444,6 +1463,7 @@ body {
 
 		input[type="search"] {
 			font-size: 16px;
+			background: transparent;
 		}
 	}
 
@@ -1816,7 +1836,7 @@ body.buddypress {
 			border: none;
 
 			.list-wrap {
-				border: 1px dotted var(--global--color-primary);
+				border: 1px solid var(--global--color-primary);
 				background: transparent;
 			}
 
@@ -1827,4 +1847,3 @@ body.buddypress {
 		}
 	}
 }
-

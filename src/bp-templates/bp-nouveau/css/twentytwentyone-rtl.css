@@ -494,8 +494,7 @@ body.activity-permalink #buddypress.twentytwentyone .activity-list .activity-ava
 */
 #buddypress.twentytwentyone .groups-header .desc-wrap {
 	background: var(--global--color-background);
-	border: none;
-	border-right: 4px solid var(--global--color-primary);
+	border: 1px solid var(--global--color-primary);
 }
 
 #buddypress.twentytwentyone .groups-header .desc-wrap .group-description {
@@ -685,6 +684,14 @@ body.activity-permalink #buddypress.twentytwentyone .activity-list .activity-ava
 #buddypress.twentytwentyone .profile.edit .editfield {
 	background: var(--global--color-background);
 	border: 1px solid var(--global--color-primary);
+}
+
+#buddypress.twentytwentyone .profile.edit .editfield p.field-visibility-settings-toggle {
+	margin-top: 1em;
+}
+
+#buddypress.twentytwentyone .profile.edit .editfield .field-visibility-settings .radio label {
+	margin-bottom: 0.5em;
 }
 
 #buddypress.twentytwentyone .profile.edit .wp-editor-container .mce-toolbar button {
@@ -1004,6 +1011,11 @@ body.activity-permalink #buddypress.twentytwentyone .activity-list .activity-ava
 * @subsection 5.2.2.6 - Settings
 *------------------------------------------
 */
+#buddypress.twentytwentyone.buddypress-wrap .bp-tables-user tr.alt td,
+#buddypress.twentytwentyone.buddypress-wrap table.wp-profile-fields tr.alt td {
+	background: transparent;
+}
+
 /**
 *-------------------------------------------------------------------------------
 * @section 6.0 - Forms  - General
@@ -1021,7 +1033,7 @@ body.activity-permalink #buddypress.twentytwentyone .activity-list .activity-ava
 
 #buddypress.twentytwentyone .select-wrap {
 	border: 1px solid var(--global--color-primary);
-	background: var(--global--color-white);
+	background: var(--global--color-white-90);
 }
 
 #buddypress.twentytwentyone .select-wrap select {
@@ -1079,6 +1091,7 @@ body.activity-permalink #buddypress.twentytwentyone .activity-list .activity-ava
 
 #buddypress.twentytwentyone .subnav-filters input[type="search"] {
 	font-size: 16px;
+	background: transparent;
 }
 
 #buddypress.twentytwentyone .bp-dir-search-form button,
@@ -1352,7 +1365,7 @@ body.buddypress .site #buddypress.twentytwentyone .button.bp-tooltip:after {
 }
 
 #buddypress.twentytwentyone .grid > li .list-wrap {
-	border: 1px dotted var(--global--color-primary);
+	border: 1px solid var(--global--color-primary);
 	background: transparent;
 }
 
