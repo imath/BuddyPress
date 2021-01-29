@@ -346,10 +346,11 @@ class BP_XProfile_Group {
 
 		// Maybe fetch field data.
 		if ( ! empty( $r['fetch_field_data'] ) ) {
+			$field_type_objects = wp_list_pluck( $fields, 'type_obj', 'id' );
 
 			// Get field data for user ID.
 			if ( ! empty( $field_ids ) && ! empty( $r['user_id'] ) ) {
-				$field_data = BP_XProfile_ProfileData::get_data_for_user( $r['user_id'], $field_ids );
+				$field_data = BP_XProfile_ProfileData::get_data_for_user( $r['user_id'], $field_ids, $field_type_objects );
 			}
 
 			// Remove data-less fields, if necessary.

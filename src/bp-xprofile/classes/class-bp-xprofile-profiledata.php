@@ -321,7 +321,7 @@ class BP_XProfile_ProfileData {
 	 * @param array $field_ids Array of field IDs to query for.
 	 * @return array
 	 */
-	public static function get_data_for_user( $user_id, $field_ids ) {
+	public static function get_data_for_user( $user_id, $field_ids, $field_type_objects = array() ) {
 		global $wpdb;
 
 		$data = array();
@@ -359,11 +359,20 @@ class BP_XProfile_ProfileData {
 				// If no value was found, cache an empty item
 				// to avoid future cache misses.
 				} else {
-					$d               = new stdClass;
-					$d->id           = '';
+					$d = new stdClass;
+					if ( isset( $field_type_objects[ $field_id ]->meta_key ) && $field_type_objects[ $field_id ]->meta_key ) {
+						/**
+						 * @todo It should be better to get the meta id.
+						 */
+						$d->id    = $field_type_objects[ $field_id ]->meta_key;
+						$d->value = $field_type_objects[ $field_id ]->get_field_value( $user_id );
+					} else {
+						$d->id    = '';
+						$d->value = '';
+					}
+
 					$d->user_id      = $user_id;
 					$d->field_id     = $field_id;
-					$d->value        = '';
 					$d->last_updated = '';
 
 					wp_cache_set( $cache_key, $d, 'bp_xprofile_data' );

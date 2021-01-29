@@ -463,14 +463,33 @@ function xprofile_set_field_data( $field, $user_id, $value, $is_required = false
 		return false;
 	}
 
-	$field           = new BP_XProfile_ProfileData();
-	$field->field_id = $field_id;
-	$field->user_id  = $user_id;
+	$field_args = compact( 'field_type_obj', 'field', 'user_id', 'value', 'is_required' );
 
-	// Gets un/reserialized via xprofile_sanitize_data_value_before_save().
-	$field->value    = maybe_serialize( $value );
+	/**
+	 * Return a WP_Error object or true to use your custom way of saving field values.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param array $field_args
+	 */
+	$retval = apply_filters( 'bp_xprofile_set_field_data_pre_save', false, $field_args );
 
-	return $field->save();
+	if ( is_wp_error( $retval ) ) {
+		return false;
+	}
+
+	if ( false === $retval ) {
+		$field           = new BP_XProfile_ProfileData();
+		$field->field_id = $field_id;
+		$field->user_id  = $user_id;
+
+		// Gets un/reserialized via xprofile_sanitize_data_value_before_save().
+		$field->value    = maybe_serialize( $value );
+
+		$retval = $field->save();
+	}
+
+	return $retval;
 }
 
 /**

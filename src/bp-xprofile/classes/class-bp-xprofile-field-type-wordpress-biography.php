@@ -28,6 +28,7 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 		$this->category           = _x( 'WordPress Fields', 'xprofile field type category', 'buddypress' );
 		$this->name               = _x( 'Biography', 'xprofile field type', 'buddypress' );
 		$this->accepts_null_value = true;
+		$this->meta_key           = 'description';
 
 		$this->set_format( '/^.*$/m', 'replace' );
 
@@ -57,7 +58,7 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 		 * User_id is a special optional parameter that certain other fields
 		 * types pass to {@link bp_the_profile_field_options()}.
 		 */
-		if ( isset( $raw_properties['user_id'] ) ) {
+		if ( ! is_admin() && isset( $raw_properties['user_id'] ) ) {
 			unset( $raw_properties['user_id'] );
 		}
 		?>
@@ -75,10 +76,15 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 			'cols' => 40,
 			'rows' => 5,
 		) );
+
+		$user_id = bp_displayed_user_id();
+		if ( isset( $r['user_id'] ) && $r['user_id'] ) {
+			$user_id = (int) $r['user_id'];
+		}
 		?>
 
 		<textarea <?php echo $this->get_edit_field_html_elements( $r ); ?>><?php
-			echo esc_html( get_user_meta( bp_displayed_user_id(), 'description', true ) );
+			echo esc_html( get_user_meta( $user_id, $this->meta_key, true ) );
 		?></textarea>
 
 		<?php
@@ -115,6 +121,6 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 	 *                                         current field's child options.
 	 */
 	public function admin_new_field_html( BP_XProfile_Field $current_field, $control_type = '' ) {
-		return get_user_meta( bp_displayed_user_id(), 'description', true );
+		return get_user_meta( bp_displayed_user_id(), $this->meta_key, true );
 	}
 }
