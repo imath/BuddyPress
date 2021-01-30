@@ -102,6 +102,8 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 		);
 
 		if ( ! is_wp_error( $retval ) ) {
+			// Reset the User's mid cache.
+			wp_cache_delete( $retval, 'bp_user_mid' );
 			$retval = true;
 		}
 
