@@ -120,7 +120,5 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 	 * @param string            $control_type  Optional. HTML input type used to render the
 	 *                                         current field's child options.
 	 */
-	public function admin_new_field_html( BP_XProfile_Field $current_field, $control_type = '' ) {
-		return get_user_meta( bp_displayed_user_id(), $this->meta_key, true );
-	}
+	public function admin_new_field_html( BP_XProfile_Field $current_field, $control_type = '' ) {}
 }

@@ -1386,3 +1386,17 @@ function bp_xprofile_personal_data_exporter( $email_address ) {
 		'done' => true,
 	);
 }
+
+/**
+ * Returns the list of supporterd WordPress field meta keys.
+ *
+ * @since 8.0.0
+ *
+ * @return string[] List of supported WordPress user keys.
+ */
+function bp_xprofile_get_wordpress_user_keys() {
+	return array_merge(
+		array( 'first_name', 'last_name', 'nickname', 'description' ),
+		array_keys( wp_get_user_contact_methods() )
+	);
+}

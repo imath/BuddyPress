@@ -26,6 +26,14 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	public $meta_key = '';
 
 	/**
+	 * The WordPress supported user keys.
+	 *
+	 * @since 8.0.0
+	 * @var string[] The WordPress supported user keys.
+	 */
+	public $supported_keys = array();
+
+	/**
 	 * Constructor for the URL field type
 	 *
 	 * @since 8.0.0
@@ -38,12 +46,15 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 		 *
 		 * @since 8.0.0
 		 *
-		 * @param BP_XProfile_Field_Type_URL $this Instance of the field type object.
+		 * @param BP_XProfile_Field_Type_WordPress $this Instance of the field type object.
 		 */
 		do_action( 'bp_xprofile_field_type_wordpress', $this );
 
 		// Use the `$wpdb->usermeta` table instead of the $bp->profile->table_name_data one.
 		add_filter( 'bp_xprofile_set_field_data_pre_save', array( $this, 'set_field_value' ), 10, 2 );
+
+		// Set the supported keys.
+		$this->supported_keys = bp_xprofile_get_wordpress_user_keys();
 	}
 
 	/**
@@ -65,12 +76,8 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	 * @return boolean Whether to shortcircuit the $bp->profile->table_name_data table.
 	 */
 	public function set_field_value( $retval = false, $field_args = array() ) {
-		/**
-		 * Check for additional keys
-		 * @see _get_additional_user_keys
-		 * We should use `register_meta()` instead.
-		 */
-		if ( ! isset( $field_args['field_type_obj']->meta_key ) || $this->meta_key !== $field_args['field_type_obj']->meta_key ) {
+		// Check the meta_key is valid and supported.
+		if ( ! isset( $field_args['field_type_obj']->meta_key ) || $this->meta_key !== $field_args['field_type_obj']->meta_key || ! in_array( $field_args['field_type_obj']->meta_key, $this->supported_keys, true ) ) {
 			return false;
 		}
 
@@ -96,10 +103,58 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 			'table_name' => $wpdb->usermeta,
 		);
 
-		// Let's get the meta_id for the meta_key.
-		$meta['value'] = get_user_meta( $user_id, $this->meta_key, true );
-		if ( $meta['value'] ) {
-			$meta['id'] = (int) $wpdb->get_var( $wpdb->prepare( "SELECT umeta_id FROM {$wpdb->usermeta} WHERE user_id = %d AND meta_key = %s ORDER BY umeta_id ASC", $user_id, $this->meta_key ) );
+		$umeta_key = $this->meta_key;
+		$user_mid  = wp_cache_get( $user_id, 'bp_user_mid' );
+		if ( ! $user_mid ) {
+			$user_mid = array();
+		}
+
+		if ( ! $user_mid ) {
+			$list_values   = get_user_meta( $user_id, $umeta_key );
+			$meta['value'] = reset( $list_values );
+			$meta['id']    = key( $list_values );
+
+			if ( 0 === $meta['id'] ) {
+				/*
+				 * We can't just update the WP User Meta cache to key again meta values with meta_ids because of
+				 * `return maybe_unserialize( $meta_cache[ $meta_key ][0] );` in `get_metadata_raw()`.
+				 */
+				$user_meta_cache = wp_cache_get( $user_id, 'user_meta' );
+
+				if ( $user_meta_cache ) {
+					$metas = $wpdb->get_results( $wpdb->prepare( "SELECT umeta_id, meta_key, meta_value FROM {$wpdb->usermeta} WHERE user_id = %d ORDER BY umeta_id ASC", $user_id ) );
+
+					if ( $metas ) {
+						foreach ( $user_meta_cache as $meta_key => $meta_values ) {
+							if ( ! in_array( $meta_key, $this->supported_keys, true ) ) {
+								continue;
+							}
+
+							foreach ( $meta_values as $meta_value ) {
+								$meta_object = wp_list_filter( $metas, array( 'meta_key' => $meta_key, 'meta_value' => $meta_value ) );
+
+								if ( 1 === count( $meta_object ) ) {
+									$meta_object = reset( $meta_object );
+									$user_mid[ $meta_key ][ $meta_object->umeta_id ] = $meta_value;
+
+									// Set the meta_id for the requested field.
+									if ( $umeta_key === $meta_key ) {
+										$meta['id'] = $meta_object->umeta_id;
+									}
+								}
+							}
+						}
+					}
+
+					// Set the User mid cache.
+					wp_cache_set( $user_id, $user_mid, 'bp_user_mid' );
+				}
+			}
+		}
+
+		if ( isset( $user_mid[$umeta_key] ) ) {
+			$meta['value'] = reset( $user_mid[$umeta_key] );
+			$meta['id']    = key( $user_mid[$umeta_key] );
 		}
 
 		return $meta;

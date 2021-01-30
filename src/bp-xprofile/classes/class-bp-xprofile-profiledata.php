@@ -366,6 +366,7 @@ class BP_XProfile_ProfileData {
 						$d->id         = $meta['id'];
 						$d->value      = $meta['value'];
 						$d->table_name = $meta['table_name'];
+
 					} else {
 						$d->id    = '';
 						$d->value = '';
