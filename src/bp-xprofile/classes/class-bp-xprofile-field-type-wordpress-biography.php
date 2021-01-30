@@ -80,6 +80,7 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 		$user_id = bp_displayed_user_id();
 		if ( isset( $r['user_id'] ) && $r['user_id'] ) {
 			$user_id = (int) $r['user_id'];
+			unset( $r['user_id'] );
 		}
 		?>
 

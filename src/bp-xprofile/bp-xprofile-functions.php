@@ -160,6 +160,7 @@ function bp_xprofile_get_field_types() {
 		'textbox'        => 'BP_XProfile_Field_Type_Textbox',
 		'telephone'      => 'BP_XProfile_Field_Type_Telephone',
 		'wp-biography'   => 'BP_XProfile_Field_Type_WordPress_Biography',
+		'wp-textbox'     => 'BP_XProfile_Field_Type_WordPress_Textbox',
 	);
 
 	/**
