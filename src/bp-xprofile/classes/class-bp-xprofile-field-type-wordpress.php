@@ -34,6 +34,19 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	public $supported_keys = array();
 
 	/**
+	 * Supported features for the WordPress field type.
+	 *
+	 * @since 8.0.0
+	 * @var bool[] The WordPress field supported features.
+	 */
+	public static $supported_features = array(
+		'switch_fieldtype'        => false,
+		'required'                => false,
+		'do_autolink'             => false,
+		'allow_custom_visibility' => false,
+	);
+
+	/**
 	 * Constructor for the WordPress field type.
 	 *
 	 * @since 8.0.0
