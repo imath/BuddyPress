@@ -34,7 +34,7 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	public $supported_keys = array();
 
 	/**
-	 * Constructor for the URL field type
+	 * Constructor for the WordPress field type.
 	 *
 	 * @since 8.0.0
 	 */
@@ -82,7 +82,7 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 		}
 
 		$retval = wp_update_user(
-				array(
+			array(
 				'ID'            => (int) $field_args['user_id'],
 				$this->meta_key => $field_args['value'],
 			)
@@ -95,6 +95,17 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 		return $retval;
 	}
 
+	/**
+	 * Gets the WordPress field value during an xProfile fields loop.
+	 *
+	 * This function is used inside `BP_XProfile_ProfileData::get_data_for_user()`
+	 * to include the WordPress field value into the xProfile fields loop.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param integer $user_id The user ID.
+	 * @return array An array containing the metadata `id`, `value` and `table_name`.
+	 */
 	public function get_field_value( $user_id ) {
 		global $wpdb;
 		$meta = array(

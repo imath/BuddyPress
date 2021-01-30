@@ -11,7 +11,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * WordPress biography xprofile field type.
+ * WordPress Biography xProfile field type.
  *
  * @since 8.0.0
  */
