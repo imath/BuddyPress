@@ -470,7 +470,16 @@ function xprofile_set_field_data( $field, $user_id, $value, $is_required = false
 	 *
 	 * @since 8.0.0
 	 *
-	 * @param array $field_args
+	 * @param boolean Whether to shortcircuit the $bp->profile->table_name_data table.
+	 * @param array $field_args {
+	 *     An array of arguments.
+	 *
+	 *     @type object            $field_type_obj Field type object.
+	 *     @type BP_XProfile_Field $field          Field object.
+	 *     @type integer           $user_id        The user ID.
+	 *     @type mixed             $value          Value passed to xprofile_set_field_data().
+	 *     @type boolean           $is_required    Whether or not the field is required.
+	 * }
 	 */
 	$retval = apply_filters( 'bp_xprofile_set_field_data_pre_save', false, $field_args );
 

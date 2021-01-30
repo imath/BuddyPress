@@ -42,9 +42,28 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 		 */
 		do_action( 'bp_xprofile_field_type_wordpress', $this );
 
+		// Use the `$wpdb->usermeta` table instead of the $bp->profile->table_name_data one.
 		add_filter( 'bp_xprofile_set_field_data_pre_save', array( $this, 'set_field_value' ), 10, 2 );
 	}
 
+	/**
+	 * Sets the WordPress field value.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param boolean $retval Whether to shortcircuit the $bp->profile->table_name_data table.
+	 *                        Default `false`.
+	 * @param array $field_args {
+	 *     An array of arguments.
+	 *
+	 *     @type object            $field_type_obj Field type object.
+	 *     @type BP_XProfile_Field $field          Field object.
+	 *     @type integer           $user_id        The user ID.
+	 *     @type mixed             $value          Value passed to xprofile_set_field_data().
+	 *     @type boolean           $is_required    Whether or not the field is required.
+	 * }
+	 * @return boolean Whether to shortcircuit the $bp->profile->table_name_data table.
+	 */
 	public function set_field_value( $retval = false, $field_args = array() ) {
 		/**
 		 * Check for additional keys
@@ -70,6 +89,19 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	}
 
 	public function get_field_value( $user_id ) {
-		return get_user_meta( $user_id, $this->meta_key, true );
+		global $wpdb;
+		$meta = array(
+			'id'         => 0,
+			'value'      => '',
+			'table_name' => $wpdb->usermeta,
+		);
+
+		// Let's get the meta_id for the meta_key.
+		$meta['value'] = get_user_meta( $user_id, $this->meta_key, true );
+		if ( $meta['value'] ) {
+			$meta['id'] = (int) $wpdb->get_var( $wpdb->prepare( "SELECT umeta_id FROM {$wpdb->usermeta} WHERE user_id = %d AND meta_key = %s ORDER BY umeta_id ASC", $user_id, $this->meta_key ) );
+		}
+
+		return $meta;
 	}
 }

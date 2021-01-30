@@ -339,6 +339,7 @@ class BP_XProfile_ProfileData {
 			foreach ( $uncached_data as $ud ) {
 				$d               = new stdClass;
 				$d->id           = $ud->id;
+				$d->table_name   = $bp->profile->table_name_data;
 				$d->user_id      = $ud->user_id;
 				$d->field_id     = $ud->field_id;
 				$d->value        = $ud->value;
@@ -361,16 +362,16 @@ class BP_XProfile_ProfileData {
 				} else {
 					$d = new stdClass;
 					if ( isset( $field_type_objects[ $field_id ]->meta_key ) && $field_type_objects[ $field_id ]->meta_key ) {
-						/**
-						 * @todo It should be better to get the meta id.
-						 */
-						$d->id    = $field_type_objects[ $field_id ]->meta_key;
-						$d->value = $field_type_objects[ $field_id ]->get_field_value( $user_id );
+						$meta          = $field_type_objects[ $field_id ]->get_field_value( $user_id );
+						$d->id         = $meta['id'];
+						$d->value      = $meta['value'];
+						$d->table_name = $meta['table_name'];
 					} else {
 						$d->id    = '';
 						$d->value = '';
 					}
 
+					$d->table_name   = '';
 					$d->user_id      = $user_id;
 					$d->field_id     = $field_id;
 					$d->last_updated = '';
