@@ -361,8 +361,10 @@ class BP_XProfile_ProfileData {
 				// to avoid future cache misses.
 				} else {
 					$d = new stdClass;
-					if ( isset( $field_type_objects[ $field_id ]->meta_key ) && $field_type_objects[ $field_id ]->meta_key ) {
-						$meta          = $field_type_objects[ $field_id ]->get_field_value( $user_id );
+
+					// Check WordPress if it's a WordPress field.
+					if ( isset( $field_type_objects[ $field_id ]->meta_key ) ) {
+						$meta          = $field_type_objects[ $field_id ]->get_field_value( $user_id, $field_id );
 						$d->id         = $meta['id'];
 						$d->value      = $meta['value'];
 						$d->table_name = $meta['table_name'];

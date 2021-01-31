@@ -1397,7 +1397,7 @@ function bp_xprofile_personal_data_exporter( $email_address ) {
  */
 function bp_xprofile_get_wordpress_user_keys() {
 	return array_merge(
-		array( 'first_name', 'last_name', 'nickname', 'description' ),
+		array( 'first_name', 'last_name', 'user_url', 'description' ),
 		array_keys( wp_get_user_contact_methods() )
 	);
 }

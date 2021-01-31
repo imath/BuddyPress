@@ -71,6 +71,39 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	}
 
 	/**
+	 * Sanitize the user field before inserting it into db.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param string $value The user field value.
+	 * @return WP_Error
+	 */
+	public function sanitize_for_db( $value ) {
+		return new WP_Error(
+			'invalid-method',
+			/* translators: %s: Method name. */
+			sprintf( __( 'Method \'%s\' not implemented. Must be overridden in subclass.', 'buddypress' ), __METHOD__ ),
+		);
+	}
+
+	/**
+	 * Sanitize the user field before displaying it as an attribute.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param string $value The user field value.
+	 * @param integer $user_id The user ID.
+	 * @return WP_Error
+	 */
+	public function sanitize_for_output( $value, $user_id = 0 ) {
+		return new WP_Error(
+			'invalid-method',
+			/* translators: %s: Method name. */
+			sprintf( __( 'Method \'%s\' not implemented. Must be overridden in subclass.', 'buddypress' ), __METHOD__ ),
+		);
+	}
+
+	/**
 	 * Sets the WordPress field value.
 	 *
 	 * @since 8.0.0
@@ -94,16 +127,20 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 			return false;
 		}
 
+		/**
+		 * @todo Use a global to set edited WordPress fields
+		 * and only update the user once.
+		 *
+		 * @see do_action( 'xprofile_updated_profile', $user_id, $posted_field_ids, $errors ).
+		 */
 		$retval = wp_update_user(
 			array(
 				'ID'            => (int) $field_args['user_id'],
-				$this->meta_key => $field_args['value'],
+				$this->meta_key => $this->sanitize_for_db( $field_args['value'] ),
 			)
 		);
 
 		if ( ! is_wp_error( $retval ) ) {
-			// Reset the User's mid cache.
-			wp_cache_delete( $retval, 'bp_user_mid' );
 			$retval = true;
 		}
 
@@ -119,9 +156,10 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	 * @since 8.0.0
 	 *
 	 * @param integer $user_id The user ID.
+	 * @param integer $field_id The xProfile field ID.
 	 * @return array An array containing the metadata `id`, `value` and `table_name`.
 	 */
-	public function get_field_value( $user_id ) {
+	public function get_field_value( $user_id, $field_id = 0 ) {
 		global $wpdb;
 		$meta = array(
 			'id'         => 0,
@@ -136,7 +174,7 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 		}
 
 		if ( ! $user_mid ) {
-			$list_values   = get_user_meta( $user_id, $umeta_key );
+			$list_values   = bp_get_user_meta( $user_id, $umeta_key );
 			$meta['value'] = reset( $list_values );
 			$meta['id']    = key( $list_values );
 
@@ -181,6 +219,15 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 		if ( isset( $user_mid[$umeta_key] ) ) {
 			$meta['value'] = reset( $user_mid[$umeta_key] );
 			$meta['id']    = key( $user_mid[$umeta_key] );
+		}
+
+		if ( 'user_url' === $this->meta_key ) {
+			if ( bp_displayed_user_id() ) {
+				$meta['value'] = bp_get_displayed_user()->userdata->{$this->meta_key};
+			} elseif ( $user_id ) {
+				$user = get_user_by( 'id', $user_id );
+				$meta['value'] = $user->{$this->meta_key};
+			}
 		}
 
 		return $meta;

@@ -43,6 +43,35 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 	}
 
 	/**
+	 * Sanitize the user field before saving it to db.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param string $value The user field value.
+	 * @return string The sanitized field value.
+	 */
+	public function sanitize_for_db( $value ) {
+		return trim( $value );
+	}
+
+	/**
+	 * Sanitize the user field before displaying it as an attribute.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param string $value The user field value.
+	 * @param integer $user_id The user ID.
+	 * @return string The sanitized field value.
+	 */
+	public function sanitize_for_output( $value, $user_id = 0 ) {
+		if ( ! $user_id ) {
+			$user_id = bp_displayed_user_id();
+		}
+
+		return sanitize_user_field( $this->meta_key, $value, $user_id, 'attribute' );
+	}
+
+	/**
 	 * Output the edit field HTML for this field type.
 	 *
 	 * Must be used inside the {@link bp_profile_fields()} template loop.
@@ -61,6 +90,12 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 		if ( ! is_admin() && isset( $raw_properties['user_id'] ) ) {
 			unset( $raw_properties['user_id'] );
 		}
+
+		$user_id = bp_displayed_user_id();
+		if ( isset( $raw_properties['user_id'] ) && $raw_properties['user_id'] ) {
+			$user_id = (int) $raw_properties['user_id'];
+			unset( $raw_properties['user_id'] );
+		}
 		?>
 
 		<label for="<?php bp_the_profile_field_input_name(); ?>">
@@ -76,16 +111,10 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 			'cols' => 40,
 			'rows' => 5,
 		) );
-
-		$user_id = bp_displayed_user_id();
-		if ( isset( $r['user_id'] ) && $r['user_id'] ) {
-			$user_id = (int) $r['user_id'];
-			unset( $r['user_id'] );
-		}
 		?>
 
 		<textarea <?php echo $this->get_edit_field_html_elements( $r ); ?>><?php
-			echo esc_html( get_user_meta( $user_id, $this->meta_key, true ) );
+			echo $this->sanitize_for_output( bp_get_user_meta( $user_id, $this->meta_key, true ), $user_id );
 		?></textarea>
 
 		<?php
@@ -122,4 +151,17 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 	 *                                         current field's child options.
 	 */
 	public function admin_new_field_html( BP_XProfile_Field $current_field, $control_type = '' ) {}
+
+	/**
+	 * Format WordPress Biography for display.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param string     $field_value The field value, as saved in the database.
+	 * @param string|int $field_id    Optional. ID of the field.
+	 * @return string The sanitized WordPress field.
+	 */
+	public static function display_filter( $field_value, $field_id = '' ) {
+		return sanitize_user_field( 'description', $field_value, bp_displayed_user_id(), 'display' );
+	}
 }
