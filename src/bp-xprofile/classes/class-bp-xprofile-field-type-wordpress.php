@@ -123,7 +123,7 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	 */
 	public function set_field_value( $retval = false, $field_args = array() ) {
 		// Check the meta_key is valid and supported.
-		if ( ! isset( $field_args['field_type_obj']->meta_key ) || $this->meta_key !== $field_args['field_type_obj']->meta_key || ! in_array( $field_args['field_type_obj']->meta_key, $this->supported_keys, true ) ) {
+		if ( ! isset( $field_args['field']->type_obj->meta_key ) || $this->meta_key !== $field_args['field']->type_obj->meta_key || ! in_array( $field_args['field']->type_obj->meta_key, $this->supported_keys, true ) ) {
 			return false;
 		}
 

@@ -45,6 +45,12 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 		 * @param BP_XProfile_Field_Type_WordPress_Textbox $this Instance of the field type object.
 		 */
 		do_action( 'bp_xprofile_field_type_wordpress_textbox', $this );
+
+		/*
+		 * As we are using an xProfile field meta to store the WordPress field meta key we need to make
+		 * sure $this->meta_key is set before trying to save a field.
+		 */
+		add_filter( 'bp_xprofile_set_field_data_pre_validate', array( $this, 'set_meta_key' ), 10, 2 );
 	}
 
 	/**
@@ -65,6 +71,23 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 		}
 
 		return parent::get_field_value( $user_id, $field_id );
+	}
+
+	/**
+	 * Sets the WordPress field meta_key property before saving the xProfile field.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param mixed                  $value Value passed to xprofile_set_field_data().
+	 * @param BP_XProfile_Field      $field Field object.
+	 * @return mixed Unchanged value.
+	 */
+	public function set_meta_key( $value, $field ) {
+		if ( ! $this->meta_key && 'wp-textbox' === $field->type ) {
+			$this->meta_key = self::get_field_settings( $field->id );
+		}
+
+		return $value;
 	}
 
 	/**
