@@ -363,7 +363,7 @@ class BP_XProfile_ProfileData {
 					$d = new stdClass;
 
 					// Check WordPress if it's a WordPress field.
-					if ( isset( $field_type_objects[ $field_id ]->meta_key ) ) {
+					if ( isset( $field_type_objects[ $field_id ]->wp_user_key ) ) {
 						$meta          = $field_type_objects[ $field_id ]->get_field_value( $user_id, $field_id );
 						$d->id         = $meta['id'];
 						$d->value      = $meta['value'];

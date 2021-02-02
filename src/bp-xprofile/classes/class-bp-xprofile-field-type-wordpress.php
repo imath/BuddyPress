@@ -23,7 +23,7 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	 * @since 8.0.0
 	 * @var string The meta key name of this WordPress field.
 	 */
-	public $meta_key = '';
+	public $wp_user_key = '';
 
 	/**
 	 * The WordPress supported user keys.
@@ -67,7 +67,7 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 		add_filter( 'bp_xprofile_set_field_data_pre_save', array( $this, 'set_field_value' ), 10, 2 );
 
 		// Set the supported keys.
-		$this->supported_keys = bp_xprofile_get_wordpress_user_keys();
+		$this->supported_keys = bp_xprofile_get_wp_user_keys();
 	}
 
 	/**
@@ -76,15 +76,8 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	 * @since 8.0.0
 	 *
 	 * @param string $value The user field value.
-	 * @return WP_Error
 	 */
-	public function sanitize_for_db( $value ) {
-		return new WP_Error(
-			'invalid-method',
-			/* translators: %s: Method name. */
-			sprintf( __( 'Method \'%s\' not implemented. Must be overridden in subclass.', 'buddypress' ), __METHOD__ ),
-		);
-	}
+	abstract public function sanitize_for_db( $value );
 
 	/**
 	 * Sanitize the user field before displaying it as an attribute.
@@ -93,15 +86,8 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	 *
 	 * @param string $value The user field value.
 	 * @param integer $user_id The user ID.
-	 * @return WP_Error
 	 */
-	public function sanitize_for_output( $value, $user_id = 0 ) {
-		return new WP_Error(
-			'invalid-method',
-			/* translators: %s: Method name. */
-			sprintf( __( 'Method \'%s\' not implemented. Must be overridden in subclass.', 'buddypress' ), __METHOD__ ),
-		);
-	}
+	abstract public function sanitize_for_output( $value, $user_id = 0 );
 
 	/**
 	 * Sets the WordPress field value.
@@ -122,23 +108,25 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	 * @return boolean Whether to shortcircuit the $bp->profile->table_name_data table.
 	 */
 	public function set_field_value( $retval = false, $field_args = array() ) {
-		// Check the meta_key is valid and supported.
-		if ( ! isset( $field_args['field']->type_obj->meta_key ) || $this->meta_key !== $field_args['field']->type_obj->meta_key || ! in_array( $field_args['field']->type_obj->meta_key, $this->supported_keys, true ) ) {
+		// Check the wp_user_key is valid and supported.
+		if ( ! isset( $field_args['field']->type_obj->wp_user_key ) || $this->wp_user_key !== $field_args['field']->type_obj->wp_user_key || ! in_array( $field_args['field']->type_obj->wp_user_key, $this->supported_keys, true ) ) {
 			return false;
 		}
 
-		/**
-		 * @todo Use a global to set edited WordPress fields
-		 * and only update the user once.
-		 *
-		 * @see do_action( 'xprofile_updated_profile', $user_id, $posted_field_ids, $errors ).
-		 */
-		$retval = wp_update_user(
-			array(
-				'ID'            => (int) $field_args['user_id'],
-				$this->meta_key => $this->sanitize_for_db( $field_args['value'] ),
-			)
-		);
+		$wp_user_field_value = $this->sanitize_for_db( $field_args['value'] );
+		$bp_displayed_user   = bp_get_displayed_user();
+
+		if ( isset( $bp_displayed_user->updated_keys ) ) {
+			$bp_displayed_user->updated_keys[ $this->wp_user_key ] = $wp_user_field_value;
+			$retval = true;
+		} else {
+			$retval = wp_update_user(
+				array(
+					'ID'               => (int) $field_args['user_id'],
+					$this->wp_user_key => $wp_user_field_value,
+				)
+			);
+		}
 
 		if ( ! is_wp_error( $retval ) ) {
 			$retval = true;
@@ -161,75 +149,78 @@ abstract class BP_XProfile_Field_Type_WordPress extends BP_XProfile_Field_Type {
 	 */
 	public function get_field_value( $user_id, $field_id = 0 ) {
 		global $wpdb;
-		$meta = array(
+		$wp_field = array(
 			'id'         => 0,
 			'value'      => '',
 			'table_name' => $wpdb->usermeta,
 		);
 
-		$umeta_key = $this->meta_key;
-		$user_mid  = wp_cache_get( $user_id, 'bp_user_mid' );
-		if ( ! $user_mid ) {
-			$user_mid = array();
-		}
+		if ( 'user_url' === $this->wp_user_key ) {
+			if ( bp_displayed_user_id() ) {
+				$wp_field['value'] = bp_get_displayed_user()->userdata->{$this->wp_user_key};
+			} elseif ( $user_id ) {
+				$user = get_user_by( 'id', $user_id );
+				$wp_field['value'] = $user->{$this->wp_user_key};
+			}
 
-		if ( ! $user_mid ) {
-			$list_values   = bp_get_user_meta( $user_id, $umeta_key );
-			$meta['value'] = reset( $list_values );
-			$meta['id']    = key( $list_values );
+			$wp_field['id']         = $user_id;
+			$wp_field['table_name'] = $wpdb->users;
+		} else {
+			$umeta_key = $this->wp_user_key;
+			$user_mid  = wp_cache_get( $user_id, 'bp_user_mid' );
+			if ( ! $user_mid ) {
+				$user_mid = array();
+			}
 
-			if ( 0 === $meta['id'] ) {
-				/*
-				 * We can't just update the WP User Meta cache to key again meta values with meta_ids because of
-				 * `return maybe_unserialize( $meta_cache[ $meta_key ][0] );` in `get_metadata_raw()`.
-				 */
-				$user_meta_cache = wp_cache_get( $user_id, 'user_meta' );
+			if ( ! $user_mid ) {
+				$list_values   = bp_get_user_meta( $user_id, $umeta_key );
+				$wp_field['value'] = reset( $list_values );
+				$wp_field['id']    = key( $list_values );
 
-				if ( $user_meta_cache ) {
-					$metas = $wpdb->get_results( $wpdb->prepare( "SELECT umeta_id, meta_key, meta_value FROM {$wpdb->usermeta} WHERE user_id = %d ORDER BY umeta_id ASC", $user_id ) );
+				if ( 0 === $wp_field['id'] ) {
+					/*
+					* We can't just update the WP User Meta cache to key again meta values with meta_ids because of
+					* `return maybe_unserialize( $meta_cache[ $meta_key ][0] );` in `get_metadata_raw()`.
+					*/
+					$user_meta_cache = wp_cache_get( $user_id, 'user_meta' );
 
-					if ( $metas ) {
-						foreach ( $user_meta_cache as $meta_key => $meta_values ) {
-							if ( ! in_array( $meta_key, $this->supported_keys, true ) ) {
-								continue;
-							}
+					if ( $user_meta_cache ) {
+						$metas = $wpdb->get_results( $wpdb->prepare( "SELECT umeta_id, meta_key, meta_value FROM {$wpdb->usermeta} WHERE user_id = %d ORDER BY umeta_id ASC", $user_id ) );
 
-							foreach ( $meta_values as $meta_value ) {
-								$meta_object = wp_list_filter( $metas, array( 'meta_key' => $meta_key, 'meta_value' => $meta_value ) );
+						if ( $metas ) {
+							foreach ( $user_meta_cache as $meta_key => $meta_values ) {
+								if ( ! in_array( $meta_key, $this->supported_keys, true ) ) {
+									continue;
+								}
 
-								if ( 1 === count( $meta_object ) ) {
-									$meta_object = reset( $meta_object );
-									$user_mid[ $meta_key ][ $meta_object->umeta_id ] = $meta_value;
+								foreach ( $meta_values as $meta_value ) {
+									$meta_object = wp_list_filter( $metas, array( 'meta_key' => $meta_key, 'meta_value' => $meta_value ) );
 
-									// Set the meta_id for the requested field.
-									if ( $umeta_key === $meta_key ) {
-										$meta['id'] = $meta_object->umeta_id;
+									if ( 1 === count( $meta_object ) ) {
+										$meta_object = reset( $meta_object );
+										$user_mid[ $meta_key ][ $meta_object->umeta_id ] = $meta_value;
+
+										// Set the meta_id for the requested field.
+										if ( $umeta_key === $meta_key ) {
+											$wp_field['id'] = $meta_object->umeta_id;
+										}
 									}
 								}
 							}
 						}
-					}
 
-					// Set the User mid cache.
-					wp_cache_set( $user_id, $user_mid, 'bp_user_mid' );
+						// Set the User mid cache.
+						wp_cache_set( $user_id, $user_mid, 'bp_user_mid' );
+					}
 				}
 			}
-		}
 
-		if ( isset( $user_mid[$umeta_key] ) ) {
-			$meta['value'] = reset( $user_mid[$umeta_key] );
-			$meta['id']    = key( $user_mid[$umeta_key] );
-		}
-
-		if ( 'user_url' === $this->meta_key ) {
-			if ( bp_displayed_user_id() ) {
-				$meta['value'] = bp_get_displayed_user()->userdata->{$this->meta_key};
-			} elseif ( $user_id ) {
-				$user = get_user_by( 'id', $user_id );
-				$meta['value'] = $user->{$this->meta_key};
+			if ( isset( $user_mid[ $umeta_key ] ) ) {
+				$wp_field['value'] = reset( $user_mid[ $umeta_key ] );
+				$wp_field['id']    = key( $user_mid[ $umeta_key ] );
 			}
 		}
 
-		return $meta;
+		return $wp_field;
 	}
 }

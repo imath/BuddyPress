@@ -1395,7 +1395,7 @@ function bp_xprofile_personal_data_exporter( $email_address ) {
  *
  * @return string[] List of supported WordPress user keys.
  */
-function bp_xprofile_get_wordpress_user_keys() {
+function bp_xprofile_get_wp_user_keys() {
 	return array_merge(
 		array( 'first_name', 'last_name', 'user_url', 'description' ),
 		array_keys( wp_get_user_contact_methods() )

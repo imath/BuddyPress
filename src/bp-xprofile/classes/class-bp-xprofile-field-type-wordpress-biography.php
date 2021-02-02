@@ -28,7 +28,7 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 		$this->category           = _x( 'WordPress Fields', 'xprofile field type category', 'buddypress' );
 		$this->name               = _x( 'Biography', 'xprofile field type', 'buddypress' );
 		$this->accepts_null_value = true;
-		$this->meta_key           = 'description';
+		$this->wp_user_key        = 'description';
 
 		$this->set_format( '/^.*$/m', 'replace' );
 
@@ -68,7 +68,7 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 			$user_id = bp_displayed_user_id();
 		}
 
-		return sanitize_user_field( $this->meta_key, $value, $user_id, 'attribute' );
+		return sanitize_user_field( $this->wp_user_key, $value, $user_id, 'attribute' );
 	}
 
 	/**
@@ -114,7 +114,7 @@ class BP_XProfile_Field_Type_WordPress_Biography extends BP_XProfile_Field_Type_
 		?>
 
 		<textarea <?php echo $this->get_edit_field_html_elements( $r ); ?>><?php
-			echo $this->sanitize_for_output( bp_get_user_meta( $user_id, $this->meta_key, true ), $user_id );
+			echo $this->sanitize_for_output( bp_get_user_meta( $user_id, $this->wp_user_key, true ), $user_id );
 		?></textarea>
 
 		<?php

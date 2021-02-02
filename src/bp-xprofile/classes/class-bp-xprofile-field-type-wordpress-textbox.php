@@ -30,9 +30,9 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 		$this->accepts_null_value  = true;
 		$this->do_settings_section = true;
 
-		$this->meta_key = '';
+		$this->wp_user_key = '';
 		if ( isset( $this->field_obj->id ) ) {
-			$this->meta_key = self::get_field_settings( $this->field_obj->id );
+			$this->wp_user_key = self::get_field_settings( $this->field_obj->id );
 		}
 
 		$this->set_format( '/^.*$/', 'replace' );
@@ -48,9 +48,9 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 
 		/*
 		 * As we are using an xProfile field meta to store the WordPress field meta key we need to make
-		 * sure $this->meta_key is set before trying to save a field.
+		 * sure $this->wp_user_key is set before trying to save a field.
 		 */
-		add_filter( 'bp_xprofile_set_field_data_pre_validate', array( $this, 'set_meta_key' ), 10, 2 );
+		add_filter( 'bp_xprofile_set_field_data_pre_validate', array( $this, 'set_wp_user_key' ), 10, 2 );
 	}
 
 	/**
@@ -66,15 +66,15 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 	 * @return array An array containing the metadata `id`, `value` and `table_name`.
 	 */
 	public function get_field_value( $user_id, $field_id = 0 ) {
-		if ( ! $this->meta_key ) {
-			$this->meta_key = self::get_field_settings( $field_id );
+		if ( ! $this->wp_user_key ) {
+			$this->wp_user_key = self::get_field_settings( $field_id );
 		}
 
 		return parent::get_field_value( $user_id, $field_id );
 	}
 
 	/**
-	 * Sets the WordPress field meta_key property before saving the xProfile field.
+	 * Sets the WordPress field wp_user_key property before saving the xProfile field.
 	 *
 	 * @since 8.0.0
 	 *
@@ -82,9 +82,9 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 	 * @param BP_XProfile_Field      $field Field object.
 	 * @return mixed Unchanged value.
 	 */
-	public function set_meta_key( $value, $field ) {
-		if ( ! $this->meta_key && 'wp-textbox' === $field->type ) {
-			$this->meta_key = self::get_field_settings( $field->id );
+	public function set_wp_user_key( $value, $field ) {
+		if ( ! $this->wp_user_key && 'wp-textbox' === $field->type ) {
+			$this->wp_user_key = self::get_field_settings( $field->id );
 		}
 
 		return $value;
@@ -99,7 +99,7 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 	 * @return string The sanitized field value.
 	 */
 	public function sanitize_for_db( $value ) {
-		if ( 'user_url' === $this->meta_key ) {
+		if ( 'user_url' === $this->wp_user_key ) {
 			return esc_url_raw( $value );
 		}
 
@@ -119,7 +119,7 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 			$user_id = bp_displayed_user_id();
 		}
 
-		return sanitize_user_field( $this->meta_key, $value, $user_id, 'attribute' );
+		return sanitize_user_field( $this->wp_user_key, $value, $user_id, 'attribute' );
 	}
 
 	/**
@@ -148,19 +148,19 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 			unset( $raw_properties['user_id'] );
 		}
 
-		if ( ! $this->meta_key ) {
-			$this->meta_key = self::get_field_settings( bp_get_the_profile_field_id() );
+		if ( ! $this->wp_user_key ) {
+			$this->wp_user_key = self::get_field_settings( bp_get_the_profile_field_id() );
 		}
 
-		if ( 'user_url' === $this->meta_key ) {
+		if ( 'user_url' === $this->wp_user_key ) {
 			if ( bp_displayed_user_id() ) {
-				$field_value = bp_get_displayed_user()->userdata->{$this->meta_key};
+				$field_value = bp_get_displayed_user()->userdata->{$this->wp_user_key};
 			} elseif ( $user_id ) {
 				$user = get_user_by( 'id', $user_id );
-				$field_value = $user->{$this->meta_key};
+				$field_value = $user->{$this->wp_user_key};
 			}
 		} else {
-			$field_value = bp_get_user_meta( $user_id, $this->meta_key, true );
+			$field_value = bp_get_user_meta( $user_id, $this->wp_user_key, true );
 		}
 
 		$r = wp_parse_args( $raw_properties, array(
@@ -220,9 +220,9 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 	 * @return string The meta_key used for this field.
 	 */
 	public static function get_field_settings( $field_id ) {
-		$meta_key = bp_xprofile_get_meta( $field_id, 'field', 'wp_user_meta_key', true );
+		$wp_user_key = bp_xprofile_get_meta( $field_id, 'field', 'wp_user_key', true );
 
-		return sanitize_key( $meta_key );
+		return sanitize_key( $wp_user_key );
 	}
 
 	/**
@@ -238,12 +238,12 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 		$existing_setting = self::get_field_settings( $field_id );
 		$setting = '';
 
-		if ( isset( $settings['meta_key'] ) ) {
-			$setting = sanitize_key( $settings['meta_key'] );
+		if ( isset( $settings['wp_user_key'] ) ) {
+			$setting = sanitize_key( $settings['wp_user_key'] );
 		}
 
 		if ( $setting && $setting !== $existing_setting ) {
-			bp_xprofile_update_meta( $field_id, 'field', 'wp_user_meta_key', $setting );
+			bp_xprofile_update_meta( $field_id, 'field', 'wp_user_key', $setting );
 		}
 
 		return true;
@@ -295,10 +295,12 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 							}
 
 							printf(
-								'<li><label for="wp-textbox-meta-key-%1$s">
-									<input type="radio" id="wp-textbox-meta-key-%1$s" name="field-settings[meta_key]" value="%1$s" %2$s/>
-									%3$s
-								</label></li>',
+								'<li>
+									<label for="wp-textbox-wp_user_key-%1$s">
+										<input type="radio" id="wp-textbox-wp_user_key-%1$s" name="field-settings[wp_user_key]" value="%1$s" %2$s/>
+										%3$s
+									</label>
+								</li>',
 								esc_attr( $key ),
 								checked( $key, $setting, false ),
 								esc_html( $wp_labels[ $key ] )
@@ -322,17 +324,17 @@ class BP_XProfile_Field_Type_WordPress_Textbox extends BP_XProfile_Field_Type_Wo
 	 * @return string The sanitized WordPress field.
 	 */
 	public static function display_filter( $field_value, $field_id = '' ) {
-		$meta_key = self::get_field_settings( $field_id );
+		$wp_user_key = self::get_field_settings( $field_id );
 
-		if ( ! $meta_key ) {
+		if ( ! $wp_user_key ) {
 			return '';
 		}
 
-		if ( 'user_url' === $meta_key ) {
-			$sanitized_website = sanitize_user_field( $meta_key, $field_value, bp_displayed_user_id(), 'attribute' );
+		if ( 'user_url' === $wp_user_key ) {
+			$sanitized_website = sanitize_user_field( $wp_user_key, $field_value, bp_displayed_user_id(), 'attribute' );
 			return sprintf( '<a href="%1$s" rel="nofollow">%1$s</a>', $sanitized_website );
 		}
 
-		return sanitize_user_field( $meta_key, $field_value, bp_displayed_user_id(), 'display' );
+		return sanitize_user_field( $wp_user_key, $field_value, bp_displayed_user_id(), 'display' );
 	}
 }
