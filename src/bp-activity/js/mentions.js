@@ -102,7 +102,9 @@ window.bp = window.bp || {};
 		var tribute = new Tribute( tributeParams );
 
 		$( this ).each( function( i, input ) {
-			tribute.attach( $( input ) );
+			if ( ! $( input ).attr( 'data-tribute' ) ) {
+				tribute.attach( $( input ) );
+			}
 		} );
 	};
 
