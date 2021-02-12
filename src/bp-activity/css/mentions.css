@@ -45,8 +45,8 @@
 }
 
 .tribute-container ul li small {
-	float: right;
 	font-size: smaller;
+	float: right;
 	font-weight: 400;
 	margin: 0 10px 0 40px;
 }
@@ -61,7 +61,7 @@
 
 .tribute-container img {
 	border-radius: 2px;
-	float: left;
+	float: right;
 	height: 20px;
 	margin-top: 0;
 	width: 20px;

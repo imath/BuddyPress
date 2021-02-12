@@ -86,15 +86,14 @@ window.bp = window.bp || {};
 			lookup: 'search',
 			fillAttr: 'mention_name',
 			menuItemTemplate: function( user ) {
-				var template = '';
+				var template = '', item = user.string.split( '|' );
 
 				if ( user.original.avatar_urls && user.original.avatar_urls.thumb ) {
 					template = '<img src="' + user.original.avatar_urls.thumb + '" />';
 				}
 
-				var item = user.string.split( '|' );
+				template += '<span class="username">@' + item[0] + '</span><small>' + item[1] + '</small>';
 
-				template += '<span class="username">' + item[1] + '</span><small>@' + item[0] + '</small>';
 				return template;
 			}
 		};
