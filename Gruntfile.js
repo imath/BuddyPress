@@ -37,7 +37,8 @@ module.exports = function( grunt ) {
 			'!bp-members/css/blocks/member.css',
 			'!bp-groups/css/blocks/group.css',
 			'!bp-members/css/blocks/members.css',
-			'!bp-groups/css/blocks/groups.css'
+			'!bp-groups/css/blocks/groups.css',
+			'!bp-activity/css/mentions.css'
 		],
 
 		autoprefixer = require('autoprefixer');
@@ -129,6 +130,15 @@ module.exports = function( grunt ) {
 				flatten: true,
 				src: ['bp-core/admin/sass/*.scss'],
 				dest: SOURCE_DIR + 'bp-core/admin/css/'
+			},
+			activity: {
+				cwd: SOURCE_DIR,
+				extDot: 'last',
+				expand: true,
+				ext: '.css',
+				flatten: true,
+				src: ['bp-activity/sass/*.scss'],
+				dest: SOURCE_DIR + 'bp-activity/css/'
 			},
 			members_blocks: {
 				cwd: SOURCE_DIR,

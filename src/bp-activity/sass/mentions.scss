@@ -1,0 +1,72 @@
+.tribute-container {
+	background: rgba(204, 204, 204, 0.8);
+	border-radius: 2px;
+	border: 1px solid rgb(204, 204, 204);
+	box-shadow: 0 0 5px rgba(204, 204, 204, 0.25), 0 0 1px #fff;
+	color: #555;
+	display: none;
+	margin-top: 18px;
+	position: absolute;
+	top: 0;
+	z-index: 1000; /* >999 for wp-admin */
+
+	ul {
+		background: #fff;
+		list-style: none;
+		margin: auto;
+		padding: 0;
+
+		li {
+			border-bottom: 1px solid #efefef;
+			box-sizing: content-box;
+			cursor: pointer;
+			display: block;
+			font-size: 14px;
+			height: 20px;
+			line-height: 20px;
+			margin: 0;
+			overflow: hidden;
+			padding: 5px 10px;
+
+			&.highlight {
+				background: #ddd;
+			}
+
+			.username {
+				color: #555;
+
+				span {
+					font-weight: 600;
+				}
+			}
+
+			small {
+				float: right;
+				font-size: smaller;
+				font-weight: 400;
+				margin: 0 10px 0 40px;
+
+				span {
+					font-weight: 600;
+				}
+			}
+
+			.no-match {
+				cursor: default;
+			}
+		}
+	}
+
+	img {
+		border-radius: 2px;
+		float: left;
+		height: 20px;
+		margin-top: 0;
+		width: 20px;
+		margin-right: 5px;
+	}
+
+	.menu-highlighted {
+		font-weight: 700;
+	}
+}

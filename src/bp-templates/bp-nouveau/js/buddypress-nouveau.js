@@ -229,7 +229,7 @@ window.bp = window.bp || {};
 				$( selector ).html( content );
 			}
 
-			if ( 'undefined' !== typeof bp_mentions || 'undefined' !== typeof bp.mentions ) {
+			if ( 'undefined' !== typeof bp_mentions || ! $( '.bp-suggestions' ).attr( 'data-tribute' ) ) {
 				$( '.bp-suggestions' ).bp_mentions( bp.mentions.users );
 			}
 		},

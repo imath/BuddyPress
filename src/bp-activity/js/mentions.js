@@ -1,8 +1,8 @@
-/* global bp */
+/* global bp, Tribute */
 
 window.bp = window.bp || {};
 
-( function( bp, $, undefined ) {
+( function( bp, $ ) {
 	var mentionsQueryCache = [],
 		mentionsItem;
 
@@ -20,18 +20,18 @@ window.bp = window.bp || {};
 	 * @since 2.1.0
 	 */
 	$.fn.bp_mentions = function( defaultList ) {
-		var debouncer = function(func, wait) {
+		var debouncer = function( func, wait ) {
 			var timeout;
 			return function() {
 				var context = this;
 				var args = arguments;
 
 				var callFunction = function() {
-				   func.apply(context, args)
+				   func.apply( context, args );
 				};
 
-				clearTimeout(timeout);
-				timeout = setTimeout(callFunction, wait);
+				clearTimeout( timeout );
+				timeout = setTimeout( callFunction, wait );
 			};
 		};
 
@@ -40,8 +40,8 @@ window.bp = window.bp || {};
 			* Immediately show the pre-created friends list, if it's populated,
 			* and the user has hesitated after hitting @ (no search text provided).
 			*/
-			if ( text.length === 0 && $.isArray( defaultList ) && defaultList.length > 0 ) {
-				cb(defaultList);
+			if ( text.length === 0 && Array.isArray( defaultList ) && defaultList.length > 0 ) {
+				cb( defaultList ) ;
 				return;
 			}
 
@@ -60,44 +60,55 @@ window.bp = window.bp || {};
 					 * Create a composite index to determine ordering of results;
 					 * nicename matches will appear on top.
 					 *
-					 * @param {array} suggestion A suggestion's original data.
-					 * @return {array} A suggestion's new data.
-					 * @since 2.1.0
+					 * @param {object} suggestion A suggestion's original data.
+					 * @return {object} A suggestion's new data.
+					 * @since 8.0.0
 					 */
 					function( suggestion ) {
-						suggestion.search = suggestion.user_login + ' ' + suggestion.name;
+						suggestion.search = suggestion.search || suggestion.mention_name + '|' + suggestion.name;
 						return suggestion;
 					}
 				);
 
 				mentionsQueryCache[ text ] = retval;
-				cb(retval);
+				cb( retval );
 			} ).fail( function( error ) {
 				return error;
 			} );
 		};
 
 		var tributeParams = {
-			values: debouncer( function (text, cb) {
-				remoteSearch(text, users => cb(users));
+			values: debouncer( function( text, cb ) {
+				var users = function( users ) { return cb( users ); };
+
+				remoteSearch( text, users );
 			}, 250),
 			lookup: 'search',
-			fillAttr: 'user_login',
-			menuItemTemplate: function (item) {
-				return '<img src="' + item.original.avatar_urls.thumb + '" alt="Profile picture of ' + item.original.name + '"> @' + item.string;
-			},
+			fillAttr: 'mention_name',
+			menuItemTemplate: function( user ) {
+				var template = '';
+
+				if ( user.original.avatar_urls && user.original.avatar_urls.thumb ) {
+					template = '<img src="' + user.original.avatar_urls.thumb + '" />';
+				}
+
+				var item = user.string.split( '|' );
+
+				template += '<span class="username">' + item[1] + '</span><small>@' + item[0] + '</small>';
+				return template;
+			}
 		};
 
 		var tribute = new Tribute( tributeParams );
 
-		$( this ).each( function() {
-			tribute.attach( document.getElementById( $( this ).attr( "id" ) ) );
-		});
+		$( this ).each( function( i, input ) {
+			tribute.attach( $( input ) );
+		} );
 	};
 
-	$( document ).ready( function() {
+	$( function() {
 		// Activity/reply, post comments, bp-nouveau messages composer.
 		$( '.bp-suggestions, #comments form textarea, .bp-messages-content .send-to-input' ).bp_mentions( bp.mentions.users );
-	});
+	} );
 
-})( bp, jQuery );
+} )( bp, jQuery );

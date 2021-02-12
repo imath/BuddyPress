@@ -1,41 +1,73 @@
 .tribute-container {
+	background: rgba(204, 204, 204, 0.8);
+	border-radius: 2px;
+	border: 1px solid #cccccc;
+	box-shadow: 0 0 5px rgba(204, 204, 204, 0.25), 0 0 1px #fff;
+	color: #555;
+	display: none;
+	margin-top: 18px;
 	position: absolute;
 	top: 0;
-	left: 0;
-	height: auto;
-	max-height: 300px;
-	max-width: 500px;
-	overflow: auto;
-	display: block;
-	z-index: 999999;
+	z-index: 1000;
+	/* >999 for wp-admin */
 }
+
 .tribute-container ul {
-	margin: 0;
-	margin-top: 2px;
-	padding: 0;
+	background: #fff;
 	list-style: none;
-	background: #efefef;
+	margin: auto;
+	padding: 0;
 }
-.tribute-container li {
-	padding: 5px 5px;
+
+.tribute-container ul li {
+	border-bottom: 1px solid #efefef;
+	box-sizing: content-box;
 	cursor: pointer;
+	display: block;
+	font-size: 14px;
+	height: 20px;
+	line-height: 20px;
+	margin: 0;
+	overflow: hidden;
+	padding: 5px 10px;
 }
-.tribute-container li.highlight, .tribute-container li:hover {
+
+.tribute-container ul li.highlight {
 	background: #ddd;
 }
-.tribute-container li span {
-	font-weight: bold;
+
+.tribute-container ul li .username {
+	color: #555;
 }
-.tribute-container li.no-match {
+
+.tribute-container ul li .username span {
+	font-weight: 600;
+}
+
+.tribute-container ul li small {
+	float: right;
+	font-size: smaller;
+	font-weight: 400;
+	margin: 0 10px 0 40px;
+}
+
+.tribute-container ul li small span {
+	font-weight: 600;
+}
+
+.tribute-container ul li .no-match {
 	cursor: default;
 }
-.tribute-container .menu-highlighted {
-	font-weight: bold;
-}
-.tribute-container li img {
+
+.tribute-container img {
 	border-radius: 2px;
-	float: right;
+	float: left;
 	height: 20px;
-	/*margin-top: 0;*/
+	margin-top: 0;
 	width: 20px;
+	margin-right: 5px;
+}
+
+.tribute-container .menu-highlighted {
+	font-weight: 700;
 }
