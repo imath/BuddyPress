@@ -49,7 +49,7 @@ function bp_nouveau_messages_register_scripts( $scripts = array() ) {
 	return array_merge( $scripts, array(
 		'bp-nouveau-messages-at' => array(
 			'file'         => buddypress()->plugin_url . 'bp-activity/js/mentions%s.js',
-			'dependencies' => array( 'bp-nouveau', 'jquery', 'jquery-atwho' ),
+			'dependencies' => array( 'bp-nouveau', 'jquery', 'bp-api-request', 'zurb-tribute' ),
 			'version'      => bp_get_version(),
 			'footer'       => true,
 		),
@@ -72,9 +72,6 @@ function bp_nouveau_messages_enqueue_scripts() {
 	}
 
 	wp_enqueue_script( 'bp-nouveau-messages' );
-
-	// Add The tiny MCE init specific function.
-	add_filter( 'tiny_mce_before_init', 'bp_nouveau_messages_at_on_tinymce_init', 10, 2 );
 }
 
 /**
@@ -312,18 +309,6 @@ function bp_nouveau_messages_mce_buttons( $buttons = array() ) {
 	array_push( $buttons, 'image' );
 
 	return $buttons;
-}
-
-/**
- * @since 3.0.0
- */
-function bp_nouveau_messages_at_on_tinymce_init( $settings, $editor_id ) {
-	// We only apply the mentions init to the visual post editor in the WP dashboard.
-	if ( 'message_content' === $editor_id ) {
-		$settings['init_instance_callback'] = 'window.bp.Nouveau.Messages.tinyMCEinit';
-	}
-
-	return $settings;
 }
 
 /**

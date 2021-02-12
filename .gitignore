@@ -17,6 +17,7 @@ logs
 results
 src/vendor
 vendor
+!src/bp-core/js/vendor
 
 node_modules
 npm-debug.log

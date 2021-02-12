@@ -101,24 +101,6 @@ window.bp = window.bp || {};
 			}
 		},
 
-		tinyMCEinit: function() {
-			if ( typeof window.tinyMCE === 'undefined' || window.tinyMCE.activeEditor === null || typeof window.tinyMCE.activeEditor === 'undefined' ) {
-				return;
-			} else {
-				// Mentions isn't available, so bail.
-				if ( _.isEmpty( exports.mentions ) ) {
-					return;
-				}
-
-				$( window.tinyMCE.activeEditor.contentDocument.activeElement )
-					.atwho( 'setIframe', $( '#message_content_ifr' )[0] )
-					.bp_mentions( {
-						data: [],
-						suffix: ' '
-					} );
-			}
-		},
-
 		removeFeedback: function() {
 			var feedback;
 

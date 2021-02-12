@@ -70,10 +70,6 @@ function bp_core_register_common_scripts() {
 		'bp-jquery-cookie'  => array( 'file' => "{$url}vendor/jquery-cookie{$min}.js", 'dependencies' => array( 'jquery' ), 'footer' => false ),
 		'bp-jquery-scroll-to' => array( 'file' => "{$url}vendor/jquery-scroll-to{$min}.js", 'dependencies' => array( 'jquery' ), 'footer' => false ),
 
-		// Version 2.1.
-		'jquery-caret' => array( 'file' => "{$url}vendor/jquery.caret{$min}.js", 'dependencies' => array( 'jquery' ), 'footer' => true ),
-		'jquery-atwho' => array( 'file' => "{$url}vendor/jquery.atwho{$min}.js", 'dependencies' => array( 'jquery', 'jquery-caret' ), 'footer' => true ),
-
 		// Version 2.3.
 		'bp-plupload' => array( 'file' => "{$url}bp-plupload{$min}.js", 'dependencies' => array( 'plupload', 'jquery', 'json2', 'wp-backbone' ), 'footer' => true ),
 		'bp-avatar'   => array( 'file' => "{$url}avatar{$min}.js", 'dependencies' => array( 'jcrop' ), 'footer' => true ),
@@ -85,6 +81,9 @@ function bp_core_register_common_scripts() {
 		// Version 2.7.
 		'bp-moment'    => array( 'file' => "{$url}vendor/moment-js/moment{$min}.js", 'dependencies' => array(), 'footer' => true ),
 		'bp-livestamp' => array( 'file' => "{$url}vendor/livestamp{$min}.js", 'dependencies' => array( 'jquery', 'bp-moment' ), 'footer' => true ),
+
+		// Version 8
+		'zurb-tribute' => array( 'file' => "{$url}vendor/tribute{$min}.js", 'dependencies' => array(), 'footer' => true ),
 	);
 
 	// Version 2.7 - Add Moment.js locale to our $scripts array if we found one.

@@ -33,16 +33,13 @@ function bp_activity_mentions_script() {
 
 	$min = bp_core_get_minified_asset_suffix();
 
-	wp_enqueue_script( 'bp-mentions', buddypress()->plugin_url . "bp-activity/js/mentions{$min}.js", array( 'jquery', 'jquery-atwho' ), bp_get_version(), true );
+	wp_enqueue_script( 'bp-mentions', buddypress()->plugin_url . "bp-activity/js/mentions{$min}.js", array( 'bp-api-request', 'zurb-tribute' ), bp_get_version(), true );
 	wp_enqueue_style( 'bp-mentions-css', buddypress()->plugin_url . "bp-activity/css/mentions{$min}.css", array(), bp_get_version() );
 
 	wp_style_add_data( 'bp-mentions-css', 'rtl', 'replace' );
 	if ( $min ) {
 		wp_style_add_data( 'bp-mentions-css', 'suffix', $min );
 	}
-
-	// If the script has been enqueued, let's attach our mentions TinyMCE init callback.
-	add_filter( 'tiny_mce_before_init', 'bp_add_mentions_on_tinymce_init', 10, 2 );
 
 	/**
 	 * Fires at the end of the Activity Mentions script.
@@ -57,20 +54,3 @@ function bp_activity_mentions_script() {
 add_action( 'bp_enqueue_scripts', 'bp_activity_mentions_script' );
 add_action( 'bp_admin_enqueue_scripts', 'bp_activity_mentions_script' );
 
-/**
- * Bind the mentions listener to a wp_editor instance when TinyMCE initializes.
- *
- * @since 2.3.3
- *
- * @param array  $settings   An array with TinyMCE config.
- * @param string $editor_id Unique editor identifier, e.g. 'content'.
- * @return array  $mceInit   An array with TinyMCE config.
- */
-function bp_add_mentions_on_tinymce_init( $settings, $editor_id ) {
-	// We only apply the mentions init to the visual post editor in the WP dashboard.
-	if ( 'content' === $editor_id ) {
-		$settings['init_instance_callback'] = 'window.bp.mentions.tinyMCEinit';
-	}
-
-	return $settings;
-}
