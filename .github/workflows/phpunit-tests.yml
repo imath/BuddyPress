@@ -35,8 +35,7 @@ jobs:
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v1
         with:
-          composer-options: "--ignore-platform-reqs"
-          dependency-versions: "lowest"
+          composer-options: "--no-progress --no-ansi --no-interaction"
 
       - name: Cache node modules
         uses: actions/cache@v2
@@ -56,7 +55,7 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Install node modules and prepare Unit tests
+      - name: Install node modules
         run: npm ci
 
       - name: Install WordPress
