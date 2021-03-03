@@ -51,8 +51,8 @@
 		"test-php:group": "npm run wp-env run phpunit 'php /var/www/html/wp-content/plugins/buddypress/vendor/phpunit/phpunit/phpunit -c /var/www/html/wp-content/plugins/buddypress/tests/phpunit/env.xml --group $npm_confi_g'",
 		"test-php-multisite": "npm run wp-env run phpunit 'php /var/www/html/wp-content/plugins/buddypress/vendor/phpunit/phpunit/phpunit -c /var/www/html/wp-content/plugins/buddypress/tests/phpunit/env.multisite.xml'",
 		"test-php-multisite:group": "npm run wp-env run phpunit 'php /var/www/html/wp-content/plugins/buddypress/vendor/phpunit/phpunit/phpunit -c /var/www/html/wp-content/plugins/buddypress/tests/phpunit/env.multisite.xml --group $npm_confi_g'",
-		"ga-test-php": "npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/buddypress/tests/phpunit/env.xml'",
-		"ga-test-php-multisite": "npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/buddypress/tests/phpunit/env.multisite.xml'"
+		"ga-test-php": "npm run wp-env run phpunit 'php /var/www/html/wp-content/plugins/BuddyPress/vendor/phpunit/phpunit/phpunit -c /var/www/html/wp-content/plugins/BuddyPress/tests/phpunit/env.xml'",
+		"ga-test-php-multisite": "npm run wp-env run phpunit 'php /var/www/html/wp-content/plugins/BuddyPress/vendor/phpunit/phpunit/phpunit -c /var/www/html/wp-content/plugins/BuddyPress/tests/phpunit/env.multisite.xml'"
 	},
 	"keywords": [
 		"activity",
