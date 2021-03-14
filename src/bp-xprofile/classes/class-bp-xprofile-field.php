@@ -1318,6 +1318,52 @@ class BP_XProfile_Field {
 	}
 
 	/**
+	 * Gets field type supports.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @return bool[] Supported features.
+	 */
+	public function get_field_type_supports() {
+		$supports = array(
+			'switch_fieldtype'       => true,
+			'allow_required'         => true,
+			'allow_autolink'         => true,
+			'allo_custom_visibility' => true,
+		);
+
+		if ( isset( $this->type_obj ) && $this->type_obj ) {
+			$field_type        = $this->type_obj;
+			$parent_field_type = get_parent_class( $field_type );
+
+			if ( 'BP_XProfile_Field_Type_WordPress' === $parent_field_type && isset( $field_type::$supported_features ) ) {
+				$supports = array_merge( $supports, $field_type::$supported_features );
+			}
+		}
+
+		return $supports;
+	}
+
+	/**
+	 * Checks whether the field type supports the requested feature.
+	 *
+	 * @since 8.0.0
+	 *
+	 * @param string $support The name of the feature.
+	 * @return boolean True if the field type supports the feature. False otherwise.
+	 */
+	public function field_type_supports( $support = '' ) {
+		$retval   = true;
+		$features = $this->get_field_type_supports();
+
+		if ( isset( $features[ $support ] ) ) {
+			$retval = $features[ $support ];
+		}
+
+		return $retval;
+	}
+
+	/**
 	 * Private method used to display the submit metabox.
 	 *
 	 * @since 2.3.0
@@ -1496,8 +1542,8 @@ class BP_XProfile_Field {
 	 */
 	private function visibility_metabox() {
 
-		// Default field cannot have custom visibility.
-		if ( true === $this->is_default_field() ) {
+		// Default field and field types not supporting the feature cannot have custom visibility.
+		if ( true === $this->is_default_field() || ! $this->field_type_supports( 'allow_custom_visibility' ) ) {
 			return;
 		} ?>
 
@@ -1545,8 +1591,8 @@ class BP_XProfile_Field {
 	 */
 	private function required_metabox() {
 
-		// Default field is always required.
-		if ( true === $this->is_default_field() ) {
+		// Default field and field types not supporting the feature cannot be required.
+		if ( true === $this->is_default_field() || ! $this->field_type_supports( 'required' ) ) {
 			return;
 		} ?>
 
@@ -1571,7 +1617,11 @@ class BP_XProfile_Field {
 	 * @return void If default field id 1.
 	 */
 	private function autolink_metabox() {
-		?>
+
+		// Field types not supporting the feature cannot use autolink.
+		if ( ! $this->field_type_supports( 'do_autolink' ) ) {
+			return;
+		} ?>
 
 		<div class="postbox">
 			<h2><?php esc_html_e( 'Autolink', 'buddypress' ); ?></h2>
@@ -1606,16 +1656,23 @@ class BP_XProfile_Field {
 		// Default field cannot change type.
 		if ( true === $this->is_default_field() ) {
 			return;
-		} ?>
+		}
+		?>
 
 		<div class="postbox">
 			<h2><label for="fieldtype"><?php esc_html_e( 'Type', 'buddypress'); ?></label></h2>
 			<div class="inside" aria-live="polite" aria-atomic="true" aria-relevant="all">
-				<select name="fieldtype" id="fieldtype" onchange="show_options(this.value)">
+				<?php if ( ! $this->field_type_supports( 'switch_fieldtype' ) ) : ?>
+					<input type="text" disabled="true" value="<?php echo esc_attr( $this->type_obj->name ); ?>">
+					<input type="hidden" name="fieldtype" id="fieldtype" value="<?php echo esc_attr( $this->type ); ?>">
 
-					<?php bp_xprofile_admin_form_field_types( $this->type ); ?>
+				<?php else : ?>
+					<select name="fieldtype" id="fieldtype" onchange="show_options(this.value)">
 
-				</select>
+						<?php bp_xprofile_admin_form_field_types( $this->type ); ?>
+
+					</select>
+				<?php endif; ?>
 
 				<?php
 
@@ -1642,15 +1699,73 @@ class BP_XProfile_Field {
 		// Nonce.
 		wp_nonce_field( 'bp_xprofile_admin_field', 'bp_xprofile_admin_field' );
 
-		// Field 1 is the fullname field, which cannot have custom visibility.
-		if ( false === $this->is_default_field() ) {
+		// Init default field hidden inputs.
+		$default_field_hidden_inputs = array();
+		$hidden_fields = array(
+			'required' => array(
+				'name'  => 'required',
+				'id'    => 'required',
+				'value' => '0',
+			),
+			'default_visibility' => array(
+				'name'  => 'default-visibility',
+				'id'    => 'default-visibility',
+				'value' => 'public',
+			),
+			'allow_custom_visibility' => array(
+				'name'  => 'allow-custom-visibility',
+				'id'    => 'allow-custom-visibility',
+				'value' => 'disabled',
+			),
+			'do_autolink' => array(
+				'name'  => 'do_autolink',
+				'id'    => 'do-autolink',
+				'value' => '',
+			),
+		);
+
+		// Field 1 is the fullname field, which is required.
+		if ( true === $this->is_default_field() ) {
+			$default_field_required          = $hidden_fields['required'];
+			$default_field_required['value'] = '1';
+
+			$default_field_hidden_inputs = array(
+				$default_field_required,
+				array(
+					'name'  => 'fieldtype',
+					'id'    => 'fieldtype',
+					'value' => 'textbox',
+				),
+			);
+		}
+
+		$supports = $this->get_field_type_supports();
+		if ( $supports ) {
+			foreach ( $supports as $feature => $support ) {
+				if ( true === $support || 'switch_fieldtype' === $feature ) {
+					continue;
+				}
+
+				$default_field_hidden_inputs[] = $hidden_fields[ $feature ];
+
+				if ( 'allow_custom_visibility' === $feature ) {
+					$default_field_hidden_inputs[] = $hidden_fields['default_visibility'];
+				}
+			}
+		}
+
+		if ( ! $default_field_hidden_inputs ) {
 			return;
-		} ?>
+		}
 
-		<input type="hidden" name="required"  id="required"  value="1"       />
-		<input type="hidden" name="fieldtype" id="fieldtype" value="textbox" />
-
-		<?php
+		foreach ( $default_field_hidden_inputs as $default_field_hidden_input ) {
+			printf(
+				'<input type="hidden" name="%1$s" id="%2$s" value="%3$s"/>',
+				esc_attr( $default_field_hidden_input['name'] ),
+				esc_attr( $default_field_hidden_input['id'] ),
+				esc_attr( $default_field_hidden_input['value'] ),
+			);
+		}
 	}
 
 	/**
