@@ -1326,17 +1326,16 @@ class BP_XProfile_Field {
 	 */
 	public function get_field_type_supports() {
 		$supports = array(
-			'switch_fieldtype'       => true,
-			'allow_required'         => true,
-			'allow_autolink'         => true,
-			'allo_custom_visibility' => true,
+			'switch_fieldtype'        => true,
+			'allow_required'          => true,
+			'allow_autolink'          => true,
+			'allow_custom_visibility' => true,
 		);
 
 		if ( isset( $this->type_obj ) && $this->type_obj ) {
-			$field_type        = $this->type_obj;
-			$parent_field_type = get_parent_class( $field_type );
+			$field_type = $this->type_obj;
 
-			if ( 'BP_XProfile_Field_Type_WordPress' === $parent_field_type && isset( $field_type::$supported_features ) ) {
+			if ( isset( $field_type::$supported_features ) ) {
 				$supports = array_merge( $supports, $field_type::$supported_features );
 			}
 		}
@@ -1547,7 +1546,7 @@ class BP_XProfile_Field {
 			return;
 		} ?>
 
-		<div class="postbox">
+		<div class="postbox" id="field-type-visibiliy-metabox">
 			<h2><label for="default-visibility"><?php esc_html_e( 'Visibility', 'buddypress' ); ?></label></h2>
 			<div class="inside">
 				<div>
@@ -1596,7 +1595,7 @@ class BP_XProfile_Field {
 			return;
 		} ?>
 
-		<div class="postbox">
+		<div class="postbox" id="field-type-required-metabox">
 			<h2><label for="required"><?php esc_html_e( 'Requirement', 'buddypress' ); ?></label></h2>
 			<div class="inside">
 				<select name="required" id="required">
@@ -1623,7 +1622,7 @@ class BP_XProfile_Field {
 			return;
 		} ?>
 
-		<div class="postbox">
+		<div class="postbox" id="field-type-autolink-metabox">
 			<h2><?php esc_html_e( 'Autolink', 'buddypress' ); ?></h2>
 			<div class="inside">
 				<p class="description"><?php esc_html_e( 'On user profiles, link this field to a search of the Members directory, using the field value as a search term.', 'buddypress' ); ?></p>
